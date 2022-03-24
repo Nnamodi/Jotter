@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Jotter</string>
+    <string name="jot_title">Jot title</string>
+    <string name="add_jot">Jot</string>
+    <string name="note_title">Wisdom Book</string>
+    <string name="note_body">It\'s better not to know things sometimes.</string>
+    <string name="jot_body">Jot Body</string>
+    <string name="edit">Edit</string>
+</resources>
