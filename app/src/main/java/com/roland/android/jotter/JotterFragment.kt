@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 
@@ -25,7 +24,6 @@ class JotterFragment : Fragment() {
         jot.setOnClickListener {
             findNavController().navigate(R.id.jotFragment)
         }
-        jotterRecyclerView.layoutManager = LinearLayoutManager(context)
         jotterRecyclerView.adapter = adapter
         return view
     }

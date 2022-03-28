@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 
 class JotFragment : Fragment() {
     private lateinit var edit: View
@@ -18,7 +18,7 @@ class JotFragment : Fragment() {
         val note = Note()
         edit = view.findViewById(R.id.edit)
         edit.setOnClickListener {
-            Navigation.createNavigateOnClickListener(R.id.move_to_edit, null)
+            findNavController().navigate(R.id.move_to_edit, null)
         }
         noteTitle = view.findViewById(R.id.note_title)
         noteTitle.text = note.title

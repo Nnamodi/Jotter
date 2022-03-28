@@ -6,4 +6,6 @@
     <string name="note_body">It\'s better not to know things sometimes.</string>
     <string name="jot_body">Jot Body</string>
     <string name="edit">Edit</string>
+    <string name="save_jot">Save jot</string>
+    <string name="type_note">Type note</string>
 </resources>
