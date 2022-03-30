@@ -1,9 +1,7 @@
 package com.roland.android.jotter
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
@@ -17,6 +15,11 @@ class JotterFragment : Fragment() {
     private lateinit var jotterRecyclerView: RecyclerView
     private var adapter = JotterAdapter()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_jotter_list, container, false)
         jotterRecyclerView = view.findViewById(R.id.recycler_view)
@@ -26,6 +29,21 @@ class JotterFragment : Fragment() {
         }
         jotterRecyclerView.adapter = adapter
         return view
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.menu_jot_fragment, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.more_options -> {
+                // invoke bottom sheet
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     private class JotterHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {

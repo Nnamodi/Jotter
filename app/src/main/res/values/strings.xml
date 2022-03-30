@@ -8,4 +8,6 @@
     <string name="edit">Edit</string>
     <string name="save_jot">Save jot</string>
     <string name="type_note">Type note</string>
+    <string name="more_options">More options</string>
+    <string name="night_mode">Night mode</string>
 </resources>
