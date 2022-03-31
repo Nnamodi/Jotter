@@ -3,6 +3,7 @@ package com.roland.android.jotter
 import android.os.Bundle
 import android.view.*
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
@@ -16,6 +17,12 @@ class JotterFragment : Fragment() {
     private var adapter = JotterAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val isDark = QueryPreference.getDarkMode(requireContext())
+        if (isDark) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
     }
@@ -40,6 +47,8 @@ class JotterFragment : Fragment() {
         return when (item.itemId) {
             R.id.more_options -> {
                 // invoke bottom sheet
+                val modalBottomSheet = BottomSheetDialog()
+                modalBottomSheet.show(childFragmentManager, BottomSheetDialog.TAG)
                 true
             }
             else -> super.onOptionsItemSelected(item)
