@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 
-object QueryPreference {
+object Preference {
     private const val DARK_MODE = "isDark"
 
     fun getDarkMode(context: Context): Boolean {

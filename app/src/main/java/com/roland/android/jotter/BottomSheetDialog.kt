@@ -1,33 +1,38 @@
 package com.roland.android.jotter
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.widget.CheckBox
 import androidx.appcompat.app.AppCompatDelegate
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class BottomSheetDialog : BottomSheetDialogFragment() {
-    private lateinit var darkText: TextView
+    private lateinit var darkMode: CheckBox
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.jotter_bottom_sheet, container, false)
-        darkText = view.findViewById(R.id.night_mode)
-        darkText.setOnClickListener {
-            var isActivated = it.isActivated
-            isActivated = !isActivated
-            if (isActivated){
+        darkMode = view.findViewById(R.id.night_mode)
+        val isDark = Preference.getDarkMode(requireContext())
+        darkMode.isChecked = isDark
+        if (isDark) {
+            darkMode.text = getString(R.string.light_mode)
+            darkMode.setButtonDrawable(R.drawable.light_icon)
+        } else {
+            darkMode.text = getString(R.string.night_mode)
+            darkMode.setButtonDrawable(R.drawable.night_icon)
+        }
+        darkMode.setOnCheckedChangeListener { switch, isChecked ->
+            if (switch.isChecked) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             } else {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
             }
-            QueryPreference.setDarkMode(requireContext(), isActivated)
+            Preference.setDarkMode(requireContext(), isChecked)
+            Log.i("DarkActivated", "$isChecked")
         }
         return view
-    }
-
-    companion object {
-        const val TAG = "BottomSheetDialog"
     }
 }

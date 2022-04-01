@@ -26,4 +26,8 @@
         android:id="@+id/jotEditFragment"
         android:name="com.roland.android.jotter.JotEditFragment"
         tools:layout="@layout/fragment_jot_edit"/>
+    <dialog
+        android:id="@+id/bottomSheetDialog"
+        android:name="com.roland.android.jotter.BottomSheetDialog"
+        tools:layout="@layout/jotter_bottom_sheet" />
 </navigation>

@@ -6,7 +6,7 @@
         <item name="colorPrimaryVariant">@color/secondaryDarkColor</item>
         <item name="colorOnPrimary">@color/black</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/secondaryColor</item>
+        <item name="colorSecondary">@color/secondaryDarkColor</item>
         <item name="colorSecondaryVariant">@color/secondaryColor</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
@@ -14,12 +14,14 @@
         <!-- Customize your theme here. -->
         <item name="android:navigationBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <item name="bottomSheetDialogTheme">@style/Jotter.BottomSheetDialog</item>
+        <item name="floatingActionButtonStyle">@style/Widget.Design.FloatingActionButton</item>
     </style>
 
     <!-- BottomSheetDialog Theme. -->
     <style name="Jotter.BottomSheetDialog" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
         <item name="backgroundTint">@color/secondaryDarkColor</item>
         <item name="bottomSheetStyle">@style/BottomSheetDialog</item>
+        <item name="android:minHeight">200dp</item>
     </style>
 
     <style name="BottomSheetDialog" parent="Widget.MaterialComponents.BottomSheet.Modal">

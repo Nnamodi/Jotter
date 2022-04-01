@@ -17,7 +17,7 @@ class JotterFragment : Fragment() {
     private var adapter = JotterAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val isDark = QueryPreference.getDarkMode(requireContext())
+        val isDark = Preference.getDarkMode(requireContext())
         if (isDark) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         } else {
@@ -47,8 +47,7 @@ class JotterFragment : Fragment() {
         return when (item.itemId) {
             R.id.more_options -> {
                 // invoke bottom sheet
-                val modalBottomSheet = BottomSheetDialog()
-                modalBottomSheet.show(childFragmentManager, BottomSheetDialog.TAG)
+                findNavController().navigate(R.id.bottomSheetDialog)
                 true
             }
             else -> super.onOptionsItemSelected(item)
