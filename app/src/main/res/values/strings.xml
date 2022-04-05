@@ -11,4 +11,6 @@
     <string name="more_options">More options</string>
     <string name="night_mode">Night mode</string>
     <string name="light_mode">Light Mode</string>
+    <string name="date">3|4|2022</string>
+    <string name="time">1:37am</string>
 </resources>

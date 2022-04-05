@@ -1,10 +1,13 @@
 package com.roland.android.jotter
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
@@ -14,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 class JotterFragment : Fragment() {
     private lateinit var jot: View
     private lateinit var jotterRecyclerView: RecyclerView
+    private lateinit var jotterViewModel: JotterViewModel
     private var adapter = JotterAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,6 +28,7 @@ class JotterFragment : Fragment() {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         }
         super.onCreate(savedInstanceState)
+        jotterViewModel = ViewModelProvider(this) [JotterViewModel::class.java]
         setHasOptionsMenu(true)
     }
 
@@ -36,6 +41,18 @@ class JotterFragment : Fragment() {
         }
         jotterRecyclerView.adapter = adapter
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        jotterViewModel.getNotes.observe(
+            viewLifecycleOwner,
+            { note ->
+                Log.d("JotterFragment", "Notes received: $note")
+                (jotterRecyclerView.adapter as JotterAdapter).submitList(note)
+                Toast.makeText(context, "You have ${note.size} notes", Toast.LENGTH_LONG).show()
+            }
+        )
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

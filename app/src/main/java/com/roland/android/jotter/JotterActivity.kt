@@ -29,6 +29,9 @@ class JotterActivity : AppCompatActivity() {
                 R.id.bottomSheetDialog -> {
                     toolbar.isTitleCentered = true
                 }
+                else -> {
+                    toolbar.isTitleCentered = false
+                }
             }
         }
         appBarConfig = AppBarConfiguration(navController.graph)
