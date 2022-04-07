@@ -6,7 +6,7 @@ import java.util.*
 
 @Entity
 data class Note(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     var id: Int = 0,
     var date: Date = Date(),
     var time: Date = Date(),

@@ -12,6 +12,9 @@
         <action
             android:id="@+id/move_to_jot"
             app:destination="@id/jotFragment" />
+        <action
+            android:id="@+id/move_into_editing"
+            app:destination="@id/jotEditFragment" />
     </fragment>
     <fragment
         android:id="@+id/jotFragment"

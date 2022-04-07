@@ -1,12 +1,14 @@
 package com.roland.android.jotter
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import java.util.*
 
 class JotEditFragment : Fragment() {
     private lateinit var noteTitle: TextView
@@ -38,14 +40,22 @@ class JotEditFragment : Fragment() {
         return when (item.itemId) {
             R.id.save_jot -> {
                 // save jot
-                note.title = noteTitle.text.toString()
-                note.body = noteBody.text.toString()
-                jotViewModel.addNotes(note)
-                Toast.makeText(context, "Note [$note] saved.", Toast.LENGTH_LONG).show()
-                findNavController().navigateUp()
+                saveNote()
+                Toast.makeText(context, "Notes [$note] saved.", Toast.LENGTH_LONG).show()
+                Log.d("JotterFragment", "JotEdit note [$note] saved.")
+                findNavController().navigate(R.id.jotFragment)
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun saveNote() {
+        note.title = noteTitle.text.toString()
+        note.body = noteBody.text.toString()
+        note.date = Calendar.getInstance().time
+        note.time = Calendar.getInstance().time
+        jotViewModel.addNotes(note)
+        findNavController().popBackStack()
     }
 }

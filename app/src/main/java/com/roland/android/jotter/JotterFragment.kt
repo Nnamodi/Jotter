@@ -8,11 +8,13 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation
+import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import java.text.SimpleDateFormat
+import java.util.*
 
 class JotterFragment : Fragment() {
     private lateinit var jot: View
@@ -37,7 +39,7 @@ class JotterFragment : Fragment() {
         jotterRecyclerView = view.findViewById(R.id.recycler_view)
         jot = view.findViewById(R.id.jot)
         jot.setOnClickListener {
-            findNavController().navigate(R.id.jotFragment)
+            findNavController().navigate(R.id.move_into_editing)
         }
         jotterRecyclerView.adapter = adapter
         return view
@@ -75,6 +77,7 @@ class JotterFragment : Fragment() {
         private lateinit var note: Note
         private lateinit var noteTitle: TextView
         private lateinit var noteBody: TextView
+        private lateinit var dateText: TextView
 
         init {
             itemView.setOnClickListener(this)
@@ -82,20 +85,22 @@ class JotterFragment : Fragment() {
 
         fun bind(note: Note) {
             this.note = note
-            noteTitle = itemView.findViewById(R.id.note_title)
+            noteTitle = itemView.findViewById(R.id.jot_title)
             noteTitle.text = note.title
-            noteBody = itemView.findViewById(R.id.note_body)
+            noteBody = itemView.findViewById(R.id.jot_body)
             noteBody.text = note.body
+            dateText = itemView.findViewById(R.id.date_text)
+            dateText.text = SimpleDateFormat("d|M|yy", Locale.getDefault()).format(note.date)
         }
 
         override fun onClick(view: View) {
-            Navigation.createNavigateOnClickListener(R.id.move_to_jot, null)
+            findNavController(view).navigate(R.id.move_to_jot)
         }
     }
 
     private inner class JotterAdapter : ListAdapter<Note, JotterHolder>(DiffCallBack()) {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): JotterHolder {
-            val view = layoutInflater.inflate(R.layout.fragment_jotter_list, parent, false)
+            val view = layoutInflater.inflate(R.layout.fragment_jotter, parent, false)
             return JotterHolder(view)
         }
 
