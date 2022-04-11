@@ -1,17 +1,18 @@
 package com.roland.android.jotter
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import java.text.SimpleDateFormat
 import java.util.*
 
 class JotFragment : Fragment() {
+    private lateinit var note : Note
     private lateinit var edit: View
     private lateinit var noteTitle: TextView
     private lateinit var noteBody: TextView
@@ -20,20 +21,22 @@ class JotFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_jot, container, false)
-        val note = Note()
+        val args by navArgs<JotFragmentArgs>()
+        note = Note()
         edit = view.findViewById(R.id.edit)
         edit.setOnClickListener {
-            findNavController().navigate(R.id.move_to_edit, null)
+            // bug
+            val action = JotFragmentDirections.moveToEdit(note)
+            findNavController().navigate(action)
         }
         noteTitle = view.findViewById(R.id.note_title)
-        noteTitle.text = note.title
+        noteTitle.text = args.note.title
         noteBody = view.findViewById(R.id.note_body)
-        noteBody.text = note.body
+        noteBody.text = args.note.body
         date = view.findViewById(R.id.date)
-        date.text = SimpleDateFormat("d|M|yy", Locale.getDefault()).format(note.date)
+        date.text = SimpleDateFormat("d|M|yy", Locale.getDefault()).format(args.note.date)
         time = view.findViewById(R.id.time)
-        time.text = SimpleDateFormat("hh:mm a", Locale.getDefault()).format(note.time)
-        Log.d("JotterFragment", "JotFragment note [$note] saved.")
+        time.text = SimpleDateFormat("hh:mm a", Locale.getDefault()).format(args.note.time)
         return view
     }
 }

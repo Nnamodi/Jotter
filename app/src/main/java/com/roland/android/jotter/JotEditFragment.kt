@@ -1,13 +1,13 @@
 package com.roland.android.jotter
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import java.util.*
 
 class JotEditFragment : Fragment() {
@@ -24,10 +24,11 @@ class JotEditFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_jot_edit, container, false)
+        val args by navArgs<JotEditFragmentArgs>()
         noteTitle = view.findViewById(R.id.edit_title)
-        noteTitle.text = note.title
+        noteTitle.text = args.edit?.title
         noteBody = view.findViewById(R.id.edit_body)
-        noteBody.text = note.body
+        noteBody.text = args.edit?.body
         return view
     }
 
@@ -41,9 +42,6 @@ class JotEditFragment : Fragment() {
             R.id.save_jot -> {
                 // save jot
                 saveNote()
-                Toast.makeText(context, "Notes [$note] saved.", Toast.LENGTH_LONG).show()
-                Log.d("JotterFragment", "JotEdit note [$note] saved.")
-                findNavController().navigate(R.id.jotFragment)
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -56,6 +54,8 @@ class JotEditFragment : Fragment() {
         note.date = Calendar.getInstance().time
         note.time = Calendar.getInstance().time
         jotViewModel.addNotes(note)
-        findNavController().popBackStack()
+        val action = JotEditFragmentDirections.actionJotEditToJot(note)
+        findNavController().navigate(action)
+        Toast.makeText(context, "Note saved.", Toast.LENGTH_SHORT).show()
     }
 }

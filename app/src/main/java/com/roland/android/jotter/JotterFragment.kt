@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -39,7 +38,8 @@ class JotterFragment : Fragment() {
         jotterRecyclerView = view.findViewById(R.id.recycler_view)
         jot = view.findViewById(R.id.jot)
         jot.setOnClickListener {
-            findNavController().navigate(R.id.move_into_editing)
+            val action = JotterFragmentDirections.moveIntoEditing(null)
+            findNavController().navigate(action)
         }
         jotterRecyclerView.adapter = adapter
         return view
@@ -48,13 +48,11 @@ class JotterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         jotterViewModel.getNotes.observe(
-            viewLifecycleOwner,
-            { note ->
-                Log.d("JotterFragment", "Notes received: $note")
-                (jotterRecyclerView.adapter as JotterAdapter).submitList(note)
-                Toast.makeText(context, "You have ${note.size} notes", Toast.LENGTH_LONG).show()
-            }
-        )
+            viewLifecycleOwner
+        ) { note ->
+            Log.d("JotterFragment", "Notes received: $note")
+            (jotterRecyclerView.adapter as JotterAdapter).submitList(note)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -94,7 +92,8 @@ class JotterFragment : Fragment() {
         }
 
         override fun onClick(view: View) {
-            findNavController(view).navigate(R.id.move_to_jot)
+            val action = JotterFragmentDirections.moveToJot(note)
+            findNavController(view).navigate(action)
         }
     }
 

@@ -24,12 +24,23 @@
         <action
             android:id="@+id/move_to_edit"
             app:destination="@id/jotEditFragment" />
+        <argument
+            android:name="note"
+            app:argType="com.roland.android.jotter.Note" />
     </fragment>
     <fragment
         android:id="@+id/jotEditFragment"
         android:name="com.roland.android.jotter.JotEditFragment"
         android:label=""
-        tools:layout="@layout/fragment_jot_edit"/>
+        tools:layout="@layout/fragment_jot_edit">
+        <action
+            android:id="@+id/action_jotEdit_to_jot"
+            app:destination="@id/jotFragment" />
+        <argument
+            android:name="edit"
+            app:argType="com.roland.android.jotter.Note"
+            app:nullable="true" />
+    </fragment>
     <dialog
         android:id="@+id/bottomSheetDialog"
         android:name="com.roland.android.jotter.BottomSheetDialog"
