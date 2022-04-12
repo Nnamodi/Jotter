@@ -1,9 +1,12 @@
-package com.roland.android.jotter
+package com.roland.android.jotter.viewModel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
+import com.roland.android.jotter.util.NoteRepository
+import com.roland.android.jotter.database.NoteDatabase
+import com.roland.android.jotter.model.Note
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

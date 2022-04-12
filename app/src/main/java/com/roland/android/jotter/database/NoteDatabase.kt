@@ -1,10 +1,11 @@
-package com.roland.android.jotter
+package com.roland.android.jotter.database
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.roland.android.jotter.model.Note
 
 @Database(entities = [Note::class], version = 1, exportSchema = false)
 @TypeConverters(NoteTypeConverter::class)

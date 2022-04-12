@@ -1,4 +1,4 @@
-package com.roland.android.jotter
+package com.roland.android.jotter.view
 
 import android.os.Bundle
 import android.util.Log
@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import androidx.appcompat.app.AppCompatDelegate
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.roland.android.jotter.util.Preference
+import com.roland.android.jotter.R
 
 class BottomSheetDialog : BottomSheetDialogFragment() {
     private lateinit var darkMode: CheckBox

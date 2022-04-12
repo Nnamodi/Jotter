@@ -1,4 +1,4 @@
-package com.roland.android.jotter
+package com.roland.android.jotter.view
 
 import android.os.Bundle
 import android.view.*
@@ -8,6 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.roland.android.jotter.R
+import com.roland.android.jotter.model.Note
+import com.roland.android.jotter.viewModel.JotterViewModel
 import java.util.*
 
 class JotEditFragment : Fragment() {

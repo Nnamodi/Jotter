@@ -6,19 +6,25 @@
 
     <fragment
         android:id="@+id/jotterFragment"
-        android:name="com.roland.android.jotter.JotterFragment"
+        android:name="com.roland.android.jotter.view.JotterFragment"
         android:label="@string/app_name"
         tools:layout="@layout/fragment_jotter_list" >
         <action
             android:id="@+id/move_to_jot"
-            app:destination="@id/jotFragment" />
+            app:destination="@id/jotFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
         <action
             android:id="@+id/move_into_editing"
-            app:destination="@id/jotEditFragment" />
+            app:destination="@id/jotEditFragment"
+            app:enterAnim="@anim/slide_in_bottom"
+            app:popExitAnim="@anim/slide_out_bottom" />
     </fragment>
     <fragment
         android:id="@+id/jotFragment"
-        android:name="com.roland.android.jotter.JotFragment"
+        android:name="com.roland.android.jotter.view.JotFragment"
         android:label="@string/note_title"
         tools:layout="@layout/fragment_jot" >
         <action
@@ -26,23 +32,25 @@
             app:destination="@id/jotEditFragment" />
         <argument
             android:name="note"
-            app:argType="com.roland.android.jotter.Note" />
+            app:argType="com.roland.android.jotter.model.Note" />
     </fragment>
     <fragment
         android:id="@+id/jotEditFragment"
-        android:name="com.roland.android.jotter.JotEditFragment"
+        android:name="com.roland.android.jotter.view.JotEditFragment"
         android:label=""
         tools:layout="@layout/fragment_jot_edit">
         <action
             android:id="@+id/action_jotEdit_to_jot"
-            app:destination="@id/jotFragment" />
+            app:destination="@id/jotFragment"
+            app:popUpTo="@id/jotFragment"
+            app:popUpToInclusive="true" />
         <argument
             android:name="edit"
-            app:argType="com.roland.android.jotter.Note"
+            app:argType="com.roland.android.jotter.model.Note"
             app:nullable="true" />
     </fragment>
     <dialog
         android:id="@+id/bottomSheetDialog"
-        android:name="com.roland.android.jotter.BottomSheetDialog"
+        android:name="com.roland.android.jotter.view.BottomSheetDialog"
         tools:layout="@layout/jotter_bottom_sheet" />
 </navigation>

@@ -1,4 +1,4 @@
-package com.roland.android.jotter
+package com.roland.android.jotter.model
 
 import android.os.Parcelable
 import androidx.room.Entity

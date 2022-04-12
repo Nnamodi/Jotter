@@ -6,7 +6,7 @@
     android:id="@+id/fragment_jotter"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".JotterFragment">
+    tools:context=".view.JotterFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"

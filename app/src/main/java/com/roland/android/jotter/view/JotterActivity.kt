@@ -1,15 +1,14 @@
-package com.roland.android.jotter
+package com.roland.android.jotter.view
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.android.material.appbar.MaterialToolbar
+import com.roland.android.jotter.R
 
 class JotterActivity : AppCompatActivity() {
-    private lateinit var appBarConfig: AppBarConfiguration
     private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,13 +28,15 @@ class JotterActivity : AppCompatActivity() {
                 R.id.bottomSheetDialog -> {
                     toolbar.isTitleCentered = true
                 }
+                R.id.jotEditFragment -> {
+                    toolbar.setNavigationIcon(R.drawable.menu_cancel)
+                }
                 else -> {
                     toolbar.isTitleCentered = false
                 }
             }
         }
-        appBarConfig = AppBarConfiguration(navController.graph)
-        setupActionBarWithNavController(navController, appBarConfig)
+        setupActionBarWithNavController(navController)
     }
 
     override fun onSupportNavigateUp(): Boolean {

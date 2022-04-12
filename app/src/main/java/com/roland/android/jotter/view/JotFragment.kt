@@ -1,4 +1,4 @@
-package com.roland.android.jotter
+package com.roland.android.jotter.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,6 +8,8 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.roland.android.jotter.R
+import com.roland.android.jotter.model.Note
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -25,8 +27,7 @@ class JotFragment : Fragment() {
         note = Note()
         edit = view.findViewById(R.id.edit)
         edit.setOnClickListener {
-            // bug
-            val action = JotFragmentDirections.moveToEdit(note)
+            val action = JotFragmentDirections.moveToEdit(args.note)
             findNavController().navigate(action)
         }
         noteTitle = view.findViewById(R.id.note_title)

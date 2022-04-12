@@ -1,4 +1,4 @@
-package com.roland.android.jotter
+package com.roland.android.jotter.util
 
 import android.content.Context
 import androidx.core.content.edit

@@ -1,4 +1,4 @@
-package com.roland.android.jotter
+package com.roland.android.jotter.database
 
 import androidx.room.TypeConverter
 import java.util.*

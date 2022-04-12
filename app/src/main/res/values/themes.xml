@@ -15,6 +15,7 @@
         <item name="android:navigationBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <item name="bottomSheetDialogTheme">@style/Jotter.BottomSheetDialog</item>
         <item name="floatingActionButtonStyle">@style/Widget.Design.FloatingActionButton</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
     <!-- BottomSheetDialog Theme. -->

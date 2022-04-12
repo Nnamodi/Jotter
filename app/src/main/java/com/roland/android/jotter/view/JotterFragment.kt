@@ -1,4 +1,4 @@
-package com.roland.android.jotter
+package com.roland.android.jotter.view
 
 import android.os.Bundle
 import android.util.Log
@@ -12,6 +12,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.roland.android.jotter.util.Preference
+import com.roland.android.jotter.R
+import com.roland.android.jotter.model.Note
+import com.roland.android.jotter.viewModel.JotterViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
