@@ -1,9 +1,7 @@
 package com.roland.android.jotter.database
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import com.roland.android.jotter.model.Note
 
 @Dao
@@ -13,4 +11,10 @@ interface NoteDao {
 
     @Insert
     suspend fun addNote(note: Note)
+
+    @Update
+    suspend fun updateNote(note: Note)
+
+    @Delete
+    suspend fun deleteNote(note: Note)
 }

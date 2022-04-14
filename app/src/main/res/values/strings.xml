@@ -13,4 +13,10 @@
     <string name="light_mode">Light Mode</string>
     <string name="date">3|4|2022</string>
     <string name="time">1:37am</string>
+    <string name="saving_empty_note_text">Note must not be empty.</string>
+    <string name="save_note_text">Note saved.</string>
+    <string name="delete_note">Delete note</string>
+    <string name="note_deleted_text">Note deleted.</string>
+    <string name="note_updated_text">Note updated successfully.</string>
+    <string name="note_not_updated_text">Fill in at least one field</string>
 </resources>

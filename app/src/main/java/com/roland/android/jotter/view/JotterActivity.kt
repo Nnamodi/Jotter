@@ -28,9 +28,6 @@ class JotterActivity : AppCompatActivity() {
                 R.id.bottomSheetDialog -> {
                     toolbar.isTitleCentered = true
                 }
-                R.id.jotEditFragment -> {
-                    toolbar.setNavigationIcon(R.drawable.menu_cancel)
-                }
                 else -> {
                     toolbar.isTitleCentered = false
                 }

@@ -25,7 +25,7 @@
     <fragment
         android:id="@+id/jotFragment"
         android:name="com.roland.android.jotter.view.JotFragment"
-        android:label="@string/note_title"
+        android:label=""
         tools:layout="@layout/fragment_jot" >
         <action
             android:id="@+id/move_to_edit"

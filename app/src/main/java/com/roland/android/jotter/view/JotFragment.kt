@@ -1,15 +1,18 @@
 package com.roland.android.jotter.view
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.roland.android.jotter.R
 import com.roland.android.jotter.model.Note
+import com.roland.android.jotter.viewModel.JotterViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -20,10 +23,18 @@ class JotFragment : Fragment() {
     private lateinit var noteBody: TextView
     private lateinit var date: TextView
     private lateinit var time: TextView
+    private lateinit var viewModel: JotterViewModel
+    private val args by navArgs<JotFragmentArgs>()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = ViewModelProvider(this) [JotterViewModel::class.java]
+        setHasOptionsMenu(true)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_jot, container, false)
-        val args by navArgs<JotFragmentArgs>()
+        (activity as AppCompatActivity).supportActionBar?.title = args.note.title
         note = Note()
         edit = view.findViewById(R.id.edit)
         edit.setOnClickListener {
@@ -39,5 +50,34 @@ class JotFragment : Fragment() {
         time = view.findViewById(R.id.time)
         time.text = SimpleDateFormat("hh:mm a", Locale.getDefault()).format(args.note.time)
         return view
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.menu_jot, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.delete_note -> {
+                deleteNote(args.note)
+                true
+            }
+            else -> {
+                super.onOptionsItemSelected(item)
+            }
+        }
+    }
+
+    private fun deleteNote(note: Note) {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setMessage("Delete ${note.title}?")
+        builder.setPositiveButton("Yes") { _, _ ->
+            viewModel.deleteNote(note)
+            findNavController().popBackStack()
+            Toast.makeText(context, getString(R.string.note_deleted_text), Toast.LENGTH_SHORT).show()
+        }
+        builder.setNegativeButton("No") { _, _ -> }
+        builder.create().show()
     }
 }

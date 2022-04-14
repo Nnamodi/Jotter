@@ -61,7 +61,7 @@ class JotterFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.menu_jot_fragment, menu)
+        inflater.inflate(R.menu.menu_jotter_fragment, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
