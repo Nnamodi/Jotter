@@ -19,4 +19,10 @@
     <string name="note_deleted_text">Note deleted.</string>
     <string name="note_updated_text">Note updated successfully.</string>
     <string name="note_not_updated_text">Fill in at least one field</string>
+    <string name="share_note">Share note</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="delete_message">Delete <b>%s</b>?</string>
+    <string name="text"><b>%s</b>\n%2s</string>
+    <string name="subject_text">Note text</string>
 </resources>

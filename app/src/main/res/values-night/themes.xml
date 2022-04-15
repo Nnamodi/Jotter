@@ -18,11 +18,10 @@
         <item name="android:textColor">@color/primaryTextColor</item>
     </style>
 
-    <!-- BottomSheetDialog Theme. -->
+    <!-- JotterBottomSheet Theme. -->
     <style name="Jotter.BottomSheetDialog" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
         <item name="backgroundTint">@color/secondaryDarkColor</item>
         <item name="bottomSheetStyle">@style/BottomSheetDialog</item>
-        <item name="android:minHeight">200dp</item>
     </style>
 
     <style name="BottomSheetDialog" parent="Widget.MaterialComponents.BottomSheet.Modal">

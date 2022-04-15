@@ -11,7 +11,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.roland.android.jotter.util.Preference
 import com.roland.android.jotter.R
 
-class BottomSheetDialog : BottomSheetDialogFragment() {
+class JotterBottomSheet : BottomSheetDialogFragment() {
     private lateinit var darkMode: CheckBox
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

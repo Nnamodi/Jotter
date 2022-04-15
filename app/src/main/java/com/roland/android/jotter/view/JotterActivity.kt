@@ -25,7 +25,7 @@ class JotterActivity : AppCompatActivity() {
                 R.id.jotterFragment -> {
                     toolbar.isTitleCentered = true
                 }
-                R.id.bottomSheetDialog -> {
+                R.id.jotterBottomSheet -> {
                     toolbar.isTitleCentered = true
                 }
                 else -> {

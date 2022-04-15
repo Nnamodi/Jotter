@@ -3,8 +3,6 @@ package com.roland.android.jotter.view
 import android.os.Bundle
 import android.view.*
 import android.widget.TextView
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -59,25 +57,14 @@ class JotFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.delete_note -> {
-                deleteNote(args.note)
+            R.id.more_options -> {
+                val action = JotFragmentDirections.jotFragmentToJotBottomSheet(args.note)
+                findNavController().navigate(action)
                 true
             }
             else -> {
                 super.onOptionsItemSelected(item)
             }
         }
-    }
-
-    private fun deleteNote(note: Note) {
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setMessage("Delete ${note.title}?")
-        builder.setPositiveButton("Yes") { _, _ ->
-            viewModel.deleteNote(note)
-            findNavController().popBackStack()
-            Toast.makeText(context, getString(R.string.note_deleted_text), Toast.LENGTH_SHORT).show()
-        }
-        builder.setNegativeButton("No") { _, _ -> }
-        builder.create().show()
     }
 }

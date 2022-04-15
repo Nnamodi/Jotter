@@ -68,7 +68,7 @@ class JotterFragment : Fragment() {
         return when (item.itemId) {
             R.id.more_options -> {
                 // invoke bottom sheet
-                findNavController().navigate(R.id.bottomSheetDialog)
+                findNavController().navigate(R.id.jotterBottomSheet)
                 true
             }
             else -> super.onOptionsItemSelected(item)

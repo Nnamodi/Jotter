@@ -33,6 +33,9 @@
         <argument
             android:name="note"
             app:argType="com.roland.android.jotter.model.Note" />
+        <action
+            android:id="@+id/jotFragment_to_jotBottomSheet"
+            app:destination="@id/jotBottomSheet" />
     </fragment>
     <fragment
         android:id="@+id/jotEditFragment"
@@ -50,7 +53,15 @@
             app:nullable="true" />
     </fragment>
     <dialog
-        android:id="@+id/bottomSheetDialog"
-        android:name="com.roland.android.jotter.view.BottomSheetDialog"
+        android:id="@+id/jotterBottomSheet"
+        android:name="com.roland.android.jotter.view.JotterBottomSheet"
         tools:layout="@layout/jotter_bottom_sheet" />
+    <dialog
+        android:id="@+id/jotBottomSheet"
+        android:name="com.roland.android.jotter.view.JotBottomSheet"
+        tools:layout="@layout/jot_bottom_sheet" >
+        <argument
+            android:name="utils"
+            app:argType="com.roland.android.jotter.model.Note" />
+    </dialog>
 </navigation>
