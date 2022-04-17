@@ -22,7 +22,8 @@
     <string name="share_note">Share note</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="delete_message">Delete <b>%s</b>?</string>
-    <string name="text"><b>%s</b>\n%2s</string>
+    <string name="delete_message">Delete %s?</string>
+    <string name="text">%s\n%2s</string>
     <string name="subject_text">Note text</string>
+    <string name="jotter_empty_text"><b>No notes saved.</b>\n\nClick on the \'add button\' (+) below to write a note.</string>
 </resources>

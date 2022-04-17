@@ -31,7 +31,6 @@ class JotBottomSheet : BottomSheetDialogFragment() {
         deleteNote = view.findViewById(R.id.delete_note)
         deleteNote.setOnClickListener {
             deleteNote(args.utils)
-            dismiss()
         }
         shareNote = view.findViewById(R.id.share_note)
         shareNote.setOnClickListener {
@@ -52,7 +51,7 @@ class JotBottomSheet : BottomSheetDialogFragment() {
         builder.setMessage(getString(R.string.delete_message, note.title))
         builder.setPositiveButton(getString(R.string.yes)) { _, _ ->
             viewModel.deleteNote(note)
-            findNavController().popBackStack()
+            findNavController().popBackStack(R.id.jotFragment, true)
             Toast.makeText(context, getString(R.string.note_deleted_text), Toast.LENGTH_SHORT).show()
         }
         builder.setNegativeButton(getString(R.string.no)) { _, _ -> }

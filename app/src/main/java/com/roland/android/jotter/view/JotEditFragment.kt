@@ -64,7 +64,6 @@ class JotEditFragment : Fragment() {
             note.title = noteTitle.text.toString()
             note.body = noteBody.text.toString()
             note.date = Calendar.getInstance().time
-            note.time = Calendar.getInstance().time
             jotViewModel.addNotes(note)
             val action = JotEditFragmentDirections.actionJotEditToJot(note)
             findNavController().navigate(action)
@@ -81,7 +80,6 @@ class JotEditFragment : Fragment() {
             note.title = noteTitle.text.toString()
             note.body = noteBody.text.toString()
             note.date = Calendar.getInstance().time
-            note.time = Calendar.getInstance().time
             jotViewModel.updateNote(note)
             val action = JotEditFragmentDirections.actionJotEditToJot(note)
             findNavController().navigate(action)

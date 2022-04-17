@@ -46,7 +46,7 @@ class JotFragment : Fragment() {
         date = view.findViewById(R.id.date)
         date.text = SimpleDateFormat("d|M|yy", Locale.getDefault()).format(args.note.date)
         time = view.findViewById(R.id.time)
-        time.text = SimpleDateFormat("hh:mm a", Locale.getDefault()).format(args.note.time)
+        time.text = SimpleDateFormat("hh:mm a", Locale.getDefault()).format(args.note.date)
         return view
     }
 

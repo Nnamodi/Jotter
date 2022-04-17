@@ -23,6 +23,7 @@ class JotterFragment : Fragment() {
     private lateinit var jot: View
     private lateinit var jotterRecyclerView: RecyclerView
     private lateinit var jotterViewModel: JotterViewModel
+    private lateinit var emptyText: TextView
     private var adapter = JotterAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,6 +46,7 @@ class JotterFragment : Fragment() {
             val action = JotterFragmentDirections.moveIntoEditing(null)
             findNavController().navigate(action)
         }
+        emptyText = view.findViewById(R.id.jotter_empty_text)
         jotterRecyclerView.adapter = adapter
         return view
     }
@@ -56,6 +58,13 @@ class JotterFragment : Fragment() {
         ) { note ->
             Log.d("JotterFragment", "Notes received: $note")
             (jotterRecyclerView.adapter as JotterAdapter).submitList(note)
+            if (note.isEmpty()) {
+                emptyText.visibility = View.VISIBLE
+                jotterRecyclerView.visibility = View.GONE
+            } else {
+                emptyText.visibility = View.GONE
+                jotterRecyclerView.visibility = View.VISIBLE
+            }
         }
     }
 
