@@ -26,4 +26,5 @@
     <string name="text">%s\n%2s</string>
     <string name="subject_text">Note text</string>
     <string name="jotter_empty_text"><b>No notes saved.</b>\n\nClick on the \'add button\' (+) below to write a note.</string>
+    <string name="delete">Delete</string>
 </resources>

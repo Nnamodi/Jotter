@@ -1,10 +1,15 @@
 package com.roland.android.jotter.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.CheckBox
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation.findNavController
@@ -12,9 +17,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.roland.android.jotter.util.Preference
 import com.roland.android.jotter.R
 import com.roland.android.jotter.model.Note
+import com.roland.android.jotter.util.Preference
 import com.roland.android.jotter.viewModel.JotterViewModel
 import java.text.SimpleDateFormat
 import java.util.*
@@ -84,14 +89,17 @@ class JotterFragment : Fragment() {
         }
     }
 
-    private class JotterHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
+    private inner class JotterHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener, View.OnLongClickListener {
         private lateinit var note: Note
         private lateinit var noteTitle: TextView
         private lateinit var noteBody: TextView
         private lateinit var dateText: TextView
+        private lateinit var check: CheckBox
+        private var actionEnabled = false
 
         init {
             itemView.setOnClickListener(this)
+            itemView.setOnLongClickListener(this)
         }
 
         fun bind(note: Note) {
@@ -102,11 +110,89 @@ class JotterFragment : Fragment() {
             noteBody.text = note.body
             dateText = itemView.findViewById(R.id.date_text)
             dateText.text = SimpleDateFormat("d|M|yy", Locale.getDefault()).format(note.date)
+            check = itemView.findViewById(R.id.checkBox)
         }
 
         override fun onClick(view: View) {
             val action = JotterFragmentDirections.moveToJot(note)
             findNavController(view).navigate(action)
+        }
+
+        override fun onLongClick(view: View): Boolean {
+            if (!actionEnabled) {
+                val callback = object : ActionMode.Callback {
+                    override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
+                        val menuInflater =  mode.menuInflater
+                        menuInflater.inflate(R.menu.jotter_item_selected, menu)
+                        return true
+                    }
+
+                    override fun onPrepareActionMode(mode: ActionMode, menu: Menu): Boolean {
+                        actionEnabled = true
+                        if (check.visibility == View.GONE) {
+                            check.visibility = View.VISIBLE
+                            itemView.setBackgroundColor(ContextCompat.getColor(
+                                requireContext(),
+                                R.color.grey
+                            ))
+                        } else {
+                            check.visibility = View.GONE
+                            itemView.setBackgroundColor(ContextCompat.getColor(
+                                requireContext(),
+                                R.color.primaryTextColor
+                            ))
+                        }
+                        return true
+                    }
+
+                    override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
+                        when (item.itemId) {
+                            R.id.delete -> {
+                                val builder = AlertDialog.Builder(requireContext())
+                                builder.setMessage("Delete selected notes\nThis action is irreversible")
+                                builder.setPositiveButton("Continue") { _, _ ->
+                                    jotterViewModel.deleteNote(note)
+                                    Toast.makeText(requireContext(), "Deleted", Toast.LENGTH_SHORT).show()
+                                }
+                                builder.setNegativeButton("Close") { _, _ -> }
+                                builder.create().show()
+                            }
+                            R.id.share_note -> {
+                                Intent(Intent.ACTION_SEND).apply {
+                                    type = "text/plain"
+                                    putExtra(Intent.EXTRA_TEXT, getString(R.string.text, note.title, note.body))
+                                    putExtra(Intent.EXTRA_SUBJECT, getString(R.string.subject_text))
+                                }.also { intent ->
+                                    val chooserIntent = Intent.createChooser(intent, null)
+                                    startActivity(chooserIntent)
+                                }
+                            }
+                        }
+                        return true
+                    }
+
+                    override fun onDestroyActionMode(mode: ActionMode) {
+                        note.isSelected = false
+                        mode.finish()
+                    }
+                }
+                activity?.startActionMode(callback)
+            } else {
+                if (check.visibility == View.GONE) {
+                    check.visibility = View.VISIBLE
+                    itemView.setBackgroundColor(ContextCompat.getColor(
+                        requireContext(),
+                        R.color.grey
+                    ))
+                } else {
+                    check.visibility = View.GONE
+                    itemView.setBackgroundColor(ContextCompat.getColor(
+                        requireContext(),
+                        R.color.primaryTextColor
+                    ))
+                }
+            }
+            return true
         }
     }
 
