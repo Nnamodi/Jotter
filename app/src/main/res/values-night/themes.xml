@@ -20,7 +20,6 @@
 
     <!-- JotterBottomSheet Theme. -->
     <style name="Jotter.BottomSheetDialog" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
-        <item name="backgroundTint">@color/secondaryDarkColor</item>
         <item name="bottomSheetStyle">@style/BottomSheetDialog</item>
     </style>
 

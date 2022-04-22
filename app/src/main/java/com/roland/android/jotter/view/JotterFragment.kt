@@ -9,7 +9,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation.findNavController
@@ -25,11 +24,14 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class JotterFragment : Fragment() {
-    private lateinit var jot: View
     private lateinit var jotterRecyclerView: RecyclerView
     private lateinit var jotterViewModel: JotterViewModel
+    private lateinit var selectedNotes: MutableList<Note>
+    private lateinit var actionMode: ActionMode
     private lateinit var emptyText: TextView
+    private lateinit var jot: View
     private var adapter = JotterAdapter()
+    private var actionEnabled = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val isDark = Preference.getDarkMode(requireContext())
@@ -70,6 +72,8 @@ class JotterFragment : Fragment() {
                 emptyText.visibility = View.GONE
                 jotterRecyclerView.visibility = View.VISIBLE
             }
+            selectedNotes = note.toMutableList()
+            selectedNotes.clear()
         }
     }
 
@@ -95,7 +99,6 @@ class JotterFragment : Fragment() {
         private lateinit var noteBody: TextView
         private lateinit var dateText: TextView
         private lateinit var check: CheckBox
-        private var actionEnabled = false
 
         init {
             itemView.setOnClickListener(this)
@@ -114,34 +117,33 @@ class JotterFragment : Fragment() {
         }
 
         override fun onClick(view: View) {
-            val action = JotterFragmentDirections.moveToJot(note)
-            findNavController(view).navigate(action)
+            if (actionEnabled) {
+                select()
+            } else {
+                val action = JotterFragmentDirections.moveToJot(note)
+                findNavController(view).navigate(action)
+            }
         }
 
         override fun onLongClick(view: View): Boolean {
             if (!actionEnabled) {
                 val callback = object : ActionMode.Callback {
                     override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
-                        val menuInflater =  mode.menuInflater
+                        val menuInflater = mode.menuInflater
                         menuInflater.inflate(R.menu.jotter_item_selected, menu)
                         return true
                     }
 
                     override fun onPrepareActionMode(mode: ActionMode, menu: Menu): Boolean {
+                        actionMode = mode
+                        selectedNotes.add(note)
+                        mode.title = "${selectedNotes.size}"
                         actionEnabled = true
-                        if (check.visibility == View.GONE) {
-                            check.visibility = View.VISIBLE
-                            itemView.setBackgroundColor(ContextCompat.getColor(
-                                requireContext(),
-                                R.color.grey
-                            ))
-                        } else {
-                            check.visibility = View.GONE
-                            itemView.setBackgroundColor(ContextCompat.getColor(
-                                requireContext(),
-                                R.color.primaryTextColor
-                            ))
+                        check.apply {
+                            visibility = View.VISIBLE
+                            isChecked = !this.isChecked
                         }
+                        jot.visibility = View.GONE
                         return true
                     }
 
@@ -149,9 +151,13 @@ class JotterFragment : Fragment() {
                         when (item.itemId) {
                             R.id.delete -> {
                                 val builder = AlertDialog.Builder(requireContext())
-                                builder.setMessage("Delete selected notes\nThis action is irreversible")
+                                builder.setTitle("Delete")
+                                builder.setMessage("Delete ${selectedNotes.size} notes\nThis action is irreversible")
                                 builder.setPositiveButton("Continue") { _, _ ->
-                                    jotterViewModel.deleteNote(note)
+                                    selectedNotes.forEach { note ->
+                                        jotterViewModel.deleteNote(note)
+                                    }
+                                    mode.finish()
                                     Toast.makeText(requireContext(), "Deleted", Toast.LENGTH_SHORT).show()
                                 }
                                 builder.setNegativeButton("Close") { _, _ -> }
@@ -172,27 +178,41 @@ class JotterFragment : Fragment() {
                     }
 
                     override fun onDestroyActionMode(mode: ActionMode) {
-                        note.isSelected = false
+                        check.apply {
+                            isChecked = false
+                            visibility = View.GONE
+                        }
+                        selectedNotes.clear()
+                        actionEnabled = false
                         mode.finish()
+                        jot.visibility = View.VISIBLE
                     }
                 }
                 activity?.startActionMode(callback)
             } else {
-                if (check.visibility == View.GONE) {
-                    check.visibility = View.VISIBLE
-                    itemView.setBackgroundColor(ContextCompat.getColor(
-                        requireContext(),
-                        R.color.grey
-                    ))
-                } else {
-                    check.visibility = View.GONE
-                    itemView.setBackgroundColor(ContextCompat.getColor(
-                        requireContext(),
-                        R.color.primaryTextColor
-                    ))
-                }
+                select()
             }
             return true
+        }
+
+        private fun select() {
+            if (!check.isChecked) {
+                check.apply {
+                    visibility = View.VISIBLE
+                    isChecked = !this.isChecked
+                }
+                selectedNotes.add(note)
+            } else {
+                check.apply {
+                    isChecked = !this.isChecked
+                    visibility = View.GONE
+                }
+                selectedNotes.remove(note)
+            }
+            if (selectedNotes.size == 0) {
+                actionMode.finish()
+            }
+            actionMode.title = "${selectedNotes.size}"
         }
     }
 
