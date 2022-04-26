@@ -32,6 +32,7 @@ class JotterFragment : Fragment() {
     private lateinit var jot: View
     private var adapter = JotterAdapter()
     private var actionEnabled = false
+//    private var manySelected = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val isDark = Preference.getDarkMode(requireContext())
@@ -114,11 +115,20 @@ class JotterFragment : Fragment() {
             dateText = itemView.findViewById(R.id.date_text)
             dateText.text = SimpleDateFormat("d|M|yy", Locale.getDefault()).format(note.date)
             check = itemView.findViewById(R.id.checkBox)
+            check.apply {
+                setOnClickListener {
+                    unSelect(check, this@JotterHolder.note)
+                }
+                setOnLongClickListener {
+                    unSelect(check, this@JotterHolder.note)
+                    true
+                }
+            }
         }
 
         override fun onClick(view: View) {
             if (actionEnabled) {
-                select()
+                select(check, note)
             } else {
                 val action = JotterFragmentDirections.moveToJot(note)
                 findNavController(view).navigate(action)
@@ -131,6 +141,7 @@ class JotterFragment : Fragment() {
                     override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
                         val menuInflater = mode.menuInflater
                         menuInflater.inflate(R.menu.jotter_item_selected, menu)
+//                        menu.findItem(R.id.share_note).isVisible = !manySelected
                         return true
                     }
 
@@ -190,29 +201,9 @@ class JotterFragment : Fragment() {
                 }
                 activity?.startActionMode(callback)
             } else {
-                select()
+                select(check, note)
             }
             return true
-        }
-
-        private fun select() {
-            if (!check.isChecked) {
-                check.apply {
-                    visibility = View.VISIBLE
-                    isChecked = !this.isChecked
-                }
-                selectedNotes.add(note)
-            } else {
-                check.apply {
-                    isChecked = !this.isChecked
-                    visibility = View.GONE
-                }
-                selectedNotes.remove(note)
-            }
-            if (selectedNotes.size == 0) {
-                actionMode.finish()
-            }
-            actionMode.title = "${selectedNotes.size}"
         }
     }
 
@@ -235,5 +226,37 @@ class JotterFragment : Fragment() {
         override fun areContentsTheSame(oldItem: Note, newItem: Note): Boolean {
             return oldItem == newItem
         }
+    }
+
+    private fun select(check: CheckBox, note: Note) {
+        if (!check.isChecked) {
+            check.apply {
+                visibility = View.VISIBLE
+                isChecked = !this.isChecked
+            }
+            selectedNotes.add(note)
+        } else {
+            check.apply {
+                isChecked = !this.isChecked
+                visibility = View.GONE
+            }
+            selectedNotes.remove(note)
+        }
+        if (selectedNotes.size == 0) {
+            actionMode.finish()
+        }
+//        manySelected = selectedNotes.size != 1
+        actionMode.title = "${selectedNotes.size}"
+    }
+
+    private fun unSelect(check: CheckBox, note: Note) {
+        check.isChecked = false
+        check.visibility = View.GONE
+        selectedNotes.remove(note)
+        if (selectedNotes.size == 0) {
+            actionMode.finish()
+        }
+//        manySelected = selectedNotes.size != 1
+        actionMode.title = "${selectedNotes.size}"
     }
 }

@@ -20,6 +20,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <View
+        android:id="@+id/view"
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:background="?android:attr/listDivider"
@@ -32,6 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
+        android:layout_marginEnd="8dp"
         android:gravity="end"
         android:text="@string/date"
         android:textSize="12sp"
@@ -42,25 +44,32 @@
         android:id="@+id/time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:text="@string/time"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/date" />
 
-    <TextView
-        android:id="@+id/note_body"
+    <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:isScrollContainer="true"
-        android:text="@string/note_body"
-        android:textSize="16sp"
+        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/note_title" />
+        app:layout_constraintTop_toBottomOf="@+id/note_title">
+
+        <TextView
+            android:id="@+id/note_body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/note_body"
+            android:textSize="16sp" />
+    </ScrollView>
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/edit"
