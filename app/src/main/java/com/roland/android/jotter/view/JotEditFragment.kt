@@ -65,8 +65,7 @@ class JotEditFragment : Fragment() {
             note.body = noteBody.text.toString()
             note.date = Calendar.getInstance().time
             jotViewModel.addNotes(note)
-            val action = JotEditFragmentDirections.actionJotEditToJot(note)
-            findNavController().navigate(action)
+            findNavController().navigateUp()
             Toast.makeText(context, getString(R.string.save_note_text), Toast.LENGTH_SHORT).show()
         } else {
             findNavController().navigateUp()
