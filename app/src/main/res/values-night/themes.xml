@@ -21,6 +21,7 @@
         <item name="windowActionModeOverlay">true</item>
         <item name="actionModeStyle">@style/ActionModeStyle</item>
         <item name="actionBarTheme">@style/MyActionBarTheme</item>
+        <item name="switchStyle">@style/Jotter.CheckBox</item>
     </style>
 
     <!-- JotterBottomSheet Theme. -->
@@ -44,5 +45,14 @@
 
     <style name="ActionModeStyle" parent="@style/Widget.AppCompat.ActionMode">
         <item name="background">?attr/colorPrimaryVariant</item>
+    </style>
+
+    <!-- CheckBox Theme -->
+    <style name="Jotter.CheckBox" parent="Widget.MaterialComponents.CompoundButton.CheckBox">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.CheckBox</item>
+    </style>
+
+    <style name="ThemeOverlay.App.CheckBox" parent="">
+        <item name="colorSecondary">@color/primaryTextColor</item>
     </style>
 </resources>
