@@ -60,6 +60,11 @@
         android:id="@+id/jotBottomSheet"
         android:name="com.roland.android.jotter.view.JotBottomSheet"
         tools:layout="@layout/jot_bottom_sheet" >
+        <action
+            android:id="@+id/jotBottomSheet_to_jotFragment"
+            app:destination="@id/jotFragment"
+            app:popUpTo="@id/jotFragment"
+            app:popUpToInclusive="true" />
         <argument
             android:name="utils"
             app:argType="com.roland.android.jotter.model.Note" />

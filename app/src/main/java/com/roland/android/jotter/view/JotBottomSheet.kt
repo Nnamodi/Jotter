@@ -19,6 +19,7 @@ class JotBottomSheet : BottomSheetDialogFragment() {
     private lateinit var deleteNote: View
     private lateinit var shareNote: View
     private lateinit var viewModel: JotterViewModel
+    private val args by navArgs<JotBottomSheetArgs>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +28,6 @@ class JotBottomSheet : BottomSheetDialogFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.jot_bottom_sheet, container, false)
-        val args by navArgs<JotBottomSheetArgs>()
         deleteNote = view.findViewById(R.id.delete_note)
         deleteNote.setOnClickListener {
             deleteNote(args.utils)
@@ -44,6 +44,11 @@ class JotBottomSheet : BottomSheetDialogFragment() {
             }
         }
         return view
+    }
+
+    override fun dismiss() {
+        val action = JotBottomSheetDirections.jotBottomSheetToJotFragment(args.utils)
+        findNavController().navigate(action)
     }
 
     private fun deleteNote(note: Note) {

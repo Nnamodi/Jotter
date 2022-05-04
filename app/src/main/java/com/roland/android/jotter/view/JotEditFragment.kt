@@ -77,17 +77,17 @@ class JotEditFragment : Fragment() {
         val titleIsSame = noteTitle.text.contentEquals(args.edit?.title)
         val bodyIsSame = noteBody.text.contentEquals(args.edit?.body)
         if (noteTitle.text.isNotEmpty() || noteBody.text.isNotEmpty()) {
-            if (!titleIsSame && !bodyIsSame) {
-                note.id = args.edit?.id!!
-                note.title = noteTitle.text.toString()
-                note.body = noteBody.text.toString()
-                note.date = Calendar.getInstance().time
+            note.id = args.edit?.id!!
+            note.title = noteTitle.text.toString()
+            note.body = noteBody.text.toString()
+            note.date = Calendar.getInstance().time
+            if (titleIsSame && bodyIsSame) {
+                findNavController().navigateUp()
+            } else {
                 jotViewModel.updateNote(note)
                 val action = JotEditFragmentDirections.actionJotEditToJot(note)
                 findNavController().navigate(action)
                 Toast.makeText(context, getString(R.string.note_updated_text), Toast.LENGTH_SHORT).show()
-            } else {
-                findNavController().navigateUp()
             }
         } else {
             Toast.makeText(context, getString(R.string.note_not_updated_text), Toast.LENGTH_SHORT).show()
