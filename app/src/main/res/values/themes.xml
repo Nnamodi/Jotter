@@ -46,12 +46,4 @@
         <item name="background">?attr/colorPrimaryVariant</item>
     </style>
 
-    <!-- DarkMode CheckBox Theme -->
-    <style name="Jotter.CheckBox" parent="Widget.MaterialComponents.CompoundButton.CheckBox">
-        <item name="materialThemeOverlay">@style/ThemeOverlay.App.CheckBox</item>
-    </style>
-
-    <style name="ThemeOverlay.App.CheckBox" parent="">
-        <item name="colorOnSurface">@color/black</item>
-    </style>
 </resources>

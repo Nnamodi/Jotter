@@ -29,14 +29,13 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:button="@drawable/night_icon"
-            android:checked="false"
+            android:buttonTint="?attr/colorOnSecondary"
             android:layoutDirection="rtl"
             android:text="@string/night_mode"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/divider"
-            style="@style/Jotter.CheckBox"/>
+            app:layout_constraintTop_toBottomOf="@+id/divider" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

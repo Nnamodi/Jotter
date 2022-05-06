@@ -47,8 +47,8 @@ class JotBottomSheet : BottomSheetDialogFragment() {
     }
 
     override fun dismiss() {
-        val action = JotBottomSheetDirections.jotBottomSheetToJotFragment(args.utils)
-        findNavController().navigate(action)
+        val title = args.utils.title
+        findNavController().previousBackStackEntry?.savedStateHandle?.set("title", title)
     }
 
     private fun deleteNote(note: Note) {

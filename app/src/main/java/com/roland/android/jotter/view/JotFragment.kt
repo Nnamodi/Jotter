@@ -26,13 +26,21 @@ class JotFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        (activity as AppCompatActivity).supportActionBar?.title = args.note.title
         viewModel = ViewModelProvider(this) [JotterViewModel::class.java]
         setHasOptionsMenu(true)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_jot, container, false)
-        (activity as AppCompatActivity).supportActionBar?.title = args.note.title
+        val titleEmpty = (activity as AppCompatActivity).supportActionBar?.title.isNullOrEmpty()
+        if (titleEmpty) {
+            findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<String>("title")?.observe(
+                viewLifecycleOwner
+            ) { title ->
+                (activity as AppCompatActivity).supportActionBar?.title = title
+            }
+        }
         note = Note()
         edit = view.findViewById(R.id.edit)
         edit.setOnClickListener {
