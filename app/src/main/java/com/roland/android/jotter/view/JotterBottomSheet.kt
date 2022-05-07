@@ -1,39 +1,45 @@
 package com.roland.android.jotter.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.roland.android.jotter.util.Preference
 import com.roland.android.jotter.R
+import com.roland.android.jotter.util.Preference
 
 class JotterBottomSheet : BottomSheetDialogFragment() {
-    private lateinit var darkMode: CheckBox
+    private lateinit var archive: View
+    private lateinit var checkView: View
+    private lateinit var darkMode: TextView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.jotter_bottom_sheet, container, false)
-        darkMode = view.findViewById(R.id.night_mode)
         val isDark = Preference.getDarkMode(requireContext())
-        darkMode.isChecked = isDark
+        archive = view.findViewById(R.id.archive)
+        archive.setOnClickListener {
+            Toast.makeText(context, "Archive coming soon...", Toast.LENGTH_SHORT).show()
+        }
+        darkMode = view.findViewById(R.id.night_mode)
         if (isDark) {
             darkMode.text = getString(R.string.light_mode)
-            darkMode.setButtonDrawable(R.drawable.light_icon)
+            darkMode.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.light_icon, 0)
         } else {
             darkMode.text = getString(R.string.night_mode)
-            darkMode.setButtonDrawable(R.drawable.night_icon)
+            darkMode.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.night_icon, 0)
         }
-        darkMode.setOnCheckedChangeListener { switch, isChecked ->
-            if (switch.isChecked) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            } else {
+        checkView = view.findViewById(R.id.check_view)
+        checkView.setOnClickListener {
+            if (isDark) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                Preference.setDarkMode(requireContext(), false)
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                Preference.setDarkMode(requireContext(), true)
             }
-            Preference.setDarkMode(requireContext(), isChecked)
-            Log.i("DarkActivated", "$isChecked")
         }
         return view
     }

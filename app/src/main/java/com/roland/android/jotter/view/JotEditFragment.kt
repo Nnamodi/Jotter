@@ -1,11 +1,15 @@
 package com.roland.android.jotter.view
 
+import android.content.Context
 import android.os.Bundle
 import android.view.*
+import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -36,6 +40,13 @@ class JotEditFragment : Fragment() {
         noteBody = view.findViewById(R.id.edit_body)
         noteBody.text = args.edit?.body
         noteIsNew = noteTitle.text.isEmpty() && noteBody.text.isEmpty()
+        viewLifecycleOwner.lifecycle.addObserver(LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_STOP) {
+                val activity = activity?.currentFocus
+                val imm= context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(activity?.windowToken, 0)
+            }
+        })
         return view
     }
 
