@@ -64,4 +64,9 @@
             android:name="utils"
             app:argType="com.roland.android.jotter.model.Note" />
     </dialog>
+    <fragment
+        android:id="@+id/archiveFragment"
+        android:name="com.roland.android.jotter.view.ArchiveFragment"
+        android:label="Archive"
+        tools:layout="@layout/fragment_archive"/>
 </navigation>

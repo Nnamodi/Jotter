@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.roland.android.jotter.R
 import com.roland.android.jotter.util.Preference
@@ -21,7 +21,7 @@ class JotterBottomSheet : BottomSheetDialogFragment() {
         val isDark = Preference.getDarkMode(requireContext())
         archive = view.findViewById(R.id.archive)
         archive.setOnClickListener {
-            Toast.makeText(context, "Archive coming soon...", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.archiveFragment)
         }
         darkMode = view.findViewById(R.id.night_mode)
         if (isDark) {

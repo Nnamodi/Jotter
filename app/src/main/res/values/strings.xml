@@ -28,4 +28,5 @@
     <string name="jotter_empty_text"><b>No notes saved.</b>\n\nClick on the \'add button\' (+) below to write a note.</string>
     <string name="delete">Delete</string>
     <string name="archive">Archive</string>
+    <string name="empty_archive_text">Archive a note to see it here.</string>
 </resources>

@@ -25,15 +25,20 @@ class JotEditFragment : Fragment() {
     private val args by navArgs<JotEditFragmentArgs>()
     private val note = Note()
     private var noteIsNew = false
+    private var menuCancelShown = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         (activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.menu_cancel)
         jotViewModel = ViewModelProvider(this) [JotterViewModel::class.java]
+        menuCancelShown = true
         setHasOptionsMenu(true)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        if (!menuCancelShown) {
+            (activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.menu_cancel)
+        }
         val view = inflater.inflate(R.layout.fragment_jot_edit, container, false)
         noteTitle = view.findViewById(R.id.edit_title)
         noteTitle.text = args.edit?.title
