@@ -180,9 +180,16 @@ class JotterFragment : Fragment() {
                                     putExtra(Intent.EXTRA_TEXT, getString(R.string.text, note.title, note.body))
                                     putExtra(Intent.EXTRA_SUBJECT, getString(R.string.subject_text))
                                 }.also { intent ->
-                                    val chooserIntent = Intent.createChooser(intent, null)
+                                    val chooserIntent = Intent.createChooser(intent, getString(R.string.chooser_title))
                                     startActivity(chooserIntent)
                                 }
+                            }
+                            R.id.archive_note -> {
+                                selectedNotes.forEach { note ->
+                                    note.archived = true
+                                }
+                                mode.finish()
+                                Toast.makeText(context, getString(R.string.note_archived), Toast.LENGTH_SHORT).show()
                             }
                         }
                         return true

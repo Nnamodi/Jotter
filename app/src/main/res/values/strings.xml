@@ -29,4 +29,8 @@
     <string name="delete">Delete</string>
     <string name="archive">Archive</string>
     <string name="empty_archive_text">Archive a note to see it here.</string>
+    <string name="archive_note">Archive note</string>
+    <string name="jot_archived">%s archived</string>
+    <string name="note_archived">Notes archived</string>
+    <string name="chooser_title">Share note via</string>
 </resources>

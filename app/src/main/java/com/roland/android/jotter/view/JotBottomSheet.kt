@@ -18,6 +18,7 @@ import com.roland.android.jotter.viewModel.JotterViewModel
 class JotBottomSheet : BottomSheetDialogFragment() {
     private lateinit var deleteNote: View
     private lateinit var shareNote: View
+    private lateinit var archiveNote: View
     private lateinit var viewModel: JotterViewModel
     private val args by navArgs<JotBottomSheetArgs>()
 
@@ -39,9 +40,15 @@ class JotBottomSheet : BottomSheetDialogFragment() {
                 putExtra(Intent.EXTRA_TEXT, getString(R.string.text, args.utils.title, args.utils.body))
                 putExtra(Intent.EXTRA_SUBJECT, getString(R.string.subject_text))
             }.also { intent ->
-                val chooserIntent = Intent.createChooser(intent, null)
+                val chooserIntent = Intent.createChooser(intent, getString(R.string.chooser_title))
                 startActivity(chooserIntent)
             }
+        }
+        archiveNote = view.findViewById(R.id.archive_note)
+        archiveNote.setOnClickListener {
+            args.utils.archived = true
+            findNavController().popBackStack(R.id.jotFragment, true)
+            Toast.makeText(context, getString(R.string.jot_archived, args.utils.title), Toast.LENGTH_SHORT).show()
         }
         return view
     }

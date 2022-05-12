@@ -6,6 +6,10 @@
         android:icon="@drawable/share_icon"
         android:title="@string/share_note" />
     <item
+        android:id="@+id/archive_note"
+        android:icon="@drawable/archive_icon"
+        android:title="@string/archive" />
+    <item
         android:id="@+id/delete"
         android:icon="@drawable/delete_icon"
         android:title="@string/delete" />

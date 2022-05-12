@@ -13,5 +13,6 @@ data class Note(
     var id: Int = 0,
     var date: Date = Date(),
     var title: String = "",
-    var body: String = ""
+    var body: String = "",
+    var archived: Boolean = false
 ) : Parcelable

@@ -68,5 +68,9 @@
         android:id="@+id/archiveFragment"
         android:name="com.roland.android.jotter.view.ArchiveFragment"
         android:label="Archive"
-        tools:layout="@layout/fragment_archive"/>
+        tools:layout="@layout/fragment_archive">
+        <action
+            android:id="@+id/archive_to_jot"
+            app:destination="@id/jotFragment" />
+    </fragment>
 </navigation>
