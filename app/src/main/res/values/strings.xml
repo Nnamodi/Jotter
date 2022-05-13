@@ -10,16 +10,15 @@
     <string name="type_note">Type note</string>
     <string name="more_options">More options</string>
     <string name="night_mode">Night mode</string>
-    <string name="light_mode">Light Mode</string>
+    <string name="light_mode">Light mode</string>
     <string name="date">3|4|2022</string>
     <string name="time">1:37am</string>
     <string name="saving_empty_note_text">Note must not be empty.</string>
     <string name="save_note_text">Note saved.</string>
-    <string name="delete_note">Delete note</string>
     <string name="note_deleted_text">Note deleted.</string>
     <string name="note_updated_text">Note updated successfully.</string>
     <string name="note_not_updated_text">Fill in at least one field</string>
-    <string name="share_note">Share note</string>
+    <string name="share">Share…</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="delete_message">Delete %s?</string>
@@ -28,9 +27,12 @@
     <string name="jotter_empty_text"><b>No notes saved.</b>\n\nClick on the \'add button\' (+) below to write a note.</string>
     <string name="delete">Delete</string>
     <string name="archive">Archive</string>
+    <string name="archived">Archived</string>
     <string name="empty_archive_text">Archive a note to see it here.</string>
-    <string name="archive_note">Archive note</string>
     <string name="jot_archived">%s archived</string>
     <string name="note_archived">Notes archived</string>
     <string name="chooser_title">Share note via</string>
+    <string name="unarchive">Unarchive</string>
+    <string name="jot_unarchived">%s unarchived</string>
+    <string name="undo">UNDO</string>
 </resources>

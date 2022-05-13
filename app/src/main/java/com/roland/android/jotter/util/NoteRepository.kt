@@ -5,9 +5,9 @@ import com.roland.android.jotter.database.NoteDao
 import com.roland.android.jotter.model.Note
 
 class NoteRepository(private val noteDao: NoteDao) {
-    val getNotes: LiveData<List<Note>> = noteDao.getNotes()
+    val getNotes: LiveData<List<Note>> = noteDao.getNotes(false)
 
-    val getArchivedNotes: LiveData<List<Note>> = noteDao.getArchivedNotes(false)
+    val getArchivedNotes: LiveData<List<Note>> = noteDao.getNotes(true)
 
     suspend fun addNote(note: Note) {
         noteDao.addNote(note)

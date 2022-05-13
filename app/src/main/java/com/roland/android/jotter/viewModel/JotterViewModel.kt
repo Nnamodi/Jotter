@@ -37,4 +37,9 @@ class JotterViewModel(app: Application) : AndroidViewModel(app) {
             repository.deleteNote(note)
         }
     }
+
+    fun archiveNote(note: Note, archive: Boolean) {
+        note.archived = archive
+        updateNote(note)
+    }
 }

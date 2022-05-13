@@ -75,7 +75,6 @@ class JotEditFragment : Fragment() {
             note.title = noteTitle.text.toString()
             note.body = noteBody.text.toString()
             note.date = Calendar.getInstance().time
-            note.archived = false
             jotViewModel.addNotes(note)
             findNavController().navigateUp()
             Toast.makeText(context, getString(R.string.save_note_text), Toast.LENGTH_SHORT).show()
@@ -93,6 +92,7 @@ class JotEditFragment : Fragment() {
             note.title = noteTitle.text.toString()
             note.body = noteBody.text.toString()
             note.date = Calendar.getInstance().time
+            note.archived = args.edit?.archived!!
             if (titleIsSame && bodyIsSame) {
                 findNavController().navigateUp()
             } else {

@@ -19,6 +19,7 @@ class JotBottomSheet : BottomSheetDialogFragment() {
     private lateinit var deleteNote: View
     private lateinit var shareNote: View
     private lateinit var archiveNote: View
+    private lateinit var unarchiveNote: View
     private lateinit var viewModel: JotterViewModel
     private val args by navArgs<JotBottomSheetArgs>()
 
@@ -46,9 +47,22 @@ class JotBottomSheet : BottomSheetDialogFragment() {
         }
         archiveNote = view.findViewById(R.id.archive_note)
         archiveNote.setOnClickListener {
-            args.utils.archived = true
+            viewModel.archiveNote(args.utils, true)
             findNavController().popBackStack(R.id.jotFragment, true)
             Toast.makeText(context, getString(R.string.jot_archived, args.utils.title), Toast.LENGTH_SHORT).show()
+        }
+        unarchiveNote = view.findViewById(R.id.unarchive_note)
+        unarchiveNote.setOnClickListener {
+            viewModel.archiveNote(args.utils, false)
+            findNavController().popBackStack(R.id.jotFragment, true)
+            Toast.makeText(context, getString(R.string.jot_unarchived, args.utils.title), Toast.LENGTH_SHORT).show()
+        }
+        if (args.utils.archived) {
+            archiveNote.visibility = View.GONE
+            unarchiveNote.visibility = View.VISIBLE
+        } else {
+            archiveNote.visibility = View.VISIBLE
+            unarchiveNote.visibility = View.GONE
         }
         return view
     }

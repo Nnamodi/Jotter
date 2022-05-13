@@ -16,6 +16,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.roland.android.jotter.R
 import com.roland.android.jotter.model.Note
 import com.roland.android.jotter.util.Preference
@@ -186,10 +187,13 @@ class JotterFragment : Fragment() {
                             }
                             R.id.archive_note -> {
                                 selectedNotes.forEach { note ->
-                                    note.archived = true
+                                    jotterViewModel.archiveNote(note, true)
+                                    Snackbar.make(requireContext(), view, getString(R.string.note_archived), Snackbar.LENGTH_LONG)
+                                        .setAction(getString(R.string.undo)) {
+                                            jotterViewModel.archiveNote(note, false)
+                                        }.show()
                                 }
                                 mode.finish()
-                                Toast.makeText(context, getString(R.string.note_archived), Toast.LENGTH_SHORT).show()
                             }
                         }
                         return true
