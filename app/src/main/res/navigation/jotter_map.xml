@@ -67,10 +67,14 @@
     <fragment
         android:id="@+id/archiveFragment"
         android:name="com.roland.android.jotter.view.ArchiveFragment"
-        android:label="@string/archived"
+        android:label="@string/archive"
         tools:layout="@layout/fragment_archive">
         <action
             android:id="@+id/archive_to_jot"
-            app:destination="@id/jotFragment" />
+            app:destination="@id/jotFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left" />
     </fragment>
 </navigation>

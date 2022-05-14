@@ -21,7 +21,7 @@ import java.util.*
 class ArchiveFragment : Fragment() {
     private lateinit var archiveViewModel: ArchiveViewModel
     private lateinit var archiveRecyclerView: RecyclerView
-    private lateinit var archiveEmptyText: TextView
+    private lateinit var archiveEmptyText: View
     private var adapter = ArchiveAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {

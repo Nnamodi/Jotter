@@ -33,7 +33,7 @@ class JotterFragment : Fragment() {
     private lateinit var jot: View
     private var adapter = JotterAdapter()
     private var actionEnabled = false
-//    private var manySelected = false
+    private var manySelected = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val isDark = Preference.getDarkMode(requireContext())
@@ -142,37 +142,42 @@ class JotterFragment : Fragment() {
                     override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
                         val menuInflater = mode.menuInflater
                         menuInflater.inflate(R.menu.jotter_item_selected, menu)
-//                        menu.findItem(R.id.share_note).isVisible = !manySelected
-                        return true
-                    }
-
-                    override fun onPrepareActionMode(mode: ActionMode, menu: Menu): Boolean {
                         actionMode = mode
-                        selectedNotes.add(note)
-                        mode.title = "${selectedNotes.size}"
                         actionEnabled = true
                         check.apply {
                             visibility = View.VISIBLE
                             isChecked = !this.isChecked
                         }
+                        selectedNotes.add(note)
+                        mode.title = "${selectedNotes.size}"
                         jot.visibility = View.GONE
+                        return true
+                    }
+
+                    override fun onPrepareActionMode(mode: ActionMode, menu: Menu): Boolean {
+                        menu.findItem(R.id.share_note).isVisible = !manySelected
                         return true
                     }
 
                     override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
                         when (item.itemId) {
                             R.id.delete -> {
+                                val text = if (selectedNotes.size == 1) {
+                                    getString(R.string.delete_this_message, note.title)
+                                } else {
+                                    getString(R.string.delete_multiple_messages, selectedNotes.size)
+                                }
                                 val builder = AlertDialog.Builder(requireContext())
-                                builder.setTitle("Delete")
-                                builder.setMessage("Delete ${selectedNotes.size} notes\nThis action is irreversible")
-                                builder.setPositiveButton("Continue") { _, _ ->
+                                builder.setTitle(getString(R.string.delete))
+                                builder.setMessage(text)
+                                builder.setPositiveButton(getString(R.string.continue_action)) { _, _ ->
                                     selectedNotes.forEach { note ->
                                         jotterViewModel.deleteNote(note)
                                     }
                                     mode.finish()
-                                    Toast.makeText(requireContext(), "Deleted", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(requireContext(), getString(R.string.deleted), Toast.LENGTH_SHORT).show()
                                 }
-                                builder.setNegativeButton("Close") { _, _ -> }
+                                builder.setNegativeButton(getString(R.string.close)) { _, _ -> }
                                 builder.create().show()
                             }
                             R.id.share_note -> {
@@ -186,9 +191,14 @@ class JotterFragment : Fragment() {
                                 }
                             }
                             R.id.archive_note -> {
+                                val text = if (selectedNotes.size == 1) {
+                                    getString(R.string.archived)
+                                } else {
+                                    getString(R.string.note_archived)
+                                }
                                 selectedNotes.forEach { note ->
                                     jotterViewModel.archiveNote(note, true)
-                                    Snackbar.make(requireContext(), view, getString(R.string.note_archived), Snackbar.LENGTH_LONG)
+                                    Snackbar.make(requireContext(), view, text, Snackbar.LENGTH_LONG)
                                         .setAction(getString(R.string.undo)) {
                                             jotterViewModel.archiveNote(note, false)
                                         }.show()
@@ -206,6 +216,7 @@ class JotterFragment : Fragment() {
                         }
                         selectedNotes.clear()
                         actionEnabled = false
+                        manySelected = false
                         mode.finish()
                         jot.visibility = View.VISIBLE
                     }
@@ -256,8 +267,9 @@ class JotterFragment : Fragment() {
         if (selectedNotes.size == 0) {
             actionMode.finish()
         }
-//        manySelected = selectedNotes.size != 1
+        manySelected = selectedNotes.size != 1
         actionMode.title = "${selectedNotes.size}"
+        actionMode.invalidate()
     }
 
     private fun unSelect(check: CheckBox, note: Note) {
@@ -266,8 +278,10 @@ class JotterFragment : Fragment() {
         selectedNotes.remove(note)
         if (selectedNotes.size == 0) {
             actionMode.finish()
+            manySelected = false
         }
-//        manySelected = selectedNotes.size != 1
+        manySelected = selectedNotes.size != 1
         actionMode.title = "${selectedNotes.size}"
+        actionMode.invalidate()
     }
 }

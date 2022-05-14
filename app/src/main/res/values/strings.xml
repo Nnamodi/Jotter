@@ -35,4 +35,10 @@
     <string name="unarchive">Unarchive</string>
     <string name="jot_unarchived">%s unarchived</string>
     <string name="undo">UNDO</string>
+    <string name="close">Close</string>
+    <string name="continue_action">Continue</string>
+    <string name="deleted">Deleted</string>
+    <string name="delete_multiple_messages">Delete %d notes.\nThis action is irreversible</string>
+    <string name="delete_this_message">Delete %s.\nThis action is irreversible</string>
+    <string name="archive_empty">Archive empty</string>
 </resources>
