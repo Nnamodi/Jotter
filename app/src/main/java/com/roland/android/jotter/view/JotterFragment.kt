@@ -49,6 +49,7 @@ class JotterFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_jotter_list, container, false)
+        selectedNotes = mutableListOf()
         jotterRecyclerView = view.findViewById(R.id.recycler_view)
         jot = view.findViewById(R.id.jot)
         jot.setOnClickListener {
@@ -74,8 +75,6 @@ class JotterFragment : Fragment() {
                 emptyText.visibility = View.GONE
                 jotterRecyclerView.visibility = View.VISIBLE
             }
-            selectedNotes = note.toMutableList()
-            selectedNotes.clear()
         }
     }
 
@@ -142,6 +141,7 @@ class JotterFragment : Fragment() {
                     override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
                         val menuInflater = mode.menuInflater
                         menuInflater.inflate(R.menu.jotter_item_selected, menu)
+                        selectedNotes.clear()
                         actionMode = mode
                         actionEnabled = true
                         check.apply {
@@ -198,11 +198,13 @@ class JotterFragment : Fragment() {
                                 }
                                 selectedNotes.forEach { note ->
                                     jotterViewModel.archiveNote(note, true)
-                                    Snackbar.make(requireContext(), view, text, Snackbar.LENGTH_LONG)
-                                        .setAction(getString(R.string.undo)) {
-                                            jotterViewModel.archiveNote(note, false)
-                                        }.show()
                                 }
+                                Snackbar.make(requireContext(), view, text, Snackbar.LENGTH_LONG)
+                                    .setAction(getString(R.string.undo)) {
+                                        selectedNotes.forEach { note ->
+                                            jotterViewModel.archiveNote(note, false)
+                                        }
+                                    }.show()
                                 mode.finish()
                             }
                         }
@@ -214,7 +216,6 @@ class JotterFragment : Fragment() {
                             isChecked = false
                             visibility = View.GONE
                         }
-                        selectedNotes.clear()
                         actionEnabled = false
                         manySelected = false
                         mode.finish()
@@ -267,7 +268,7 @@ class JotterFragment : Fragment() {
         if (selectedNotes.size == 0) {
             actionMode.finish()
         }
-        manySelected = selectedNotes.size != 1
+        manySelected = !(selectedNotes.size == 1 || selectedNotes.size == 0)
         actionMode.title = "${selectedNotes.size}"
         actionMode.invalidate()
     }
@@ -280,7 +281,7 @@ class JotterFragment : Fragment() {
             actionMode.finish()
             manySelected = false
         }
-        manySelected = selectedNotes.size != 1
+        manySelected = !(selectedNotes.size == 1 || selectedNotes.size == 0)
         actionMode.title = "${selectedNotes.size}"
         actionMode.invalidate()
     }

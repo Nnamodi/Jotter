@@ -43,7 +43,7 @@ class JotEditFragment : Fragment() {
         viewLifecycleOwner.lifecycle.addObserver(LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_STOP) {
                 val activity = activity?.currentFocus
-                val imm= context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow(activity?.windowToken, 0)
             }
         })

@@ -41,4 +41,7 @@
     <string name="delete_multiple_messages">Delete %d notes.\nThis action is irreversible</string>
     <string name="delete_this_message">Delete %s.\nThis action is irreversible</string>
     <string name="archive_empty">Archive empty</string>
+    <string name="ok">OK</string>
+    <string name="incorrect_password">Incorrect Password</string>
+    <string name="input_password">Input Password</string>
 </resources>
