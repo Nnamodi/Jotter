@@ -21,7 +21,7 @@ class JotterBottomSheet : BottomSheetDialogFragment() {
         val isDark = Preference.getDarkMode(requireContext())
         archive = view.findViewById(R.id.archive)
         archive.setOnClickListener {
-            ArchiveLock(requireContext(), requireParentFragment().requireView()).enterPassword()
+            findNavController().navigate(R.id.archiveLock)
         }
         darkMode = view.findViewById(R.id.night_mode)
         if (isDark) {

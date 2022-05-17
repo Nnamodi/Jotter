@@ -43,5 +43,8 @@
     <string name="archive_empty">Archive empty</string>
     <string name="ok">OK</string>
     <string name="incorrect_password">Incorrect Password</string>
-    <string name="input_password">Input Password</string>
+    <string name="password">Password</string>
+    <string name="enter_pin">Enter PIN</string>
+    <string name="archive_locked">Archive locked</string>
+    <string name="next">NEXT</string>
 </resources>
