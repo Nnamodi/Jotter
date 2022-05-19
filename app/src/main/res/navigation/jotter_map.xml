@@ -76,9 +76,15 @@
             app:exitAnim="@anim/slide_out_right"
             app:popEnterAnim="@anim/slide_in_right"
             app:popExitAnim="@anim/slide_out_left" />
+        <action
+            android:id="@+id/back_to_jotterFragment"
+            app:destination="@id/jotterFragment"
+            app:popUpTo="@id/jotterFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/archiveLock"
         android:name="com.roland.android.jotter.view.ArchiveLock"
+        android:label=""
         tools:layout="@layout/fragment_archive_lock" />
 </navigation>

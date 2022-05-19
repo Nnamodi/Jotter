@@ -37,6 +37,12 @@ class JotterActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp()
+        val archiveFragment = navController.findDestination(R.id.archiveFragment)
+        return if (navController.currentDestination != archiveFragment) {
+            navController.navigateUp()
+        } else {
+            onBackPressed()
+            true
+        }
     }
 }

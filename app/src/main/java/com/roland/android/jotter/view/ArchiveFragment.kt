@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -34,6 +35,10 @@ class ArchiveFragment : Fragment() {
         archiveRecyclerView = view.findViewById(R.id.archive_recycler_view)
         archiveEmptyText = view.findViewById(R.id.archive_empty_text)
         archiveRecyclerView.adapter = adapter
+        // The below actions will be conditional.
+        activity?.onBackPressedDispatcher?.addCallback(this) {
+            findNavController().navigate(R.id.back_to_jotterFragment)
+        }
         return view
     }
 
