@@ -30,7 +30,7 @@ class JotBottomSheet : BottomSheetDialogFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.jot_bottom_sheet, container, false)
-        deleteNote = view.findViewById(R.id.delete_note)
+        deleteNote = view.findViewById(R.id.lock_archive)
         deleteNote.setOnClickListener {
             deleteNote(args.utils)
         }

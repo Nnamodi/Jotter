@@ -23,7 +23,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/delete_note"
+            android:id="@+id/lock_archive"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -71,7 +71,7 @@
             android:foreground="?android:attr/selectableItemBackground"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/delete_note">
+            app:layout_constraintTop_toBottomOf="@+id/lock_archive">
 
             <ImageView
                 android:id="@+id/share"

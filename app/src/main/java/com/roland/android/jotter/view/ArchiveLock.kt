@@ -1,7 +1,7 @@
 package com.roland.android.jotter.view
 
 import android.content.Context
-import android.os.Bundle
+import android.os.*
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -21,8 +21,35 @@ class ArchiveLock : Fragment() {
     private lateinit var incorrectPinText: TextView
     private lateinit var nextButton: Button
 
+    @Suppress("DEPRECATION")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_archive_lock, container, false)
+        val vibrate: () -> Unit = {
+            when {
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> {
+                    (context?.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator)
+                        .vibrate(
+                            VibrationEffect.createOneShot(
+                                200, VibrationEffect.DEFAULT_AMPLITUDE
+                            )
+                        )
+                }
+                Build.VERSION.SDK_INT == Build.VERSION_CODES.S -> {
+                    (context?.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager)
+                        .vibrate(
+                            CombinedVibration.createParallel(
+                                VibrationEffect.createOneShot(
+                                    200, VibrationEffect.DEFAULT_AMPLITUDE
+                                )
+                            )
+                        )
+                }
+                else -> {
+                    (context?.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator)
+                        .vibrate(200)
+                }
+            }
+        }
         val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         val textWatcher = object : TextWatcher {
             override fun beforeTextChanged(sequence: CharSequence?, start: Int, count: Int, after: Int) {
@@ -47,6 +74,7 @@ class ArchiveLock : Fragment() {
             } else {
                 password.text.clear()
                 incorrectPinText.visibility = View.VISIBLE
+                vibrate()
             }
         }
         imm.showSoftInput(getView(), InputMethodManager.SHOW_IMPLICIT)

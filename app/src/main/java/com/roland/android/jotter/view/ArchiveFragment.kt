@@ -2,9 +2,7 @@ package com.roland.android.jotter.view
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.TextView
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
@@ -15,6 +13,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.roland.android.jotter.R
 import com.roland.android.jotter.model.Note
+import com.roland.android.jotter.util.Preference
 import com.roland.android.jotter.viewModel.ArchiveViewModel
 import java.text.SimpleDateFormat
 import java.util.*
@@ -28,6 +27,7 @@ class ArchiveFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         archiveViewModel = ViewModelProvider(this) [ArchiveViewModel::class.java]
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -35,9 +35,10 @@ class ArchiveFragment : Fragment() {
         archiveRecyclerView = view.findViewById(R.id.archive_recycler_view)
         archiveEmptyText = view.findViewById(R.id.archive_empty_text)
         archiveRecyclerView.adapter = adapter
-        // The below actions will be conditional.
-        activity?.onBackPressedDispatcher?.addCallback(this) {
-            findNavController().navigate(R.id.back_to_jotterFragment)
+        if (Preference.getLockState(requireContext())) {
+            activity?.onBackPressedDispatcher?.addCallback(this) {
+                findNavController().navigate(R.id.back_to_jotterFragment)
+            }
         }
         return view
     }
@@ -55,6 +56,23 @@ class ArchiveFragment : Fragment() {
             } else {
                 archiveRecyclerView.visibility = View.VISIBLE
                 archiveEmptyText.visibility = View.GONE
+            }
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.archive_fragment, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.more_options -> {
+                findNavController().navigate(R.id.archiveBottomSheet)
+                true
+            }
+            else -> {
+                super.onOptionsItemSelected(item)
             }
         }
     }

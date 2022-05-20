@@ -41,10 +41,12 @@
     <string name="delete_multiple_messages">Delete %d notes.\nThis action is irreversible</string>
     <string name="delete_this_message">Delete %s.\nThis action is irreversible</string>
     <string name="archive_empty">Archive empty</string>
-    <string name="ok">OK</string>
     <string name="incorrect_password">Incorrect PIN</string>
     <string name="password">****</string>
     <string name="enter_pin">Enter PIN</string>
     <string name="archive_locked">Archive locked</string>
     <string name="next">NEXT</string>
+    <string name="lock">Lock</string>
+    <string name="archive_not_locked_text">Turn this setting on to enable Archive privacy, securing all archived notes.</string>
+    <string name="archive_locked_text">Turning this setting off will disable Archive privacy, leaving any personal information unprotected.</string>
 </resources>

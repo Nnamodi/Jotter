@@ -87,4 +87,8 @@
         android:name="com.roland.android.jotter.view.ArchiveLock"
         android:label=""
         tools:layout="@layout/fragment_archive_lock" />
+    <dialog
+        android:id="@+id/archiveBottomSheet"
+        android:name="com.roland.android.jotter.view.ArchiveBottomSheet"
+        tools:layout="@layout/archive_bottom_sheet" />
 </navigation>

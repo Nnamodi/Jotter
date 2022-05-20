@@ -19,9 +19,11 @@ class JotterBottomSheet : BottomSheetDialogFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.jotter_bottom_sheet, container, false)
         val isDark = Preference.getDarkMode(requireContext())
+        val archiveLocked = Preference.getLockState(requireContext())
         archive = view.findViewById(R.id.archive)
         archive.setOnClickListener {
-            findNavController().navigate(R.id.archiveLock)
+            if (archiveLocked) { findNavController().navigate(R.id.archiveLock) }
+            else { findNavController().navigate(R.id.archiveFragment) }
         }
         darkMode = view.findViewById(R.id.night_mode)
         if (isDark) {
