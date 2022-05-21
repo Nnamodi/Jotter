@@ -31,13 +31,6 @@ class JotterBottomSheet : BottomSheetDialogFragment() {
             }
         }
         darkMode = view.findViewById(R.id.night_mode)
-        if (isDark) {
-            darkMode.text = getString(R.string.light_mode)
-            darkMode.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.light_icon, 0)
-        } else {
-            darkMode.text = getString(R.string.night_mode)
-            darkMode.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.night_icon, 0)
-        }
         checkView = view.findViewById(R.id.check_view)
         checkView.setOnClickListener {
             if (isDark) {
@@ -47,6 +40,15 @@ class JotterBottomSheet : BottomSheetDialogFragment() {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                 Preference.setDarkMode(requireContext(), true)
             }
+        }
+        if (isDark) {
+            darkMode.text = getString(R.string.light_mode)
+            darkMode.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.light_icon, 0)
+            checkView.contentDescription = getString(R.string.switch_to_light)
+        } else {
+            darkMode.text = getString(R.string.night_mode)
+            darkMode.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.night_icon, 0)
+            checkView.contentDescription = getString(R.string.switch_to_night)
         }
         return view
     }

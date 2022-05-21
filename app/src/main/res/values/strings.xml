@@ -47,6 +47,16 @@
     <string name="archive_locked">Archive locked</string>
     <string name="next">NEXT</string>
     <string name="lock">Lock</string>
-    <string name="archive_not_locked_text">Turn this setting on to enable Archive privacy, securing all archived notes.</string>
+    <string name="archive_not_locked_text">Turn on this setting to enable Archive privacy, securing all archived notes.</string>
     <string name="archive_locked_text">Turning this setting off will disable Archive privacy, leaving any personal information unprotected.</string>
+    <string name="change_pin">Change PIN</string>
+    <string name="unlock_archive">Unlock Archive</string>
+    <string name="lock_archive">Lock Archive</string>
+    <string name="switch_to_night">Switch to dark mode</string>
+    <string name="switch_to_light">Switch to light mode</string>
+    <string name="pin_tip">* Pin must contain 4 – 8 digits.</string>
+    <string name="old_pin">Input Old PIN</string>
+    <string name="new_pin">Input New PIN</string>
+    <string name="set_button">SET</string>
+    <string name="pin_changed_text">PIN successfully changed!</string>
 </resources>

@@ -34,7 +34,7 @@ class JotterActivity : AppCompatActivity() {
                 }
                 R.id.archiveBottomSheet -> {
                     toolbar.isTitleCentered = false
-                    title = "Archive"
+                    title = getString(R.string.archive)
                     supportActionBar?.setDisplayHomeAsUpEnabled(true)
                 }
                 else -> {

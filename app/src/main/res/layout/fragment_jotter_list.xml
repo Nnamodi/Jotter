@@ -40,7 +40,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="56dp"
         android:clickable="true"
         android:contentDescription="@string/add_jot"
         android:focusable="true"

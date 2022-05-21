@@ -67,7 +67,12 @@
         android:id="@+id/archiveLock"
         android:name="com.roland.android.jotter.view.ArchiveLock"
         android:label=""
-        tools:layout="@layout/fragment_archive_lock" />
+        tools:layout="@layout/fragment_archive_lock" >
+        <argument
+            android:name="changePassword"
+            app:argType="boolean"
+            android:defaultValue="false" />
+    </fragment>
     <fragment
         android:id="@+id/archiveFragment"
         android:name="com.roland.android.jotter.view.ArchiveFragment"
@@ -89,5 +94,9 @@
     <dialog
         android:id="@+id/archiveBottomSheet"
         android:name="com.roland.android.jotter.view.ArchiveBottomSheet"
-        tools:layout="@layout/archive_bottom_sheet" />
+        tools:layout="@layout/archive_bottom_sheet" >
+        <action
+            android:id="@+id/archiveBottomSheet_to_archiveLock"
+            app:destination="@id/archiveLock" />
+    </dialog>
 </navigation>

@@ -8,6 +8,7 @@ object Preference {
     private const val DARK_MODE = "isDark"
     private const val LOCKED = "locked"
     private const val SECURED = "back_button_config"
+    private const val PIN = "pin"
 
     fun getDarkMode(context: Context): Boolean {
         return PreferenceManager.getDefaultSharedPreferences(context)
@@ -39,6 +40,17 @@ object Preference {
     fun setLock(context: Context, configBackButton: Boolean) {
         PreferenceManager.getDefaultSharedPreferences(context).edit {
             putBoolean(SECURED, configBackButton)
+        }
+    }
+
+    fun getPIN(context: Context): String {
+        return PreferenceManager.getDefaultSharedPreferences(context)
+            .getString(PIN, "9570")!!
+    }
+
+    fun setPIN(context: Context, pin: String) {
+        PreferenceManager.getDefaultSharedPreferences(context).edit {
+            putString(PIN, pin)
         }
     }
 }
