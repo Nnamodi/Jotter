@@ -67,12 +67,6 @@ class JotBottomSheet : BottomSheetDialogFragment() {
         return view
     }
 
-    override fun onDestroy() {
-        val title = args.utils.title
-        findNavController().previousBackStackEntry?.savedStateHandle?.set("title", title)
-        super.onDestroy()
-    }
-
     private fun deleteNote(note: Note) {
         val builder = AlertDialog.Builder(requireContext())
         builder.setMessage(getString(R.string.delete_message, note.title))

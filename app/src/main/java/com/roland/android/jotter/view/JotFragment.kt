@@ -32,18 +32,7 @@ class JotFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_jot, container, false)
-        val titleEmpty = (activity as AppCompatActivity).supportActionBar?.title.isNullOrEmpty()
-        val navBackStackEntry = findNavController().getBackStackEntry(R.id.jotFragment)
-        navBackStackEntry.savedStateHandle.getLiveData<String>("title").observe(
-                viewLifecycleOwner
-            ) { title ->
-                if (titleEmpty) {
-                    (activity as AppCompatActivity).supportActionBar?.title = title
-                }
-            }
-        if (titleEmpty) {
-            (activity as AppCompatActivity).supportActionBar?.title = args.note.title
-        }
+        (activity as AppCompatActivity).supportActionBar?.title = args.note.title
         note = Note()
         edit = view.findViewById(R.id.edit)
         edit.setOnClickListener {

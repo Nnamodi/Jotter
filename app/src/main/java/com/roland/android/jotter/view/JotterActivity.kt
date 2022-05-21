@@ -28,6 +28,15 @@ class JotterActivity : AppCompatActivity() {
                 R.id.jotterBottomSheet -> {
                     toolbar.isTitleCentered = true
                 }
+                R.id.jotBottomSheet -> {
+                    toolbar.isTitleCentered = false
+                    supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                }
+                R.id.archiveBottomSheet -> {
+                    toolbar.isTitleCentered = false
+                    title = "Archive"
+                    supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                }
                 else -> {
                     toolbar.isTitleCentered = false
                 }

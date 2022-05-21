@@ -31,7 +31,6 @@ class ArchiveBottomSheet : BottomSheetDialogFragment() {
         lock = view.findViewById(R.id.lock_archive)
         lock.isChecked = Preference.getLockState(requireContext())
         lock.setOnCheckedChangeListener { _, checked ->
-            lockField.isPressed
             if (checked) {
                 lockText.text = getString(R.string.archive_locked_text)
                 Preference.setLockState(requireContext(), true)

@@ -7,6 +7,7 @@ import androidx.preference.PreferenceManager
 object Preference {
     private const val DARK_MODE = "isDark"
     private const val LOCKED = "locked"
+    private const val SECURED = "back_button_config"
 
     fun getDarkMode(context: Context): Boolean {
         return PreferenceManager.getDefaultSharedPreferences(context)
@@ -27,6 +28,17 @@ object Preference {
     fun setLockState(context: Context, locked: Boolean) {
         PreferenceManager.getDefaultSharedPreferences(context).edit {
             putBoolean(LOCKED, locked)
+        }
+    }
+
+    fun getLock(context: Context): Boolean {
+        return PreferenceManager.getDefaultSharedPreferences(context)
+            .getBoolean(SECURED, false)
+    }
+
+    fun setLock(context: Context, configBackButton: Boolean) {
+        PreferenceManager.getDefaultSharedPreferences(context).edit {
+            putBoolean(SECURED, configBackButton)
         }
     }
 }

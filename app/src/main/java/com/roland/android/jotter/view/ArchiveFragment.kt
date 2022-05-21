@@ -35,7 +35,7 @@ class ArchiveFragment : Fragment() {
         archiveRecyclerView = view.findViewById(R.id.archive_recycler_view)
         archiveEmptyText = view.findViewById(R.id.archive_empty_text)
         archiveRecyclerView.adapter = adapter
-        if (Preference.getLockState(requireContext())) {
+        if (Preference.getLock(requireContext())) {
             activity?.onBackPressedDispatcher?.addCallback(this) {
                 findNavController().navigate(R.id.back_to_jotterFragment)
             }

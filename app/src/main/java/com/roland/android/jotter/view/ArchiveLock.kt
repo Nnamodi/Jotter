@@ -26,21 +26,21 @@ class ArchiveLock : Fragment() {
         val view = inflater.inflate(R.layout.fragment_archive_lock, container, false)
         val vibrate: () -> Unit = {
             when {
-                Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> {
-                    (context?.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator)
-                        .vibrate(
-                            VibrationEffect.createOneShot(
-                                200, VibrationEffect.DEFAULT_AMPLITUDE
-                            )
-                        )
-                }
-                Build.VERSION.SDK_INT == Build.VERSION_CODES.S -> {
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
                     (context?.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager)
                         .vibrate(
                             CombinedVibration.createParallel(
                                 VibrationEffect.createOneShot(
                                     200, VibrationEffect.DEFAULT_AMPLITUDE
                                 )
+                            )
+                        )
+                }
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> {
+                    (context?.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator)
+                        .vibrate(
+                            VibrationEffect.createOneShot(
+                                200, VibrationEffect.DEFAULT_AMPLITUDE
                             )
                         )
                 }

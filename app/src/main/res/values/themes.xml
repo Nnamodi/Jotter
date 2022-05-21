@@ -30,6 +30,7 @@
 
     <style name="BottomSheetDialog" parent="Widget.MaterialComponents.BottomSheet.Modal">
         <item name="shapeAppearance">@style/ShapeAppearance</item>
+        <item name="behavior_peekHeight">300dp</item>
     </style>
 
     <style name="ShapeAppearance" parent="ShapeAppearance.MaterialComponents.LargeComponent">
