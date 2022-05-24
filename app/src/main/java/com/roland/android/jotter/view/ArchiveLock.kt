@@ -77,30 +77,48 @@ class ArchiveLock : Fragment() {
         lockText = view.findViewById(R.id.lock_text)
         pinTip = view.findViewById(R.id.pin_tip)
         nextButton = view.findViewById(R.id.next_button)
-        if (!args.changePassword) {
-            nextButton.setOnClickListener {
-                if (password.text.toString() == pin) {
-                    findNavController().navigate(R.id.archiveFragment)
-                } else {
-                    password.text.clear()
-                    incorrectPinText.visibility = View.VISIBLE
-                    vibrate()
+        when (args.changePassword) {
+            "change" -> {
+                lockText.text = getString(R.string.old_pin)
+                nextButton.setOnClickListener {
+                    if (password.text.toString() == pin) {
+                        password.text.clear()
+                        pinTip.visibility = View.VISIBLE
+                        lockText.text = getString(R.string.new_pin)
+                        nextButton.apply {
+                            text = getString(R.string.set_button)
+                            setOnClickListener {
+                                Preference.setPIN(requireContext(), password.text.toString())
+                                pinTip.visibility = View.GONE
+                                Snackbar.make(requireContext(), requireView(), getString(R.string.pin_changed_text), Snackbar.LENGTH_SHORT)
+                                    .show()
+                                findNavController().navigateUp()
+                            }
+                        }
+                    } else {
+                        password.text.clear()
+                        incorrectPinText.visibility = View.VISIBLE
+                        vibrate()
+                    }
                 }
             }
-        } else {
-            lockText.text = getString(R.string.old_pin)
-            nextButton.setOnClickListener {
-                if (password.text.toString() == pin) {
-                    password.text.clear()
-                    pinTip.visibility = View.VISIBLE
-                    lockText.text = getString(R.string.new_pin)
-                    nextButton.text = getString(R.string.set_button)
-                    nextButton.setOnClickListener {
-                        Preference.setPIN(requireContext(), password.text.toString())
-                        pinTip.visibility = View.GONE
-                        Snackbar.make(requireContext(), requireView(), getString(R.string.pin_changed_text), Snackbar.LENGTH_SHORT).show()
-                        findNavController().navigateUp()
+            "set" -> {
+                nextButton.apply {
+                    text = getString(R.string.set_button)
+                    setOnClickListener {
+                        Preference.apply {
+                            setLockState(requireContext(), true)
+                            setPIN(requireContext(), password.text.toString())
+                            Snackbar.make(requireContext(), requireView(), context.getString(R.string.pin_set_text), Snackbar.LENGTH_SHORT)
+                                .show()
+                            findNavController().navigateUp()
+                        }
                     }
+                }
+            }
+            else -> nextButton.setOnClickListener {
+                if (password.text.toString() == pin) {
+                    findNavController().navigate(R.id.archiveFragment)
                 } else {
                     password.text.clear()
                     incorrectPinText.visibility = View.VISIBLE

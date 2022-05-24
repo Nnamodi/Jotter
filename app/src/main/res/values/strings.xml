@@ -54,9 +54,14 @@
     <string name="lock_archive">Lock Archive</string>
     <string name="switch_to_night">Switch to dark mode</string>
     <string name="switch_to_light">Switch to light mode</string>
-    <string name="pin_tip">* Pin must contain 4 – 8 digits.</string>
+    <string name="pin_tip">* PIN must contain 4 – 8 digits.</string>
     <string name="old_pin">Input Old PIN</string>
     <string name="new_pin">Input New PIN</string>
     <string name="set_button">SET</string>
     <string name="pin_changed_text">PIN successfully changed!</string>
+    <string name="pin_set_text">PIN successfully set!</string>
+    <string name="lock_dialog_message">To enable Archive privacy, please first set up your PIN</string>
+    <string name="lock_dialog_pos_button">Set PIN</string>
+    <string name="lock_dialog_neg_button">Later</string>
+    <string name="set_pin">Set up Archive lock</string>
 </resources>

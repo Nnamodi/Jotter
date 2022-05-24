@@ -45,7 +45,7 @@ object Preference {
 
     fun getPIN(context: Context): String {
         return PreferenceManager.getDefaultSharedPreferences(context)
-            .getString(PIN, "9570")!!
+            .getString(PIN, "")!!
     }
 
     fun setPIN(context: Context, pin: String) {

@@ -70,8 +70,8 @@
         tools:layout="@layout/fragment_archive_lock" >
         <argument
             android:name="changePassword"
-            app:argType="boolean"
-            android:defaultValue="false" />
+            app:argType="string"
+            android:defaultValue="enter" />
     </fragment>
     <fragment
         android:id="@+id/archiveFragment"
