@@ -10,6 +10,7 @@ import com.roland.android.jotter.util.NoteRepository
 class ArchiveViewModel(app: Application) : AndroidViewModel(app) {
     private val repository: NoteRepository
     val getArchivedNotes: LiveData<List<Note>>
+    var inputPIN = ""
 
     init {
         val noteDao = NoteDatabase.getDatabase(app).noteDao()
