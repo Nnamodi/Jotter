@@ -64,6 +64,6 @@
     <string name="lock_dialog_pos_button">Set PIN</string>
     <string name="lock_dialog_neg_button">Later</string>
     <string name="set_pin">Set up Archive lock</string>
-    <string name="pin_does_not_match">PIN does not match</string>
+    <string name="pin_does_not_match">PIN does not match!</string>
     <string name="confirm_pin">Confirm your PIN</string>
 </resources>
