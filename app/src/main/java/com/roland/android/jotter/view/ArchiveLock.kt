@@ -16,7 +16,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.google.android.material.snackbar.Snackbar
 import com.roland.android.jotter.R
 import com.roland.android.jotter.util.Preference
 import com.roland.android.jotter.viewModel.ArchiveViewModel
@@ -100,10 +99,10 @@ class ArchiveLock : Fragment() {
                                 setOnClickListener {
                                     if (password.text.toString() == viewModel.inputPIN) {
                                         Preference.setPIN(requireContext(), password.text.toString())
-                                        pinTip.visibility = View.GONE
-                                        Snackbar.make(requireContext(), requireView(), getString(R.string.pin_changed_text), Snackbar.LENGTH_SHORT)
-                                            .show()
-                                        findNavController().navigateUp()
+                                        findNavController().apply {
+                                            previousBackStackEntry?.savedStateHandle?.set("PIN", "change")
+                                            navigateUp()
+                                        }
                                     } else {
                                         password.text.clear()
                                         incorrectPinText.text = context.getString(R.string.pin_does_not_match)
@@ -131,13 +130,11 @@ class ArchiveLock : Fragment() {
                         text = getString(R.string.set_button)
                         setOnClickListener {
                             if (password.text.toString() == viewModel.inputPIN) {
-                                Preference.apply {
-                                    setLockState(requireContext(), true)
-                                    setPIN(requireContext(), password.text.toString())
+                                Preference.setPIN(requireContext(), password.text.toString())
+                                findNavController().apply {
+                                    previousBackStackEntry?.savedStateHandle?.set("PIN", "set")
+                                    navigateUp()
                                 }
-                                Snackbar.make(requireContext(), requireView(), context.getString(R.string.pin_set_text), Snackbar.LENGTH_SHORT)
-                                    .show()
-                                findNavController().navigateUp()
                             } else {
                                 password.text.clear()
                                 incorrectPinText.text = context.getString(R.string.pin_does_not_match)

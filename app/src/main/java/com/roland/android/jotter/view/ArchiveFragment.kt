@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -11,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.roland.android.jotter.R
 import com.roland.android.jotter.model.Note
 import com.roland.android.jotter.util.Preference
@@ -32,12 +34,26 @@ class ArchiveFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_archive, container, false)
+        val navBackStackEntry = findNavController().getBackStackEntry(R.id.archiveFragment)
         archiveRecyclerView = view.findViewById(R.id.archive_recycler_view)
         archiveEmptyText = view.findViewById(R.id.archive_empty_text)
         archiveRecyclerView.adapter = adapter
         if (Preference.getLock(requireContext())) {
             activity?.onBackPressedDispatcher?.addCallback(this) {
                 findNavController().navigate(R.id.back_to_jotterFragment)
+            }
+        }
+        navBackStackEntry.savedStateHandle.getLiveData<String>("PIN").observe(
+            viewLifecycleOwner
+        ) { set ->
+            when (set) {
+                "set" -> {
+                    snackbar(requireView(), getString(R.string.pin_set_text))
+                }
+                "change" -> {
+                    snackbar(requireView(), getString(R.string.pin_changed_text))
+                }
+                else -> {}
             }
         }
         return view
@@ -122,5 +138,20 @@ class ArchiveFragment : Fragment() {
         override fun areContentsTheSame(oldItem: Note, newItem: Note): Boolean {
             return oldItem == newItem
         }
+    }
+
+    private fun snackbar(view: View, text: CharSequence) {
+        val locked = Preference.getLockState(requireContext())
+        val duration = if (locked) { Snackbar.LENGTH_SHORT } else { Snackbar.LENGTH_LONG }
+        val snackbar = Snackbar.make(view, text, duration)
+        if (!locked) {
+            snackbar.setAction(getString(R.string.lock).replaceFirstChar {
+                if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
+            }) {
+                Preference.setLockState(requireContext(), true)
+                Toast.makeText(context, getString(R.string.archive_locked), Toast.LENGTH_SHORT).show()
+            }
+        }
+        snackbar.show()
     }
 }
