@@ -51,7 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/pin_tip"
-            android:textColor="@color/design_default_color_primary_variant"
+            android:textColor="@color/design_default_color_primary"
             android:textSize="16sp"
             android:textStyle="italic"
             android:visibility="gone"

@@ -13,7 +13,7 @@ import com.roland.android.jotter.util.Preference
 
 class JotterBottomSheet : BottomSheetDialogFragment() {
     private lateinit var archive: View
-    private lateinit var checkView: View
+    private lateinit var darkModeView: View
     private lateinit var darkMode: TextView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -31,8 +31,9 @@ class JotterBottomSheet : BottomSheetDialogFragment() {
             }
         }
         darkMode = view.findViewById(R.id.night_mode)
-        checkView = view.findViewById(R.id.check_view)
-        checkView.setOnClickListener {
+        darkModeView = view.findViewById(R.id.check_view)
+        darkModeView.setOnClickListener {
+            darkMode.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.loading_icon, 0)
             if (isDark) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                 Preference.setDarkMode(requireContext(), false)
@@ -44,11 +45,11 @@ class JotterBottomSheet : BottomSheetDialogFragment() {
         if (isDark) {
             darkMode.text = getString(R.string.light_mode)
             darkMode.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.light_icon, 0)
-            checkView.contentDescription = getString(R.string.switch_to_light)
+            darkModeView.contentDescription = getString(R.string.switch_to_light)
         } else {
             darkMode.text = getString(R.string.night_mode)
             darkMode.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.night_icon, 0)
-            checkView.contentDescription = getString(R.string.switch_to_night)
+            darkModeView.contentDescription = getString(R.string.switch_to_night)
         }
         return view
     }

@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -27,6 +28,7 @@ class ArchiveLock : Fragment() {
     private lateinit var lockText: TextView
     private lateinit var pinTip: TextView
     private lateinit var nextButton: Button
+    private lateinit var lockImage: ImageView
 
     @Suppress("DEPRECATION")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -77,6 +79,7 @@ class ArchiveLock : Fragment() {
         password.addTextChangedListener(textWatcher)
         password.requestFocus()
         incorrectPinText = view.findViewById(R.id.incorrect_pin)
+        lockImage = view.findViewById(R.id.lock_image)
         lockText = view.findViewById(R.id.lock_text)
         pinTip = view.findViewById(R.id.pin_tip)
         nextButton = view.findViewById(R.id.next_button)
@@ -147,7 +150,10 @@ class ArchiveLock : Fragment() {
             }
             else -> nextButton.setOnClickListener {
                 if (password.text.toString() == pin) {
-                    findNavController().navigate(R.id.archiveFragment)
+                    lockImage.setImageResource(R.drawable.unlock_icon)
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        findNavController().navigate(R.id.archiveFragment)
+                    }, 500)
                 } else {
                     password.text.clear()
                     incorrectPinText.visibility = View.VISIBLE

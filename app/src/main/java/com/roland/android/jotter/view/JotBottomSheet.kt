@@ -48,8 +48,10 @@ class JotBottomSheet : BottomSheetDialogFragment() {
         archiveNote = view.findViewById(R.id.archive_note)
         archiveNote.setOnClickListener {
             viewModel.archiveNote(args.utils, true)
-            findNavController().popBackStack(R.id.jotFragment, true)
-            Toast.makeText(context, getString(R.string.jot_archived, args.utils.title), Toast.LENGTH_SHORT).show()
+            findNavController().apply {
+                previousBackStackEntry?.savedStateHandle?.set("archive", args.utils)
+                navigateUp()
+            }
         }
         unarchiveNote = view.findViewById(R.id.unarchive_note)
         unarchiveNote.setOnClickListener {

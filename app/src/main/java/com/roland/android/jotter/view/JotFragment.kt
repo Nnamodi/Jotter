@@ -32,6 +32,8 @@ class JotFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_jot, container, false)
+        val navBackStackEntry = findNavController().getBackStackEntry(R.id.jotFragment)
+        findNavController().previousBackStackEntry?.savedStateHandle?.set("PIN", "")
         (activity as AppCompatActivity).supportActionBar?.title = args.note.title
         note = Note()
         edit = view.findViewById(R.id.edit)
@@ -47,6 +49,16 @@ class JotFragment : Fragment() {
         date.text = SimpleDateFormat("d|M|yy", Locale.getDefault()).format(args.note.date)
         time = view.findViewById(R.id.time)
         time.text = SimpleDateFormat("hh:mm a", Locale.getDefault()).format(args.note.date)
+        navBackStackEntry.savedStateHandle.getLiveData<Note>("archive").observe(
+            viewLifecycleOwner
+        ) { note ->
+            if (note.archived) {
+                findNavController().apply {
+                    previousBackStackEntry?.savedStateHandle?.set("archive", note)
+                    navigateUp()
+                }
+            }
+        }
         return view
     }
 

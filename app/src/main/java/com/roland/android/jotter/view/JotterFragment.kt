@@ -49,6 +49,7 @@ class JotterFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_jotter_list, container, false)
+        val navBackStackEntry = findNavController().getBackStackEntry(R.id.jotterFragment)
         selectedNotes = mutableListOf()
         jotterRecyclerView = view.findViewById(R.id.recycler_view)
         jot = view.findViewById(R.id.jot)
@@ -58,6 +59,16 @@ class JotterFragment : Fragment() {
         }
         emptyText = view.findViewById(R.id.jotter_empty_text)
         jotterRecyclerView.adapter = adapter
+        navBackStackEntry.savedStateHandle.getLiveData<Note>("archive").observe(
+            viewLifecycleOwner
+        ) { note ->
+            if (note.archived) {
+                Snackbar.make(requireView(), getString(R.string.jot_archived, note.title), Snackbar.LENGTH_LONG)
+                    .setAction(getString(R.string.undo)) {
+                        jotterViewModel.archiveNote(note, false)
+                    }.show()
+            }
+        }
         return view
     }
 
