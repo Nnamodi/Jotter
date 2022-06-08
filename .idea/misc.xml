@@ -5,11 +5,14 @@
       <map>
         <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/drawable-anydpi/archive_icon.xml" value="0.151" />
         <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/drawable-anydpi/delete_icon.xml" value="0.151" />
+        <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/drawable-anydpi/dialog_delete_icon.xml" value="0.188" />
         <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/drawable-anydpi/loading_icon.xml" value="0.151" />
+        <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/drawable-anydpi/lock_icon.xml" value="0.151" />
         <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/drawable-anydpi/night_icon.xml" value="0.188" />
         <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/drawable-anydpi/share_icon.xml" value="0.188" />
         <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/drawable-anydpi/unlock_icon.xml" value="0.151" />
         <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/drawable/dark_checkbox.xml" value="0.188" />
+        <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/drawable/dialog_delete_icon.xml" value="0.151" />
         <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/drawable/divider.xml" value="0.188" />
         <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/drawable/light_night.xml" value="0.151" />
         <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/layout-v23/jot_bottom_sheet.xml" value="0.25052083333333336" />
@@ -20,13 +23,14 @@
         <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/layout/fragment_jot.xml" value="0.25052083333333336" />
         <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/layout/fragment_jot_edit.xml" value="0.25052083333333336" />
         <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/layout/fragment_jotter.xml" value="0.25052083333333336" />
-        <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/layout/fragment_jotter_list.xml" value="0.25052083333333336" />
+        <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/layout/fragment_jotter_list.xml" value="0.16701388888888888" />
         <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/layout/jot_bottom_sheet.xml" value="0.25" />
         <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/layout/jotter_bottom_sheet.xml" value="0.25052083333333336" />
         <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/menu/archive_fragment.xml" value="0.25052083333333336" />
         <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/menu/jotter_item_selected.xml" value="0.25052083333333336" />
         <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/menu/menu_jot.xml" value="0.25052083333333336" />
         <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/menu/menu_jot_edit.xml" value="0.25052083333333336" />
+        <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/menu/menu_jotter_fragment.xml" value="0.25052083333333336" />
       </map>
     </option>
   </component>

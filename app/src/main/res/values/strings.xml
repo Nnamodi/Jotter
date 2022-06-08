@@ -26,6 +26,7 @@
     <string name="subject_text">Note text</string>
     <string name="jotter_empty_text"><b>No notes saved.</b>\n\nClick on the \'add button\' (+) below to write a note.</string>
     <string name="delete">Delete</string>
+    <string name="delete_">Delete?</string>
     <string name="archive">Archive</string>
     <string name="archived">Archived</string>
     <string name="empty_archive_text">Archive a note to see it here.</string>
@@ -38,8 +39,8 @@
     <string name="close">Close</string>
     <string name="continue_action">Continue</string>
     <string name="deleted">Deleted</string>
-    <string name="delete_multiple_messages">Delete %d notes.\nThis action is irreversible</string>
-    <string name="delete_this_message">Delete %s.\nThis action is irreversible</string>
+    <string name="delete_multiple_messages">Delete %d notes?\nThis action cannot be undone.</string>
+    <string name="delete_this_message">Delete %s?\nThis action cannot be undone.</string>
     <string name="archive_empty">Archive empty</string>
     <string name="incorrect_password">Incorrect PIN</string>
     <string name="password">****</string>
@@ -52,6 +53,7 @@
     <string name="change_pin">Change PIN</string>
     <string name="unlock_archive">Unlock Archive</string>
     <string name="lock_archive">Lock Archive</string>
+    <string name="archive_lock">Archive Lock</string>
     <string name="switch_to_night">Switch to dark mode</string>
     <string name="switch_to_light">Switch to light mode</string>
     <string name="pin_tip">PIN must contain 4 – 8 digits.</string>

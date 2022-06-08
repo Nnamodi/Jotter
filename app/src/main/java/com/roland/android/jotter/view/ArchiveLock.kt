@@ -7,6 +7,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
@@ -59,6 +60,18 @@ class ArchiveLock : Fragment() {
                     (context?.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator)
                         .vibrate(200)
                 }
+            }
+        }
+        val unlock: () -> Unit = {
+            if (password.text.toString() == pin) {
+                lockImage.setImageResource(R.drawable.unlock_icon)
+                Handler(Looper.getMainLooper()).postDelayed({
+                    findNavController().navigate(R.id.archiveFragment)
+                }, 500)
+            } else {
+                password.text.clear()
+                incorrectPinText.visibility = View.VISIBLE
+                vibrate()
             }
         }
         val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -148,16 +161,17 @@ class ArchiveLock : Fragment() {
                     }
                 }
             }
-            else -> nextButton.setOnClickListener {
-                if (password.text.toString() == pin) {
-                    lockImage.setImageResource(R.drawable.unlock_icon)
-                    Handler(Looper.getMainLooper()).postDelayed({
-                        findNavController().navigate(R.id.archiveFragment)
-                    }, 500)
-                } else {
-                    password.text.clear()
-                    incorrectPinText.visibility = View.VISIBLE
-                    vibrate()
+            else -> {
+                nextButton.setOnClickListener {
+                    unlock()
+                }
+                password.setOnEditorActionListener { _, id, _ ->
+                    var handled = false
+                    if (id == EditorInfo.IME_ACTION_NEXT && password.text.count() >= 4) {
+                        unlock()
+                        handled = true
+                    }
+                    handled
                 }
             }
         }

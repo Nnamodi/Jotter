@@ -33,7 +33,6 @@ class JotFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_jot, container, false)
         val navBackStackEntry = findNavController().getBackStackEntry(R.id.jotFragment)
-        findNavController().previousBackStackEntry?.savedStateHandle?.set("PIN", "")
         (activity as AppCompatActivity).supportActionBar?.title = args.note.title
         note = Note()
         edit = view.findViewById(R.id.edit)
@@ -64,7 +63,7 @@ class JotFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.menu_jot, menu)
+        inflater.inflate(R.menu.menu_more, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

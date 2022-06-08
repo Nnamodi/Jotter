@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.Jotter" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.Jotter" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryVariant">@color/primaryColor</item>
@@ -19,32 +19,46 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="windowActionModeOverlay">true</item>
-        <item name="actionModeStyle">@style/ActionModeStyle</item>
-        <item name="actionBarTheme">@style/MyActionBarTheme</item>
+        <item name="actionModeStyle">@style/Jotter.ActionModeStyle</item>
+        <item name="actionBarTheme">@style/Jotter.ActionBarTheme</item>
+        <item name="shapeAppearance">@style/ShapeAppearanceOverlay.Material3.FloatingActionButton</item>
+        <item name="materialAlertDialogTheme">@style/Jotter.DialogTheme</item>
+        <item name="actionMenuTextColor">@color/primaryColor</item>
+        <item name="snackbarButtonStyle">@style/Jotter.SnackbarTheme</item>
     </style>
 
-    <!-- JotterBottomSheet Theme. -->
-    <style name="Jotter.BottomSheetDialog" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
+    <!-- BottomSheet Theme. -->
+    <style name="Jotter.BottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/BottomSheetDialog</item>
     </style>
 
-    <style name="BottomSheetDialog" parent="Widget.MaterialComponents.BottomSheet.Modal">
+    <style name="BottomSheetDialog" parent="Widget.Material3.BottomSheet.Modal">
         <item name="shapeAppearance">@style/ShapeAppearance</item>
         <item name="behavior_peekHeight">300dp</item>
     </style>
 
-    <style name="ShapeAppearance" parent="ShapeAppearance.MaterialComponents.LargeComponent">
+    <style name="ShapeAppearance" parent="ShapeAppearance.Material3.LargeComponent">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">24dp</item>
     </style>
 
-    <!-- ActionBar Theme -->
-    <style name="MyActionBarTheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+    <!-- ActionBar Theme. -->
+    <style name="Jotter.ActionBarTheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="colorControlNormal">@color/primaryTextColor</item>
     </style>
 
-    <style name="ActionModeStyle" parent="@style/Widget.AppCompat.ActionMode">
+    <style name="Jotter.ActionModeStyle" parent="@style/Widget.AppCompat.ActionMode">
         <item name="background">?attr/colorPrimaryVariant</item>
+    </style>
+
+    <!-- Dialog Theme. -->
+    <style name="Jotter.DialogTheme" parent="ThemeOverlay.Material3.MaterialAlertDialog.Centered">
+        <item name="colorPrimary">@color/primaryColor</item>
+    </style>
+
+    <!-- Snackbar Theme. -->
+    <style name="Jotter.SnackbarTheme" parent="Widget.Material3.Button.TextButton.Snackbar">
+        <item name="android:textColor">@color/primaryLightColor</item>
     </style>
 
 </resources>

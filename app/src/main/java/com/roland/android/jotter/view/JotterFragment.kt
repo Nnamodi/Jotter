@@ -7,7 +7,6 @@ import android.view.*
 import android.widget.CheckBox
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -16,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.roland.android.jotter.R
 import com.roland.android.jotter.model.Note
@@ -91,7 +91,7 @@ class JotterFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.menu_jotter_fragment, menu)
+        inflater.inflate(R.menu.menu_more, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -178,18 +178,19 @@ class JotterFragment : Fragment() {
                                 } else {
                                     getString(R.string.delete_multiple_messages, selectedNotes.size)
                                 }
-                                val builder = AlertDialog.Builder(requireContext())
-                                builder.setTitle(getString(R.string.delete))
-                                builder.setMessage(text)
-                                builder.setPositiveButton(getString(R.string.continue_action)) { _, _ ->
-                                    selectedNotes.forEach { note ->
-                                        jotterViewModel.deleteNote(note)
+                                val builder = MaterialAlertDialogBuilder(requireContext())
+                                builder.setTitle(getString(R.string.delete_))
+                                    .setIcon(R.drawable.dialog_delete_icon)
+                                    .setMessage(text)
+                                    .setPositiveButton(getString(R.string.continue_action)) { _, _ ->
+                                        selectedNotes.forEach { note ->
+                                            jotterViewModel.deleteNote(note)
+                                        }
+                                        mode.finish()
+                                        Toast.makeText(requireContext(), getString(R.string.deleted), Toast.LENGTH_SHORT).show()
                                     }
-                                    mode.finish()
-                                    Toast.makeText(requireContext(), getString(R.string.deleted), Toast.LENGTH_SHORT).show()
-                                }
-                                builder.setNegativeButton(getString(R.string.close)) { _, _ -> }
-                                builder.create().show()
+                                    .setNegativeButton(getString(R.string.close)) { _, _ -> }
+                                    .show()
                             }
                             R.id.share_note -> {
                                 Intent(Intent.ACTION_SEND).apply {

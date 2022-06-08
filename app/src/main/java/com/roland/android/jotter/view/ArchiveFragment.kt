@@ -7,6 +7,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
@@ -56,6 +58,11 @@ class ArchiveFragment : Fragment() {
                 else -> {}
             }
         }
+        viewLifecycleOwner.lifecycle.addObserver(LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_STOP) {
+                findNavController().previousBackStackEntry?.savedStateHandle?.set("PIN", "")
+            }
+        })
         return view
     }
 
@@ -78,7 +85,7 @@ class ArchiveFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.archive_fragment, menu)
+        inflater.inflate(R.menu.menu_more, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

@@ -5,9 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.roland.android.jotter.R
 import com.roland.android.jotter.util.Preference
@@ -35,15 +35,17 @@ class ArchiveBottomSheet : BottomSheetDialogFragment() {
         lockField.setOnClickListener {
             if (pinSet) { lock.isChecked = !lock.isChecked }
             else {
-                val dialog = AlertDialog.Builder(requireContext())
-                dialog.setMessage(getString(R.string.lock_dialog_message))
+                val dialog = MaterialAlertDialogBuilder(requireContext())
+                dialog.setTitle(R.string.archive_lock)
+                    .setIcon(R.drawable.lock_icon)
+                    .setMessage(getString(R.string.lock_dialog_message))
                     .setPositiveButton(getString(R.string.lock_dialog_pos_button)) { _, _ ->
                         val action = ArchiveBottomSheetDirections.archiveBottomSheetToArchiveLock(changePassword = "set")
                         findNavController().navigate(action)
                     }
                     .setNegativeButton(getString(R.string.lock_dialog_neg_button)) { _, _ -> }
                     .setCancelable(false)
-                    .create().show()
+                    .show()
             }
         }
         lock = view.findViewById(R.id.lock_archive)
