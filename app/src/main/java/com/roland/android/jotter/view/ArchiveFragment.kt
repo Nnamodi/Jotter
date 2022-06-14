@@ -152,9 +152,7 @@ class ArchiveFragment : Fragment() {
         val duration = if (locked) { Snackbar.LENGTH_SHORT } else { Snackbar.LENGTH_LONG }
         val snackbar = Snackbar.make(view, text, duration)
         if (!locked) {
-            snackbar.setAction(getString(R.string.lock).replaceFirstChar {
-                if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
-            }) {
+            snackbar.setAction(getString(R.string.lock).uppercase()) {
                 Preference.setLockState(requireContext(), true)
                 Toast.makeText(context, getString(R.string.archive_locked), Toast.LENGTH_SHORT).show()
             }

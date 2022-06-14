@@ -35,16 +35,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/jot"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="56dp"
         android:clickable="true"
-        android:contentDescription="@string/add_jot"
+        android:contentDescription="@string/create_note"
         android:focusable="true"
-        android:src="@drawable/add_jot"
+        android:text="@string/create_note"
+        app:icon="@drawable/add_jot"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:rippleColor="?attr/colorSecondary" />
 </androidx.constraintlayout.widget.ConstraintLayout>

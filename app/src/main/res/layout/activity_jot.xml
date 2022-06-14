@@ -14,6 +14,9 @@
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:title="@string/app_name"
+        app:titleCentered="true"
+        app:menu="@menu/menu_more"
         app:popupTheme="@style/ThemeOverlay.AppCompat.DayNight"/>
 
     <androidx.fragment.app.FragmentContainerView
