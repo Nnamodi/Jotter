@@ -128,7 +128,7 @@ class ArchiveFragment : Fragment() {
 
     private inner class ArchiveAdapter : ListAdapter<Note, ArchiveHolder>(DiffCallback()) {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArchiveHolder {
-            val view = layoutInflater.inflate(R.layout.fragment_jotter, parent, false)
+            val view = layoutInflater.inflate(R.layout.jotter_item, parent, false)
             return ArchiveHolder(view)
         }
 

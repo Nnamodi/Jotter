@@ -7,7 +7,6 @@ import android.view.*
 import android.widget.CheckBox
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation.findNavController
@@ -16,10 +15,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.roland.android.jotter.R
 import com.roland.android.jotter.model.Note
-import com.roland.android.jotter.util.Preference
 import com.roland.android.jotter.viewModel.JotterViewModel
 import java.text.SimpleDateFormat
 import java.util.*
@@ -30,28 +29,33 @@ class JotterFragment : Fragment() {
     private lateinit var selectedNotes: MutableList<Note>
     private lateinit var actionMode: ActionMode
     private lateinit var emptyText: TextView
-    private lateinit var jot: View
+    private lateinit var jot: ExtendedFloatingActionButton
     private var adapter = JotterAdapter()
     private var actionEnabled = false
     private var manySelected = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val isDark = Preference.getDarkMode(requireContext())
-        if (isDark) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        }
         super.onCreate(savedInstanceState)
         jotterViewModel = ViewModelProvider(this) [JotterViewModel::class.java]
         setHasOptionsMenu(true)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_jotter_list, container, false)
+        val view = inflater.inflate(R.layout.fragment_jotter, container, false)
         val navBackStackEntry = findNavController().getBackStackEntry(R.id.jotterFragment)
         selectedNotes = mutableListOf()
         jotterRecyclerView = view.findViewById(R.id.recycler_view)
+        jotterRecyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (dy > 0) {
+                    jot.shrink()
+                } else {
+                    jot.extend()
+                }
+                Log.d("ScrollState", "Scroll direction is: $dy on y-axis")
+            }
+        })
         jot = view.findViewById(R.id.jot)
         jot.setOnClickListener {
             val action = JotterFragmentDirections.moveIntoEditing(null)
@@ -161,7 +165,7 @@ class JotterFragment : Fragment() {
                         }
                         selectedNotes.add(note)
                         mode.title = "${selectedNotes.size}"
-                        jot.visibility = View.GONE
+                        jot.hide()
                         return true
                     }
 
@@ -231,7 +235,7 @@ class JotterFragment : Fragment() {
                         actionEnabled = false
                         manySelected = false
                         mode.finish()
-                        jot.visibility = View.VISIBLE
+                        jot.show()
                     }
                 }
                 activity?.startActionMode(callback)
@@ -244,7 +248,7 @@ class JotterFragment : Fragment() {
 
     private inner class JotterAdapter : ListAdapter<Note, JotterHolder>(DiffCallBack()) {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): JotterHolder {
-            val view = layoutInflater.inflate(R.layout.fragment_jotter, parent, false)
+            val view = layoutInflater.inflate(R.layout.jotter_item, parent, false)
             return JotterHolder(view)
         }
 

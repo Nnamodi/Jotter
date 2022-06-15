@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.roland.android.jotter.R
 import com.roland.android.jotter.model.Note
 import com.roland.android.jotter.viewModel.JotterViewModel
@@ -16,7 +17,7 @@ import java.util.*
 
 class JotFragment : Fragment() {
     private lateinit var note : Note
-    private lateinit var edit: View
+    private lateinit var edit: FloatingActionButton
     private lateinit var noteTitle: TextView
     private lateinit var noteBody: TextView
     private lateinit var date: TextView
