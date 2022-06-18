@@ -4,16 +4,19 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.CheckBox
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.card.MaterialCardView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.snackbar.Snackbar
@@ -30,7 +33,7 @@ class JotterFragment : Fragment() {
     private lateinit var actionMode: ActionMode
     private lateinit var emptyText: TextView
     private lateinit var jot: ExtendedFloatingActionButton
-    private var adapter = JotterAdapter()
+    private val adapter = JotterAdapter()
     private var actionEnabled = false
     private var manySelected = false
 
@@ -73,6 +76,11 @@ class JotterFragment : Fragment() {
                     }.show()
             }
         }
+        viewLifecycleOwner.lifecycle.addObserver(LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_STOP) {
+                navBackStackEntry.savedStateHandle.set("archive", Note())
+            }
+        })
         return view
     }
 
@@ -82,13 +90,33 @@ class JotterFragment : Fragment() {
             viewLifecycleOwner
         ) { note ->
             Log.d("JotterFragment", "Notes received: $note")
-            (jotterRecyclerView.adapter as JotterAdapter).submitList(note)
+            adapter.submitList(note)
             if (note.isEmpty()) {
                 emptyText.visibility = View.VISIBLE
                 jotterRecyclerView.visibility = View.GONE
             } else {
                 emptyText.visibility = View.GONE
                 jotterRecyclerView.visibility = View.VISIBLE
+            }
+            Log.d("ItemPosition", "Note increased = ${note.size == +1}")
+
+            // Swipe_to_archive implementation
+            if (!actionEnabled) {
+                ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+                    override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+                        return true
+                    }
+
+                    override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                        val index = viewHolder.absoluteAdapterPosition
+                        jotterViewModel.archiveNote(note[index], true)
+                        Snackbar.make(requireContext(), requireView(), getString(R.string.archived), Snackbar.LENGTH_LONG)
+                            .setAction(getString(R.string.undo)) {
+                                jotterViewModel.archiveNote(note[index], false)
+                            }.show()
+                    }
+                }
+                ).attachToRecyclerView(jotterRecyclerView)
             }
         }
     }
@@ -114,7 +142,7 @@ class JotterFragment : Fragment() {
         private lateinit var noteTitle: TextView
         private lateinit var noteBody: TextView
         private lateinit var dateText: TextView
-        private lateinit var check: CheckBox
+        private lateinit var card: MaterialCardView
 
         init {
             itemView.setOnClickListener(this)
@@ -129,21 +157,12 @@ class JotterFragment : Fragment() {
             noteBody.text = note.body
             dateText = itemView.findViewById(R.id.date_text)
             dateText.text = SimpleDateFormat("d|M|yy", Locale.getDefault()).format(note.date)
-            check = itemView.findViewById(R.id.checkBox)
-            check.apply {
-                setOnClickListener {
-                    unSelect(check, this@JotterHolder.note)
-                }
-                setOnLongClickListener {
-                    unSelect(check, this@JotterHolder.note)
-                    true
-                }
-            }
+            card = itemView.findViewById(R.id.card)
         }
 
         override fun onClick(view: View) {
             if (actionEnabled) {
-                select(check, note)
+                select(card, note)
             } else {
                 val action = JotterFragmentDirections.moveToJot(note)
                 findNavController(view).navigate(action)
@@ -159,10 +178,7 @@ class JotterFragment : Fragment() {
                         selectedNotes.clear()
                         actionMode = mode
                         actionEnabled = true
-                        check.apply {
-                            visibility = View.VISIBLE
-                            isChecked = !this.isChecked
-                        }
+                        card.isChecked = true
                         selectedNotes.add(note)
                         mode.title = "${selectedNotes.size}"
                         jot.hide()
@@ -228,10 +244,7 @@ class JotterFragment : Fragment() {
                     }
 
                     override fun onDestroyActionMode(mode: ActionMode) {
-                        check.apply {
-                            isChecked = false
-                            visibility = View.GONE
-                        }
+                        card.isChecked = false
                         actionEnabled = false
                         manySelected = false
                         mode.finish()
@@ -240,7 +253,7 @@ class JotterFragment : Fragment() {
                 }
                 activity?.startActionMode(callback)
             } else {
-                select(check, note)
+                select(card, note)
             }
             return true
         }
@@ -267,35 +280,16 @@ class JotterFragment : Fragment() {
         }
     }
 
-    private fun select(check: CheckBox, note: Note) {
-        if (!check.isChecked) {
-            check.apply {
-                visibility = View.VISIBLE
-                isChecked = !this.isChecked
-            }
+    private fun select(card: MaterialCardView, note: Note) {
+        if (!card.isChecked) {
+            card.isChecked = !card.isChecked
             selectedNotes.add(note)
         } else {
-            check.apply {
-                isChecked = !this.isChecked
-                visibility = View.GONE
-            }
+            card.isChecked = !card.isChecked
             selectedNotes.remove(note)
         }
         if (selectedNotes.size == 0) {
             actionMode.finish()
-        }
-        manySelected = !(selectedNotes.size == 1 || selectedNotes.size == 0)
-        actionMode.title = "${selectedNotes.size}"
-        actionMode.invalidate()
-    }
-
-    private fun unSelect(check: CheckBox, note: Note) {
-        check.isChecked = false
-        check.visibility = View.GONE
-        selectedNotes.remove(note)
-        if (selectedNotes.size == 0) {
-            actionMode.finish()
-            manySelected = false
         }
         manySelected = !(selectedNotes.size == 1 || selectedNotes.size == 0)
         actionMode.title = "${selectedNotes.size}"

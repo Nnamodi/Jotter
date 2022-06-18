@@ -27,7 +27,7 @@
         <item name="materialAlertDialogTheme">@style/Jotter.DialogTheme</item>
         <item name="actionMenuTextColor">@color/primaryColor</item>
         <item name="snackbarButtonStyle">@style/Jotter.SnackbarTheme</item>
-        <item name="switchStyle">@style/Widget.MaterialComponents.CompoundButton.Switch</item>
+        <item name="switchStyle">@style/Widget.Material3.CompoundButton.Switch</item>
     </style>
 
     <!-- BottomSheet Theme. -->

@@ -60,7 +60,7 @@ class ArchiveFragment : Fragment() {
         }
         viewLifecycleOwner.lifecycle.addObserver(LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_STOP) {
-                findNavController().previousBackStackEntry?.savedStateHandle?.set("PIN", "")
+                navBackStackEntry.savedStateHandle.set("PIN", "")
             }
         })
         return view
@@ -72,7 +72,7 @@ class ArchiveFragment : Fragment() {
             viewLifecycleOwner
         ) { note ->
             Log.d("ArchiveFragment", "Received archived notes: $note")
-            (archiveRecyclerView.adapter as ArchiveAdapter).submitList(note)
+            adapter.submitList(note)
             if (note.isEmpty()) {
                 archiveRecyclerView.visibility = View.GONE
                 archiveEmptyText.visibility = View.VISIBLE
