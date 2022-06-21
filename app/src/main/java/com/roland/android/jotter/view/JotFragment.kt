@@ -1,5 +1,6 @@
 package com.roland.android.jotter.view
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.*
 import android.widget.TextView
@@ -11,6 +12,7 @@ import androidx.navigation.fragment.navArgs
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.roland.android.jotter.R
 import com.roland.android.jotter.model.Note
+import com.roland.android.jotter.util.TouchListener
 import com.roland.android.jotter.viewModel.JotterViewModel
 import java.text.SimpleDateFormat
 import java.util.*
@@ -31,12 +33,14 @@ class JotFragment : Fragment() {
         setHasOptionsMenu(true)
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_jot, container, false)
         val navBackStackEntry = findNavController().getBackStackEntry(R.id.jotFragment)
         (activity as AppCompatActivity).supportActionBar?.title = args.note.title
         note = Note()
         edit = view.findViewById(R.id.edit)
+        edit.setOnTouchListener(TouchListener())
         edit.setOnClickListener {
             val action = JotFragmentDirections.moveToEdit(args.note)
             findNavController().navigate(action)

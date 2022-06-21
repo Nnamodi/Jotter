@@ -101,23 +101,22 @@ class JotterFragment : Fragment() {
             Log.d("ItemPosition", "Note increased = ${note.size == +1}")
 
             // Swipe_to_archive implementation
-            if (!actionEnabled) {
-                ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
-                    override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-                        return true
-                    }
+            ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+                override fun onMove(
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder,
+                    target: RecyclerView.ViewHolder
+                ) = true
 
-                    override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                        val index = viewHolder.absoluteAdapterPosition
-                        jotterViewModel.archiveNote(note[index], true)
-                        Snackbar.make(requireContext(), requireView(), getString(R.string.archived), Snackbar.LENGTH_LONG)
-                            .setAction(getString(R.string.undo)) {
-                                jotterViewModel.archiveNote(note[index], false)
-                            }.show()
-                    }
+                override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                    val index = viewHolder.bindingAdapterPosition
+                    jotterViewModel.archiveNote(note[index], true)
+                    Snackbar.make(requireContext(), requireView(), getString(R.string.archived), Snackbar.LENGTH_LONG)
+                        .setAction(getString(R.string.undo)) {
+                            jotterViewModel.archiveNote(note[index], false)
+                        }.show()
                 }
-                ).attachToRecyclerView(jotterRecyclerView)
-            }
+            }).attachToRecyclerView(jotterRecyclerView)
         }
     }
 
