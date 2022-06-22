@@ -72,6 +72,7 @@
             android:id="@+id/note_body"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingBottom="32dp"
             android:text="@string/note_body"
             android:textIsSelectable="true"
             android:textSize="16sp"

@@ -141,7 +141,7 @@ class JotterFragment : Fragment() {
         private lateinit var noteTitle: TextView
         private lateinit var noteBody: TextView
         private lateinit var dateText: TextView
-        private lateinit var card: MaterialCardView
+        private val card = itemView as MaterialCardView
 
         init {
             itemView.setOnClickListener(this)
@@ -156,7 +156,6 @@ class JotterFragment : Fragment() {
             noteBody.text = note.body
             dateText = itemView.findViewById(R.id.date_text)
             dateText.text = SimpleDateFormat("d|M|yy", Locale.getDefault()).format(note.date)
-            card = itemView.findViewById(R.id.card)
         }
 
         override fun onClick(view: View) {
@@ -243,7 +242,9 @@ class JotterFragment : Fragment() {
                     }
 
                     override fun onDestroyActionMode(mode: ActionMode) {
-                        card.isChecked = false
+                        if (view is MaterialCardView) {
+                            view.isChecked = false
+                        }
                         actionEnabled = false
                         manySelected = false
                         mode.finish()

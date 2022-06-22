@@ -158,5 +158,10 @@ class ArchiveFragment : Fragment() {
             }
         }
         snackbar.show()
+        viewLifecycleOwner.lifecycle.addObserver(LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_STOP) {
+                snackbar.dismiss()
+            }
+        })
     }
 }
