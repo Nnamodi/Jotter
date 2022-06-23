@@ -12,6 +12,7 @@ import androidx.navigation.fragment.navArgs
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.roland.android.jotter.R
 import com.roland.android.jotter.model.Note
+import com.roland.android.jotter.util.Preference
 import com.roland.android.jotter.util.TouchListener
 import com.roland.android.jotter.viewModel.JotterViewModel
 import java.text.SimpleDateFormat
@@ -49,18 +50,22 @@ class JotFragment : Fragment() {
         noteTitle.text = args.note.title
         noteBody = view.findViewById(R.id.note_body)
         noteBody.text = args.note.body
+        noteBody.textSize = Preference.getSize(requireContext()).toFloat()
         date = view.findViewById(R.id.date)
         date.text = SimpleDateFormat("d|M|yy", Locale.getDefault()).format(args.note.date)
         time = view.findViewById(R.id.time)
         time.text = SimpleDateFormat("hh:mm a", Locale.getDefault()).format(args.note.date)
-        navBackStackEntry.savedStateHandle.getLiveData<Note>("archive").observe(
-            viewLifecycleOwner
-        ) { note ->
-            if (note.archived) {
-                findNavController().apply {
-                    previousBackStackEntry?.savedStateHandle?.set("archive", note)
-                    navigateUp()
+        navBackStackEntry.savedStateHandle.apply {
+            getLiveData<Note>("archive").observe(viewLifecycleOwner) { note ->
+                if (note.archived) {
+                    findNavController().apply {
+                        previousBackStackEntry?.savedStateHandle?.set("archive", note)
+                        navigateUp()
+                    }
                 }
+            }
+            getLiveData<Float>("text_size").observe(viewLifecycleOwner) { textSize ->
+                noteBody.textSize = textSize
             }
         }
         return view

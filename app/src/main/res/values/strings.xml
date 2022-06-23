@@ -68,4 +68,11 @@
     <string name="set_pin">Set up Archive lock</string>
     <string name="pin_does_not_match">PIN does not match!</string>
     <string name="confirm_pin">Confirm your PIN</string>
+    <string name="a">A</string>
+    <string name="text_setting">Text setting</string>
+    <string name="note_saved_message">Note has not been saved yet. Are you sure you want to discard note?</string>
+    <string name="note_updated_message">Note changes have not been saved yet. Are you sure you want to discard changes?</string>
+    <string name="discard">Discard</string>
+    <string name="discard_">Discard?</string>
+    <string name="save">Save</string>
 </resources>

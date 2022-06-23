@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.roland.android.jotter.R
 import com.roland.android.jotter.model.Note
+import com.roland.android.jotter.util.Preference
 import com.roland.android.jotter.viewModel.JotterViewModel
 import java.util.*
 
@@ -39,6 +40,7 @@ class JotEditFragment : Fragment() {
         noteTitle.text = args.edit?.title
         noteBody = view.findViewById(R.id.edit_body)
         noteBody.text = args.edit?.body
+        noteBody.textSize = Preference.getSize(requireContext()).toFloat()
         noteIsNew = noteTitle.text.isEmpty() && noteBody.text.isEmpty()
         viewLifecycleOwner.lifecycle.addObserver(LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_STOP) {

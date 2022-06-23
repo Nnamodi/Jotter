@@ -9,6 +9,7 @@ object Preference {
     private const val LOCKED = "locked"
     private const val SECURED = "back_button_config"
     private const val PIN = "pin"
+    private const val TEXT_SIZE = "text_size"
 
     fun getDarkMode(context: Context): Boolean {
         return PreferenceManager.getDefaultSharedPreferences(context)
@@ -51,6 +52,17 @@ object Preference {
     fun setPIN(context: Context, pin: String) {
         PreferenceManager.getDefaultSharedPreferences(context).edit {
             putString(PIN, pin)
+        }
+    }
+
+    fun getSize(context: Context): Int {
+        return PreferenceManager.getDefaultSharedPreferences(context)
+            .getInt(TEXT_SIZE, 18)
+    }
+
+    fun setSize(context: Context, textSize: Int) {
+        PreferenceManager.getDefaultSharedPreferences(context).edit {
+            putInt(TEXT_SIZE, textSize)
         }
     }
 }
