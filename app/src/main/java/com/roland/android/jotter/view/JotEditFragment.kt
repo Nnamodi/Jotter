@@ -6,6 +6,7 @@ import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
@@ -13,6 +14,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.roland.android.jotter.R
 import com.roland.android.jotter.model.Note
 import com.roland.android.jotter.util.Preference
@@ -42,6 +44,16 @@ class JotEditFragment : Fragment() {
         noteBody.text = args.edit?.body
         noteBody.textSize = Preference.getSize(requireContext()).toFloat()
         noteIsNew = noteTitle.text.isEmpty() && noteBody.text.isEmpty()
+        activity?.onBackPressedDispatcher?.addCallback(this) {
+            val noteIsEdited = !noteTitle.text.contentEquals(args.edit?.title) ||
+                    !noteBody.text.contentEquals(args.edit?.body)
+            val noteIsNotEmpty = noteTitle.text.isNotEmpty() || noteBody.text.isNotEmpty()
+            if (noteIsEdited && noteIsNotEmpty) {
+                confirmationDialog()
+            } else {
+                findNavController().navigateUp()
+            }
+        }
         viewLifecycleOwner.lifecycle.addObserver(LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_STOP) {
                 val activity = activity?.currentFocus
@@ -59,6 +71,17 @@ class JotEditFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
+            android.R.id.home -> {
+                val noteIsEdited = !noteTitle.text.contentEquals(args.edit?.title) ||
+                        !noteBody.text.contentEquals(args.edit?.body)
+                val noteIsNotEmpty = noteTitle.text.isNotEmpty() || noteBody.text.isNotEmpty()
+                if (noteIsEdited && noteIsNotEmpty) {
+                    confirmationDialog()
+                } else {
+                    findNavController().navigateUp()
+                }
+                true
+            }
             R.id.save_jot -> {
                 // save jot
                 if (!noteIsNew) {
@@ -106,5 +129,23 @@ class JotEditFragment : Fragment() {
         } else {
             Toast.makeText(context, getString(R.string.note_not_updated_text), Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun confirmationDialog() {
+        val message = if (noteIsNew) {
+            getString(R.string.note_saved_message)
+        } else {
+            getString(R.string.note_updated_message)
+        }
+        val dialog = MaterialAlertDialogBuilder(requireContext())
+        dialog.setTitle(getString(R.string.discard_))
+            .setMessage(message)
+            .setPositiveButton(getString(R.string.save)) { _, _ ->
+                if (noteIsNew) saveNote() else updateNote()
+            }
+            .setNegativeButton(R.string.discard) { _, _ ->
+                findNavController().navigateUp()
+            }
+            .show()
     }
 }
