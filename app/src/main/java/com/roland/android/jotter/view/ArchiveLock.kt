@@ -9,10 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -100,82 +97,114 @@ class ArchiveLock : Fragment() {
             "change" -> {
                 lockText.text = getString(R.string.old_pin)
                 nextButton.setOnClickListener {
-                    if (password.text.toString() == pin) {
-                        password.text.clear()
-                        pinTip.visibility = View.VISIBLE
-                        viewModel.inputPIN = password.text.toString()
-                        lockText.text = getString(R.string.new_pin)
-                        nextButton.setOnClickListener {
-                            viewModel.inputPIN = password.text.toString()
-                            lockText.text = getString(R.string.confirm_pin)
-                            pinTip.visibility = View.GONE
-                            password.text.clear()
-                            nextButton.apply {
-                                text = getString(R.string.set_button)
-                                setOnClickListener {
-                                    if (password.text.toString() == viewModel.inputPIN) {
-                                        Preference.setPIN(requireContext(), password.text.toString())
-                                        findNavController().apply {
-                                            previousBackStackEntry?.savedStateHandle?.set("PIN", "change")
-                                            navigateUp()
-                                        }
-                                    } else {
-                                        password.text.clear()
-                                        incorrectPinText.text = context.getString(R.string.pin_does_not_match)
-                                        incorrectPinText.visibility = View.VISIBLE
-                                        vibrate()
-                                    }
-                                }
-                            }
-                        }
-                    } else {
-                        password.text.clear()
-                        incorrectPinText.visibility = View.VISIBLE
-                        vibrate()
-                    }
+                    changePIN(pin) { vibrate() }
                 }
+                configureSoftKeyboard { changePIN(pin) { vibrate() } }
             }
             "set" -> {
                 pinTip.visibility = View.VISIBLE
                 nextButton.setOnClickListener {
-                    viewModel.inputPIN = password.text.toString()
-                    lockText.text = getString(R.string.confirm_pin)
-                    pinTip.visibility = View.GONE
-                    password.text.clear()
-                    nextButton.apply {
-                        text = getString(R.string.set_button)
-                        setOnClickListener {
-                            if (password.text.toString() == viewModel.inputPIN) {
-                                Preference.setPIN(requireContext(), password.text.toString())
-                                findNavController().apply {
-                                    previousBackStackEntry?.savedStateHandle?.set("PIN", "set")
-                                    navigateUp()
-                                }
-                            } else {
-                                password.text.clear()
-                                incorrectPinText.text = context.getString(R.string.pin_does_not_match)
-                                incorrectPinText.visibility = View.VISIBLE
-                                vibrate()
-                            }
-                        }
-                    }
+                    setPIN { vibrate() }
                 }
+                configureSoftKeyboard { setPIN(vibrate) }
             }
             else -> {
                 nextButton.setOnClickListener {
                     unlock()
                 }
-                password.setOnEditorActionListener { _, id, _ ->
-                    var handled = false
-                    if (id == EditorInfo.IME_ACTION_NEXT && password.text.count() >= 4) {
-                        unlock()
-                        handled = true
-                    }
-                    handled
-                }
+                configureSoftKeyboard(unlock)
             }
         }
         imm.showSoftInput(getView(), InputMethodManager.SHOW_IMPLICIT)
         return view
+    }
+
+    private fun changePIN(pin: String, vibrate: () -> Unit) {
+        val confirmPIN = {
+            if (password.text.toString() == viewModel.inputPIN) {
+                Preference.setPIN(requireContext(), password.text.toString())
+                findNavController().apply {
+                    previousBackStackEntry?.savedStateHandle?.set("PIN", "change")
+                    navigateUp()
+                }
+            } else {
+                password.text.clear()
+                incorrectPinText.text = getString(R.string.pin_does_not_match)
+                incorrectPinText.visibility = View.VISIBLE
+                vibrate()
+            }
+        }
+        val newPIN = {
+            viewModel.inputPIN = password.text.toString()
+            lockText.text = getString(R.string.confirm_pin)
+            pinTip.visibility = View.GONE
+            password.text.clear()
+            nextButton.apply {
+                text = getString(R.string.set_button)
+                setOnClickListener {
+                    confirmPIN()
+                }
+            }
+            configureSoftKeyboard { confirmPIN() }
+        }
+        if (password.text.toString() == pin) {
+            password.text.clear()
+            pinTip.visibility = View.VISIBLE
+            viewModel.inputPIN = password.text.toString()
+            lockText.text = getString(R.string.new_pin)
+            nextButton.setOnClickListener {
+                newPIN()
+            }
+            configureSoftKeyboard { newPIN() }
+        } else {
+            password.text.clear()
+            incorrectPinText.visibility = View.VISIBLE
+            vibrate()
+        }
+    }
+
+    private fun setPIN(vibrate: () -> Unit) {
+        val confirmPIN = {
+            if (password.text.toString() == viewModel.inputPIN) {
+                Preference.setPIN(requireContext(), password.text.toString())
+                findNavController().apply {
+                    previousBackStackEntry?.savedStateHandle?.set("PIN", "set")
+                    navigateUp()
+                }
+            } else {
+                password.text.clear()
+                incorrectPinText.text = getString(R.string.pin_does_not_match)
+                incorrectPinText.visibility = View.VISIBLE
+                vibrate()
+            }
+        }
+        viewModel.inputPIN = password.text.toString()
+        lockText.text = getString(R.string.confirm_pin)
+        pinTip.visibility = View.GONE
+        password.text.clear()
+        nextButton.apply {
+            text = getString(R.string.set_button)
+            setOnClickListener {
+                confirmPIN()
+            }
+        }
+        configureSoftKeyboard { confirmPIN() }
+    }
+
+    // To configure the `next button` on the soft keyboard to function in unison with the view's next button
+    private fun configureSoftKeyboard(input: () -> Unit) {
+        password.setOnEditorActionListener { _, id, _ ->
+            var handled = false
+            if (id == EditorInfo.IME_ACTION_NEXT && password.text.count() >= 4) {
+                input()
+                handled = true
+            } else if (password.text.count() < 4) {
+                val toast = Toast.makeText(requireContext(), getString(R.string.pin_tip_toast), Toast.LENGTH_SHORT)
+                toast.setGravity(0, 0, 200)
+                toast.show()
+                handled = true
+            }
+            handled
+        }
     }
 }
