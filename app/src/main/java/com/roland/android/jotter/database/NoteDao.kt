@@ -6,8 +6,8 @@ import com.roland.android.jotter.model.Note
 
 @Dao
 interface NoteDao {
-    @Query("SELECT * FROM note WHERE archived LIKE :value ORDER BY date DESC")
-    fun getNotes(value: Boolean): LiveData<List<Note>>
+    @Query("SELECT * FROM note WHERE archived LIKE :archive AND trashed LIKE :trash ORDER BY date DESC")
+    fun getNotes(archive: Boolean, trash: Boolean): LiveData<List<Note>>
 
     @Insert
     suspend fun addNote(note: Note)

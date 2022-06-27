@@ -23,7 +23,7 @@ import kotlin.properties.Delegates
 
 @RequiresApi(Build.VERSION_CODES.M)
 class JotBottomSheet : BottomSheetDialogFragment() {
-    private lateinit var deleteNote: View
+    private lateinit var trashNote: View
     private lateinit var shareNote: View
     private lateinit var textSetting: View
     private lateinit var archiveNote: View
@@ -42,9 +42,9 @@ class JotBottomSheet : BottomSheetDialogFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.jot_bottom_sheet, container, false)
-        deleteNote = view.findViewById(R.id.delete_note)
-        deleteNote.setOnClickListener {
-            deleteNote(args.utils)
+        trashNote = view.findViewById(R.id.delete_note)
+        trashNote.setOnClickListener {
+            trashNote(args.utils)
         }
         shareNote = view.findViewById(R.id.share_note)
         shareNote.setOnClickListener {
@@ -85,13 +85,16 @@ class JotBottomSheet : BottomSheetDialogFragment() {
         return view
     }
 
-    private fun deleteNote(note: Note) {
+    private fun trashNote(note: Note) {
         val builder = MaterialAlertDialogBuilder(requireContext())
-        builder.setMessage(getString(R.string.delete_message, note.title))
+        builder.setTitle(getString(R.string.move_to_trash_))
+            .setMessage(getString(R.string.delete_this_note, note.title))
             .setPositiveButton(getString(R.string.yes)) { _, _ ->
-                viewModel.deleteNote(note)
-                findNavController().popBackStack(R.id.jotFragment, true)
-                Toast.makeText(context, getString(R.string.note_deleted_text), Toast.LENGTH_SHORT).show()
+                viewModel.trashNote(note, archive = false, trash = true)
+                findNavController().apply {
+                    previousBackStackEntry?.savedStateHandle?.set("trashed", args.utils)
+                    popBackStack(R.id.jotFragment, true)
+                }
             }
             .setNegativeButton(getString(R.string.no)) { _, _ -> }
             .show()

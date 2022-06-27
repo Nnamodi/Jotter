@@ -14,6 +14,7 @@ import com.roland.android.jotter.util.Preference
 class JotterBottomSheet : BottomSheetDialogFragment() {
     private lateinit var archive: View
     private lateinit var darkModeView: View
+    private lateinit var trash: View
     private lateinit var darkMode: TextView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -41,6 +42,10 @@ class JotterBottomSheet : BottomSheetDialogFragment() {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                 Preference.setDarkMode(requireContext(), true)
             }
+        }
+        trash = view.findViewById(R.id.trash)
+        trash.setOnClickListener {
+            findNavController().navigate(R.id.trashFragment)
         }
         if (isDark) {
             darkMode.text = getString(R.string.light_mode)

@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -66,19 +65,28 @@ class JotterFragment : Fragment() {
         }
         emptyText = view.findViewById(R.id.jotter_empty_text)
         jotterRecyclerView.adapter = adapter
-        navBackStackEntry.savedStateHandle.getLiveData<Note>("archive").observe(
-            viewLifecycleOwner
-        ) { note ->
-            if (note.archived) {
-                Snackbar.make(requireView(), getString(R.string.jot_archived, note.title), Snackbar.LENGTH_LONG)
-                    .setAction(getString(R.string.undo)) {
-                        jotterViewModel.archiveNote(note, false)
-                    }.show()
+        navBackStackEntry.savedStateHandle.apply {
+            getLiveData<Note>("archive").observe(viewLifecycleOwner) { note ->
+                if (note.archived) {
+                    Snackbar.make(requireView(), getString(R.string.jot_archived, note.title), Snackbar.LENGTH_LONG)
+                        .setAction(getString(R.string.undo)) {
+                            jotterViewModel.archiveNote(note, false)
+                        }.show()
+                }
+            }
+            getLiveData<Note>("trashed").observe(viewLifecycleOwner) { note ->
+                if (note.trashed) {
+                    Snackbar.make(requireView(), getString(R.string.moved_to_trash), Snackbar.LENGTH_LONG)
+                        .setAction(getString(R.string.undo)) {
+                            jotterViewModel.trashNote(note, archive = false, trash = false)
+                        }.show()
+                }
             }
         }
         viewLifecycleOwner.lifecycle.addObserver(LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_STOP) {
                 navBackStackEntry.savedStateHandle.set("archive", Note())
+                navBackStackEntry.savedStateHandle.set("trashed", Note())
             }
         })
         return view
@@ -190,22 +198,27 @@ class JotterFragment : Fragment() {
 
                     override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
                         when (item.itemId) {
-                            R.id.delete -> {
+                            R.id.trash_note -> {
                                 val text = if (selectedNotes.size == 1) {
-                                    getString(R.string.delete_this_message, note.title)
+                                    getString(R.string.delete_this_note, note.title)
                                 } else {
-                                    getString(R.string.delete_multiple_messages, selectedNotes.size)
+                                    getString(R.string.delete_multiple_note, selectedNotes.size)
                                 }
                                 val builder = MaterialAlertDialogBuilder(requireContext())
-                                builder.setTitle(getString(R.string.delete_))
-                                    .setIcon(R.drawable.dialog_delete_icon)
+                                builder.setTitle(getString(R.string.move_to_trash_))
                                     .setMessage(text)
                                     .setPositiveButton(getString(R.string.continue_action)) { _, _ ->
                                         selectedNotes.forEach { note ->
-                                            jotterViewModel.deleteNote(note)
+                                             jotterViewModel.trashNote(note, archive = false, trash = true)
                                         }
                                         mode.finish()
-                                        Toast.makeText(requireContext(), getString(R.string.deleted), Toast.LENGTH_SHORT).show()
+                                        Snackbar.make(requireView(), text, Snackbar.LENGTH_LONG)
+                                            .setText(getString(R.string.moved_to_trash))
+                                            .setAction(R.string.undo) {
+                                                selectedNotes.forEach { note ->
+                                                    jotterViewModel.trashNote(note, archive = false, trash = false)
+                                                }
+                                            }.show()
                                     }
                                     .setNegativeButton(getString(R.string.close)) { _, _ -> }
                                     .show()

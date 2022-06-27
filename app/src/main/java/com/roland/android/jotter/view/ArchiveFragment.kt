@@ -36,7 +36,6 @@ class ArchiveFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_archive, container, false)
-        val navBackStackEntry = findNavController().getBackStackEntry(R.id.archiveFragment)
         archiveRecyclerView = view.findViewById(R.id.archive_recycler_view)
         archiveEmptyText = view.findViewById(R.id.archive_empty_text)
         archiveRecyclerView.adapter = adapter
@@ -45,24 +44,7 @@ class ArchiveFragment : Fragment() {
                 findNavController().navigate(R.id.back_to_jotterFragment)
             }
         }
-        navBackStackEntry.savedStateHandle.getLiveData<String>("PIN").observe(
-            viewLifecycleOwner
-        ) { set ->
-            when (set) {
-                "set" -> {
-                    snackbar(requireView(), getString(R.string.pin_set_text))
-                }
-                "change" -> {
-                    snackbar(requireView(), getString(R.string.pin_changed_text))
-                }
-                else -> {}
-            }
-        }
-        viewLifecycleOwner.lifecycle.addObserver(LifecycleEventObserver { _, event ->
-            if (event == Lifecycle.Event.ON_STOP) {
-                navBackStackEntry.savedStateHandle.set("PIN", "")
-            }
-        })
+        savedStateHandle()
         return view
     }
 
@@ -70,10 +52,10 @@ class ArchiveFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         archiveViewModel.getArchivedNotes.observe(
             viewLifecycleOwner
-        ) { note ->
-            Log.d("ArchiveFragment", "Received archived notes: $note")
-            adapter.submitList(note)
-            if (note.isEmpty()) {
+        ) { archive ->
+            Log.d("ArchiveFragment", "Received archived notes: $archive")
+            adapter.submitList(archive)
+            if (archive.isEmpty()) {
                 archiveRecyclerView.visibility = View.GONE
                 archiveEmptyText.visibility = View.VISIBLE
             } else {
@@ -145,6 +127,42 @@ class ArchiveFragment : Fragment() {
         override fun areContentsTheSame(oldItem: Note, newItem: Note): Boolean {
             return oldItem == newItem
         }
+    }
+
+    private fun savedStateHandle() {
+        val navBackStackEntry = findNavController().getBackStackEntry(R.id.archiveFragment)
+        navBackStackEntry.savedStateHandle.apply {
+            getLiveData<String>("PIN").observe(viewLifecycleOwner) { set ->
+                when (set) {
+                    "set" -> {
+                        snackbar(requireView(), getString(R.string.pin_set_text))
+                    }
+                    "change" -> {
+                        snackbar(requireView(), getString(R.string.pin_changed_text))
+                    }
+                    else -> {}
+                }
+            }
+            getLiveData<Note>("trashed").observe(viewLifecycleOwner) { note ->
+                if (note.trashed) {
+                    val snackbar = Snackbar.make(requireView(), getString(R.string.moved_to_trash), Snackbar.LENGTH_LONG)
+                    snackbar.setAction(getString(R.string.undo)) {
+                        archiveViewModel.trashNote(note, archive = true, trash = false)
+                    }.show()
+                    viewLifecycleOwner.lifecycle.addObserver(LifecycleEventObserver { _, event ->
+                        if (event == Lifecycle.Event.ON_STOP) {
+                            snackbar.dismiss()
+                        }
+                    })
+                }
+            }
+        }
+        viewLifecycleOwner.lifecycle.addObserver(LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_STOP) {
+                navBackStackEntry.savedStateHandle.set("PIN", "")
+                navBackStackEntry.savedStateHandle.set("trashed", Note())
+            }
+        })
     }
 
     private fun snackbar(view: View, text: CharSequence) {

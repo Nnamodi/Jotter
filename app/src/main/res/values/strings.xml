@@ -15,18 +15,15 @@
     <string name="time">1:37am</string>
     <string name="saving_empty_note_text">Note must not be empty.</string>
     <string name="save_note_text">Note saved.</string>
-    <string name="note_deleted_text">Note deleted.</string>
     <string name="note_updated_text">Note updated successfully.</string>
     <string name="note_not_updated_text">Fill in at least one field</string>
     <string name="share">Share…</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="delete_message">Delete %s?</string>
     <string name="text">%s\n%2s</string>
     <string name="subject_text">Note text</string>
     <string name="jotter_empty_text"><b>No notes saved.</b>\n\nClick on the \'add button\' (+) below to write a note.</string>
     <string name="delete">Delete</string>
-    <string name="delete_">Delete?</string>
     <string name="archive">Archive</string>
     <string name="archived">Archived</string>
     <string name="empty_archive_text">Archive a note to see it here.</string>
@@ -39,8 +36,8 @@
     <string name="close">Close</string>
     <string name="continue_action">Continue</string>
     <string name="deleted">Deleted</string>
-    <string name="delete_multiple_messages">Delete %d notes?\nThis action cannot be undone.</string>
-    <string name="delete_this_message">Delete %s?\nThis action cannot be undone.</string>
+    <string name="delete_multiple_note">Move %d notes to Trash?\nYou can still restore these notes from Trash.</string>
+    <string name="delete_this_note">Move %s to Trash?\nYou can still restore this note from Trash.</string>
     <string name="archive_empty">Archive empty</string>
     <string name="incorrect_password">Incorrect PIN</string>
     <string name="password">****</string>
@@ -57,6 +54,7 @@
     <string name="switch_to_night">Switch to dark mode</string>
     <string name="switch_to_light">Switch to light mode</string>
     <string name="pin_tip">PIN must contain 4 – 8 digits.</string>
+    <string name="pin_tip_toast">PIN must be at least 4 digits!</string>
     <string name="old_pin">Input Old PIN</string>
     <string name="new_pin">Input New PIN</string>
     <string name="set_button">SET</string>
@@ -75,4 +73,14 @@
     <string name="discard">Discard</string>
     <string name="discard_">Discard?</string>
     <string name="save">Save</string>
+    <string name="trash">Trash</string>
+    <string name="empty_trash_text">Nothing in Trash</string>
+    <string name="move_to_trash">Move to Trash</string>
+    <string name="move_to_trash_">Move to Trash?</string>
+    <string name="moved_to_trash">Moved to Trash</string>
+    <string name="restore">Restore</string>
+    <string name="delete_permanently">Delete permanently</string>
+    <string name="delete_permanently_">Delete permanently?</string>
+    <string name="restored">Note restored</string>
+    <string name="delete_permanently_dialog">Note will be permanently deleted. Are you sure you want to continue?</string>
 </resources>

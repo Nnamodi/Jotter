@@ -207,7 +207,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/textView4"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/textView4"
-                app:srcCompat="@drawable/delete_icon"
+                app:srcCompat="@drawable/trash_icon"
                 app:tint="@android:color/holo_red_dark" />
 
             <TextView

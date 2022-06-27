@@ -35,6 +35,9 @@
         <action
             android:id="@+id/jotFragment_to_jotBottomSheet"
             app:destination="@id/jotBottomSheet" />
+        <action
+            android:id="@+id/jot_to_trashJotBottomSheet"
+            app:destination="@id/trashJotBottomSheet" />
     </fragment>
     <fragment
         android:id="@+id/jotEditFragment"
@@ -98,5 +101,23 @@
         <action
             android:id="@+id/archiveBottomSheet_to_archiveLock"
             app:destination="@id/archiveLock" />
+    </dialog>
+    <fragment
+        android:id="@+id/trashFragment"
+        android:name="com.roland.android.jotter.view.TrashFragment"
+        android:label="@string/trash"
+        tools:layout="@layout/fragment_trash" >
+        <action
+            android:id="@+id/trash_to_jot"
+            app:destination="@id/jotFragment" />
+    </fragment>
+    <dialog
+        android:id="@+id/trashJotBottomSheet"
+        android:name="com.roland.android.jotter.view.TrashJotBottomSheet"
+        android:label="TrashJotBottomSheet"
+        tools:layout="@layout/trash_jot_bottom_sheet" >
+        <argument
+            android:name="trash"
+            app:argType="com.roland.android.jotter.model.Note" />
     </dialog>
 </navigation>

@@ -10,7 +10,7 @@
         android:icon="@drawable/archive_icon"
         android:title="@string/archive" />
     <item
-        android:id="@+id/delete"
-        android:icon="@drawable/delete_icon"
-        android:title="@string/delete" />
+        android:id="@+id/trash_note"
+        android:icon="@drawable/trash_icon"
+        android:title="@string/move_to_trash" />
 </menu>
