@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.roland.android.jotter.database.NoteDatabase
 import com.roland.android.jotter.model.Note
-import com.roland.android.jotter.util.NoteRepository
+import com.roland.android.jotter.repository.NoteRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

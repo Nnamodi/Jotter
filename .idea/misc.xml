@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/drawable-anydpi/archive_icon.xml" value="0.151" />
+        <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/drawable-anydpi/delete_dialog_icon.xml" value="0.151" />
         <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/drawable-anydpi/delete_icon.xml" value="0.151" />
         <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/drawable-anydpi/delete_permanently_icon.xml" value="0.188" />
         <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/drawable-anydpi/dialog_delete_icon.xml" value="0.188" />

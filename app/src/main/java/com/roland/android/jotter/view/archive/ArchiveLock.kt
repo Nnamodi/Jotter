@@ -1,4 +1,4 @@
-package com.roland.android.jotter.view
+package com.roland.android.jotter.view.archive
 
 import android.content.Context
 import android.os.*

@@ -184,6 +184,17 @@
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:layout_marginStart="70dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/divider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_setting" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/delete_note"
             android:layout_width="0dp"
@@ -194,7 +205,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_setting">
+            app:layout_constraintTop_toBottomOf="@+id/divider2">
 
             <ImageView
                 android:id="@+id/delete"

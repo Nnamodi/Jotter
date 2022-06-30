@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/jotterFragment"
-        android:name="com.roland.android.jotter.view.JotterFragment"
+        android:name="com.roland.android.jotter.view.main.JotterFragment"
         android:label="@string/app_name"
         tools:layout="@layout/fragment_jotter" >
         <action
@@ -24,7 +24,7 @@
     </fragment>
     <fragment
         android:id="@+id/jotFragment"
-        android:name="com.roland.android.jotter.view.JotFragment"
+        android:name="com.roland.android.jotter.view.details.JotFragment"
         tools:layout="@layout/fragment_jot" >
         <action
             android:id="@+id/move_to_edit"
@@ -41,7 +41,7 @@
     </fragment>
     <fragment
         android:id="@+id/jotEditFragment"
-        android:name="com.roland.android.jotter.view.JotEditFragment"
+        android:name="com.roland.android.jotter.view.details.JotEditFragment"
         android:label=""
         tools:layout="@layout/fragment_jot_edit">
         <action
@@ -56,11 +56,11 @@
     </fragment>
     <dialog
         android:id="@+id/jotterBottomSheet"
-        android:name="com.roland.android.jotter.view.JotterBottomSheet"
+        android:name="com.roland.android.jotter.view.dialog.JotterBottomSheet"
         tools:layout="@layout/jotter_bottom_sheet" />
     <dialog
         android:id="@+id/jotBottomSheet"
-        android:name="com.roland.android.jotter.view.JotBottomSheet"
+        android:name="com.roland.android.jotter.view.dialog.JotBottomSheet"
         tools:layout="@layout/jot_bottom_sheet" >
         <argument
             android:name="utils"
@@ -68,7 +68,7 @@
     </dialog>
     <fragment
         android:id="@+id/archiveLock"
-        android:name="com.roland.android.jotter.view.ArchiveLock"
+        android:name="com.roland.android.jotter.view.archive.ArchiveLock"
         android:label=""
         tools:layout="@layout/fragment_archive_lock" >
         <argument
@@ -78,7 +78,7 @@
     </fragment>
     <fragment
         android:id="@+id/archiveFragment"
-        android:name="com.roland.android.jotter.view.ArchiveFragment"
+        android:name="com.roland.android.jotter.view.archive.ArchiveFragment"
         android:label="@string/archive"
         tools:layout="@layout/fragment_archive">
         <action
@@ -96,7 +96,7 @@
     </fragment>
     <dialog
         android:id="@+id/archiveBottomSheet"
-        android:name="com.roland.android.jotter.view.ArchiveBottomSheet"
+        android:name="com.roland.android.jotter.view.dialog.ArchiveBottomSheet"
         tools:layout="@layout/archive_bottom_sheet" >
         <action
             android:id="@+id/archiveBottomSheet_to_archiveLock"
@@ -104,7 +104,7 @@
     </dialog>
     <fragment
         android:id="@+id/trashFragment"
-        android:name="com.roland.android.jotter.view.TrashFragment"
+        android:name="com.roland.android.jotter.view.trash.TrashFragment"
         android:label="@string/trash"
         tools:layout="@layout/fragment_trash" >
         <action
@@ -113,8 +113,7 @@
     </fragment>
     <dialog
         android:id="@+id/trashJotBottomSheet"
-        android:name="com.roland.android.jotter.view.TrashJotBottomSheet"
-        android:label="TrashJotBottomSheet"
+        android:name="com.roland.android.jotter.view.dialog.TrashJotBottomSheet"
         tools:layout="@layout/trash_jot_bottom_sheet" >
         <argument
             android:name="trash"

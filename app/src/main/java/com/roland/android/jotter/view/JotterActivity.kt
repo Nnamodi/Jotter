@@ -41,23 +41,13 @@ class JotterActivity : AppCompatActivity() {
                     toolbar.isTitleCentered = true
                     requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
                 }
-                R.id.jotBottomSheet -> {
-                    toolbar.isTitleCentered = false
-                    supportActionBar?.setDisplayHomeAsUpEnabled(true)
-                    requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
-                }
                 R.id.archiveLock -> {
                     toolbar.isTitleCentered = false
                     requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
                 }
-                R.id.archiveBottomSheet -> {
-                    toolbar.isTitleCentered = false
-                    title = getString(R.string.archive)
-                    supportActionBar?.setDisplayHomeAsUpEnabled(true)
-                    requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
-                }
                 else -> {
                     toolbar.isTitleCentered = false
+                    supportActionBar?.setDisplayHomeAsUpEnabled(true)
                     requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
                 }
             }

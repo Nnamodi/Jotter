@@ -1,10 +1,11 @@
-package com.roland.android.jotter.view
+package com.roland.android.jotter.view.dialog
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -20,6 +21,7 @@ class ArchiveBottomSheet : BottomSheetDialogFragment() {
     private lateinit var changePin: View
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.archive)
         val view = inflater.inflate(R.layout.archive_bottom_sheet, container, false)
         val locked = Preference.getLockState(requireContext())
         val pinSet = Preference.getPIN(requireContext()).isNotEmpty()

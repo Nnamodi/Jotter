@@ -1,50 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="view.JotterFragment">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
+    <data>
+        <import type="android.view.View"/>
+        <import type="com.roland.android.jotter.model.Note"/>
+        <import type="java.util.List"/>
+        <variable
+            name="notes"
+            type="List&lt;Note>" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:paddingTop="1dp"
-        android:paddingBottom="60dp"
-        android:scrollbarStyle="outsideOverlay"
-        android:scrollbars="vertical"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/jotter_item" />
+        tools:context=".view.main.JotterFragment">
 
-    <TextView
-        android:id="@+id/jotter_empty_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:overScrollMode="always"
-        android:scrollbarStyle="outsideOverlay"
-        android:text="@string/jotter_empty_text"
-        android:textAlignment="center"
-        android:textSize="34sp"
-        android:textStyle="italic"
-        android:visibility="gone" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingTop="1dp"
+            android:paddingBottom="60dp"
+            android:scrollbarStyle="outsideOverlay"
+            android:scrollbars="vertical"
+            android:visibility="@{notes.empty ? View.GONE : View.VISIBLE}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/jotter_item" />
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/jot"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:clickable="true"
-        android:contentDescription="@string/create_note"
-        android:focusable="true"
-        android:text="@string/create_note"
-        app:icon="@drawable/add_jot"
-        app:rippleColor="?attr/colorSecondary" />
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+        <TextView
+            android:id="@+id/jotter_empty_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:overScrollMode="always"
+            android:scrollbarStyle="outsideOverlay"
+            android:text="@string/jotter_empty_text"
+            android:textAlignment="center"
+            android:textSize="34sp"
+            android:textStyle="italic"
+            android:visibility="@{notes.empty ? View.VISIBLE : View.GONE}"
+            tools:visibility="gone" />
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/jot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:clickable="true"
+            android:contentDescription="@string/create_note"
+            android:focusable="true"
+            android:text="@string/create_note"
+            app:icon="@drawable/add_jot"
+            app:rippleColor="?attr/colorSecondary" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

@@ -1,4 +1,4 @@
-package com.roland.android.jotter.util
+package com.roland.android.jotter.repository
 
 import androidx.lifecycle.LiveData
 import com.roland.android.jotter.database.NoteDao

@@ -32,15 +32,17 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:autofillHints="@string/jot_body"
+        android:background="@android:color/transparent"
         android:ems="10"
         android:gravity="start|top"
         android:hint="@string/type_note"
         android:imeOptions="flagNoFullscreen"
         android:inputType="textLongMessage|textAutoCorrect|textMultiLine|text|textCapSentences"
         android:paddingBottom="32dp"
+        android:textColorHint="#78909C"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/edit_title"
-        tools:ignore="LabelFor" />
+        tools:ignore="LabelFor,TextContrastCheck" />
 </androidx.constraintlayout.widget.ConstraintLayout>
