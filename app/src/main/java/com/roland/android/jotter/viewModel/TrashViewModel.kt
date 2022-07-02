@@ -26,7 +26,7 @@ class TrashViewModel(val app: Application) : AndroidViewModel(app) {
         }
     }
 
-    private fun updateNote(note: Note) {
+    fun updateNote(note: Note) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.updateNote(note)
         }

@@ -38,8 +38,15 @@ class JotterViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     fun trashNote(note: Note, archive: Boolean, trash: Boolean) {
-        note.trashed = trash
-        note.archived = archive
+        note.apply {
+            trashed = trash
+            archived = archive
+        }
+        updateNote(note)
+    }
+
+    fun starNote(note: Note, starred: Boolean) {
+        note.starred = starred
         updateNote(note)
     }
 }

@@ -63,7 +63,15 @@ class JotFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.menu_more, menu)
+        inflater.inflate(R.menu.menu_jot, menu)
+        val starItem = menu.findItem(R.id.star)
+        if (args.note.starred) {
+            starItem.apply {
+                title = getString(R.string.unstar)
+                setIcon(R.drawable.menu_unstar)
+            }
+        }
+        starItem.isVisible = !args.note.trashed
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -76,6 +84,15 @@ class JotFragment : Fragment() {
                     val action = JotFragmentDirections.jotFragmentToJotBottomSheet(args.note)
                     findNavController().navigate(action)
                 }
+                true
+            }
+            R.id.star -> {
+                if (args.note.starred) {
+                    viewModel.starNote(args.note, false)
+                } else {
+                    viewModel.starNote(args.note, true)
+                }
+                activity?.invalidateOptionsMenu()
                 true
             }
             else -> {

@@ -33,7 +33,6 @@ class ArchiveFragment : Fragment() {
             }
         }
         setHasOptionsMenu(true)
-        savedStateHandle()
         return binding.root
     }
 
@@ -46,6 +45,7 @@ class ArchiveFragment : Fragment() {
             adapter.submitList(archive)
             binding.archive = archive
         }
+        savedStateHandle()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -66,42 +66,41 @@ class ArchiveFragment : Fragment() {
     }
 
     private fun savedStateHandle() {
+        val snackbar = Snackbar.make(requireView(), "", Snackbar.LENGTH_LONG)
         val navBackStackEntry = findNavController().getBackStackEntry(R.id.archiveFragment)
         navBackStackEntry.savedStateHandle.apply {
             getLiveData<String>("PIN").observe(viewLifecycleOwner) { set ->
                 when (set) {
                     "set" -> {
-                        snackbar(requireView(), getString(R.string.pin_set_text))
+                        lockSnackbar(requireView(), getString(R.string.pin_set_text))
                     }
                     "change" -> {
-                        snackbar(requireView(), getString(R.string.pin_changed_text))
+                        lockSnackbar(requireView(), getString(R.string.pin_changed_text))
                     }
                     else -> {}
                 }
             }
             getLiveData<Note>("trashed").observe(viewLifecycleOwner) { note ->
                 if (note.trashed) {
-                    val snackbar = Snackbar.make(requireView(), getString(R.string.moved_to_trash), Snackbar.LENGTH_LONG)
+                    snackbar.setText(getString(R.string.moved_to_trash))
                     snackbar.setAction(getString(R.string.undo)) {
                         archiveViewModel.trashNote(note, archive = true, trash = false)
                     }.show()
-                    viewLifecycleOwner.lifecycle.addObserver(LifecycleEventObserver { _, event ->
-                        if (event == Lifecycle.Event.ON_STOP) {
-                            snackbar.dismiss()
-                        }
-                    })
                 }
             }
         }
         viewLifecycleOwner.lifecycle.addObserver(LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_STOP) {
-                navBackStackEntry.savedStateHandle.set("PIN", "")
-                navBackStackEntry.savedStateHandle.set("trashed", Note())
+                navBackStackEntry.savedStateHandle.apply {
+                    set("PIN", "")
+                    set("trashed", Note())
+                }
+                if (snackbar.isShown) { snackbar.dismiss() }
             }
         })
     }
 
-    private fun snackbar(view: View, text: CharSequence) {
+    private fun lockSnackbar(view: View, text: CharSequence) {
         val locked = Preference.getLockState(requireContext())
         val duration = if (locked) { Snackbar.LENGTH_SHORT } else { Snackbar.LENGTH_LONG }
         val snackbar = Snackbar.make(view, text, duration)
@@ -114,7 +113,7 @@ class ArchiveFragment : Fragment() {
         snackbar.show()
         viewLifecycleOwner.lifecycle.addObserver(LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_STOP) {
-                snackbar.dismiss()
+                if (snackbar.isShown) { snackbar.dismiss() }
             }
         })
     }

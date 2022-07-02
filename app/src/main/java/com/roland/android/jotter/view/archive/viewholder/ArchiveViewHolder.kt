@@ -1,5 +1,6 @@
 package com.roland.android.jotter.view.archive.viewholder
 
+import android.view.View
 import androidx.navigation.Navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.roland.android.jotter.databinding.JotterItemBinding
@@ -11,13 +12,16 @@ import java.util.*
 class ArchiveHolder(private val binding: JotterItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(note: Note) {
-        binding.jotTitle.text = note.title
-        binding.jotBody.text = note.body
-        binding.dateText.text = SimpleDateFormat("d|M|yy", Locale.getDefault()).format(note.date)
+        binding.apply {
+            jotTitle.text = note.title
+            jotBody.text = note.body
+            dateText.text = SimpleDateFormat("d|M|yy", Locale.getDefault()).format(note.date)
+            starredIcon.visibility = if (note.starred) View.VISIBLE else View.GONE
 
-        binding.root.setOnClickListener {
-            val action = ArchiveFragmentDirections.archiveToJot(note)
-            findNavController(binding.root).navigate(action)
+            root.setOnClickListener {
+                val action = ArchiveFragmentDirections.archiveToJot(note)
+                findNavController(binding.root).navigate(action)
+            }
         }
     }
 }

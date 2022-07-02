@@ -39,6 +39,7 @@ class JotEditFragment : Fragment() {
         (activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.menu_cancel)
         val view = inflater.inflate(R.layout.fragment_jot_edit, container, false)
         noteTitle = view.findViewById(R.id.edit_title)
+        noteTitle.requestFocus()
         noteTitle.text = args.edit?.title
         noteBody = view.findViewById(R.id.edit_body)
         noteBody.text = args.edit?.body
@@ -97,9 +98,11 @@ class JotEditFragment : Fragment() {
 
     private fun saveNote() {
         if (noteTitle.text.isNotEmpty() || noteBody.text.isNotEmpty()) {
-            note.title = noteTitle.text.toString()
-            note.body = noteBody.text.toString()
-            note.date = Calendar.getInstance().time
+            note.apply {
+                title = noteTitle.text.toString()
+                body = noteBody.text.toString()
+                date = Calendar.getInstance().time
+            }
             jotViewModel.addNotes(note)
             findNavController().navigateUp()
             Toast.makeText(context, getString(R.string.save_note_text), Toast.LENGTH_SHORT).show()
@@ -113,11 +116,14 @@ class JotEditFragment : Fragment() {
         val titleIsSame = noteTitle.text.contentEquals(args.edit?.title)
         val bodyIsSame = noteBody.text.contentEquals(args.edit?.body)
         if (noteTitle.text.isNotEmpty() || noteBody.text.isNotEmpty()) {
-            note.id = args.edit?.id!!
-            note.title = noteTitle.text.toString()
-            note.body = noteBody.text.toString()
-            note.date = Calendar.getInstance().time
-            note.archived = args.edit?.archived!!
+            note.apply {
+                id = args.edit?.id!!
+                title = noteTitle.text.toString()
+                body = noteBody.text.toString()
+                date = Calendar.getInstance().time
+                archived = args.edit?.archived!!
+                starred = args.edit?.starred == true
+            }
             if (titleIsSame && bodyIsSame) {
                 findNavController().navigateUp()
             } else {

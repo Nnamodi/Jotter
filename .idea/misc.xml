@@ -25,7 +25,7 @@
         <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/layout/dialog_archive_lock.xml" value="0.25052083333333336" />
         <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/layout/fragment_archive.xml" value="0.25" />
         <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/layout/fragment_archive_lock.xml" value="0.25" />
-        <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/layout/fragment_jot.xml" value="0.25052083333333336" />
+        <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/layout/fragment_jot.xml" value="0.25" />
         <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/layout/fragment_jot_edit.xml" value="0.25052083333333336" />
         <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/layout/fragment_jotter.xml" value="0.25052083333333336" />
         <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/layout/fragment_jotter_list.xml" value="0.25052083333333336" />
@@ -40,6 +40,7 @@
         <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/menu/menu_jot.xml" value="0.25052083333333336" />
         <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/menu/menu_jot_edit.xml" value="0.25052083333333336" />
         <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/menu/menu_jotter_fragment.xml" value="0.25052083333333336" />
+        <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/menu/menu_more.xml" value="0.25052083333333336" />
       </map>
     </option>
   </component>

@@ -29,6 +29,12 @@ class TrashFragment : Fragment() {
             viewLifecycleOwner
         ) { trash ->
             Log.d("TrashFragment", "Received trashed notes: $trash")
+            trash.forEach {
+                if (it.starred) {
+                    it.starred = false
+                    trashViewModel.updateNote(it)
+                }
+            }
             adapter.submitList(trash)
             binding.trash = trash
         }

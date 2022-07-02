@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/star"
+        android:icon="@drawable/menu_star"
+        android:title="@string/star"
+        app:showAsAction="always"
+        tools:ignore="AlwaysShowAction" />
+
+    <item
+        android:id="@+id/more_options"
+        android:icon="@drawable/menu_more_options"
+        android:title="@string/more_options"
+        app:showAsAction="always" />
+</menu>

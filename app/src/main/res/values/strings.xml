@@ -83,4 +83,7 @@
     <string name="delete_permanently_">Delete permanently?</string>
     <string name="restored">Note restored</string>
     <string name="delete_permanently_dialog">Note will be permanently deleted. Are you sure you want to continue?</string>
+    <string name="star">Star</string>
+    <string name="unstar">Unstar</string>
+    <string name="note_starred">Note starred</string>
 </resources>
