@@ -196,7 +196,7 @@
             app:layout_constraintTop_toBottomOf="@+id/text_setting" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/delete_note"
+            android:id="@+id/trash_note"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"

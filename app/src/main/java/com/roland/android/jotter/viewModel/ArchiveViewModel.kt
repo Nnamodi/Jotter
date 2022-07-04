@@ -27,6 +27,11 @@ class ArchiveViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
+    fun archiveNote(note: Note, archive: Boolean) {
+        note.archived = archive
+        updateNote(note)
+    }
+
     fun trashNote(note: Note, archive: Boolean, trash: Boolean) {
         note.apply {
             trashed = trash

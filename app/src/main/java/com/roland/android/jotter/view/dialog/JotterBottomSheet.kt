@@ -4,58 +4,59 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.roland.android.jotter.R
+import com.roland.android.jotter.databinding.JotterBottomSheetBinding
 import com.roland.android.jotter.util.Preference
 
 class JotterBottomSheet : BottomSheetDialogFragment() {
-    private lateinit var archive: View
-    private lateinit var darkModeView: View
-    private lateinit var trash: View
-    private lateinit var darkMode: TextView
+    private var _binding: JotterBottomSheetBinding? = null
+    private val binding get() = _binding!!
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.jotter_bottom_sheet, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        _binding = JotterBottomSheetBinding.inflate(inflater, container, false)
         val isDark = Preference.getDarkMode(requireContext())
         val archiveLocked = Preference.getLockState(requireContext())
-        archive = view.findViewById(R.id.archive)
-        archive.setOnClickListener {
-            if (archiveLocked) {
-                findNavController().navigate(R.id.archiveLock)
-                Preference.setLock(requireContext(), true)
-            } else {
-                findNavController().navigate(R.id.archiveFragment)
-                Preference.setLock(requireContext(), false)
+        binding.apply {
+            archive.setOnClickListener {
+                if (archiveLocked) {
+                    findNavController().navigate(R.id.archiveLock)
+                    Preference.setLock(requireContext(), true)
+                } else {
+                    findNavController().navigate(R.id.archiveFragment)
+                    Preference.setLock(requireContext(), false)
+                }
             }
-        }
-        darkMode = view.findViewById(R.id.night_mode)
-        darkModeView = view.findViewById(R.id.check_view)
-        darkModeView.setOnClickListener {
-            darkMode.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.loading_icon, 0)
+            darKModeView.setOnClickListener {
+                nightMode.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.loading_icon, 0)
+                if (isDark) {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                    Preference.setDarkMode(requireContext(), false)
+                } else {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                    Preference.setDarkMode(requireContext(), true)
+                }
+            }
+            trash.setOnClickListener {
+                findNavController().navigate(R.id.trashFragment)
+            }
             if (isDark) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                Preference.setDarkMode(requireContext(), false)
+                nightMode.text = getString(R.string.light_mode)
+                nightMode.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.light_icon, 0)
+                darKModeView.contentDescription = getString(R.string.switch_to_light)
             } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                Preference.setDarkMode(requireContext(), true)
+                nightMode.text = getString(R.string.night_mode)
+                nightMode.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.night_icon, 0)
+                darKModeView.contentDescription = getString(R.string.switch_to_night)
             }
         }
-        trash = view.findViewById(R.id.trash)
-        trash.setOnClickListener {
-            findNavController().navigate(R.id.trashFragment)
-        }
-        if (isDark) {
-            darkMode.text = getString(R.string.light_mode)
-            darkMode.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.light_icon, 0)
-            darkModeView.contentDescription = getString(R.string.switch_to_light)
-        } else {
-            darkMode.text = getString(R.string.night_mode)
-            darkMode.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.night_icon, 0)
-            darkModeView.contentDescription = getString(R.string.switch_to_night)
-        }
-        return view
+        viewLifecycleOwner.lifecycle.addObserver(LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_DESTROY) { _binding = null }
+        })
+        return binding.root
     }
 }

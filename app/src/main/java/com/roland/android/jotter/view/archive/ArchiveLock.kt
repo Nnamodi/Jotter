@@ -12,25 +12,30 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.roland.android.jotter.R
+import com.roland.android.jotter.databinding.FragmentArchiveLockBinding
 import com.roland.android.jotter.util.Preference
 import com.roland.android.jotter.viewModel.ArchiveViewModel
 
 class ArchiveLock : Fragment() {
     private lateinit var viewModel: ArchiveViewModel
-    private lateinit var password: EditText
-    private lateinit var incorrectPinText: TextView
-    private lateinit var lockText: TextView
-    private lateinit var pinTip: TextView
-    private lateinit var nextButton: Button
-    private lateinit var lockImage: ImageView
+    private var _binding: FragmentArchiveLockBinding? = null
+    private val binding get() = _binding!!
+    private val password = binding.archivePassword
+    private val incorrectPinText = binding.incorrectPin
+    private val lockText = binding.lockText
+    private val pinTip = binding.pinTip
+    private val nextButton = binding.nextButton
+    private val lockImage = binding.lockImage
 
     @Suppress("DEPRECATION")
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_archive_lock, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        _binding = FragmentArchiveLockBinding.inflate(inflater, container, false)
         val pin = Preference.getPIN(requireContext())
         val args by navArgs<ArchiveLockArgs>()
         val vibrate: () -> Unit = {
@@ -85,14 +90,8 @@ class ArchiveLock : Fragment() {
             }
         }
         viewModel = ViewModelProvider(this) [ArchiveViewModel::class.java]
-        password = view.findViewById(R.id.archive_password)
         password.addTextChangedListener(textWatcher)
         password.requestFocus()
-        incorrectPinText = view.findViewById(R.id.incorrect_pin)
-        lockImage = view.findViewById(R.id.lock_image)
-        lockText = view.findViewById(R.id.lock_text)
-        pinTip = view.findViewById(R.id.pin_tip)
-        nextButton = view.findViewById(R.id.next_button)
         when (args.changePassword) {
             "change" -> {
                 lockText.text = getString(R.string.old_pin)
@@ -115,8 +114,11 @@ class ArchiveLock : Fragment() {
                 configureSoftKeyboard(unlock)
             }
         }
-        imm.showSoftInput(getView(), InputMethodManager.SHOW_IMPLICIT)
-        return view
+        imm.showSoftInput(binding.root, InputMethodManager.SHOW_IMPLICIT)
+        viewLifecycleOwner.lifecycle.addObserver(LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_DESTROY) { _binding = null }
+        })
+        return binding.root
     }
 
     private fun changePIN(pin: String, vibrate: () -> Unit) {

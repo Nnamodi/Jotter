@@ -80,6 +80,14 @@ class ArchiveFragment : Fragment() {
                     else -> {}
                 }
             }
+            getLiveData<Note>("unarchive").observe(viewLifecycleOwner) { note ->
+                if (!note.archived) {
+                    snackbar.setText(getString(R.string.jot_unarchived, note.title))
+                    snackbar.setAction(getString(R.string.undo)) {
+                        archiveViewModel.archiveNote(note, true)
+                    }.show()
+                }
+            }
             getLiveData<Note>("trashed").observe(viewLifecycleOwner) { note ->
                 if (note.trashed) {
                     snackbar.setText(getString(R.string.moved_to_trash))
@@ -93,6 +101,7 @@ class ArchiveFragment : Fragment() {
             if (event == Lifecycle.Event.ON_STOP) {
                 navBackStackEntry.savedStateHandle.apply {
                     set("PIN", "")
+                    set("unarchive", Note(archived = true))
                     set("trashed", Note())
                 }
                 if (snackbar.isShown) { snackbar.dismiss() }

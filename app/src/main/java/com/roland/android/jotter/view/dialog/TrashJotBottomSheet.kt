@@ -5,27 +5,26 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.roland.android.jotter.R
+import com.roland.android.jotter.databinding.TrashJotBottomSheetBinding
 import com.roland.android.jotter.viewModel.TrashViewModel
 
 class TrashJotBottomSheet : BottomSheetDialogFragment() {
     private lateinit var viewModel: TrashViewModel
-    private lateinit var restoreNote: View
-    private lateinit var deleteNote: View
+    private var _binding: TrashJotBottomSheetBinding? = null
+    private val binding get() = _binding!!
     private val args by navArgs<TrashJotBottomSheetArgs>()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        _binding = TrashJotBottomSheetBinding.inflate(inflater, container, false)
         viewModel = ViewModelProvider(this) [TrashViewModel::class.java]
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.trash_jot_bottom_sheet, container, false)
         val deleteDialog = {
             val dialog = MaterialAlertDialogBuilder(requireContext())
             dialog.setTitle(getString(R.string.delete_permanently_))
@@ -39,16 +38,17 @@ class TrashJotBottomSheet : BottomSheetDialogFragment() {
                 .setNegativeButton(getString(R.string.no)) { _, _ -> }
                 .show()
         }
-        restoreNote = view.findViewById(R.id.restore_note)
-        restoreNote.setOnClickListener {
+        binding.restoreNote.setOnClickListener {
             viewModel.trashNote(args.trash, archive = false, trash = false)
             findNavController().popBackStack(R.id.jotFragment, true)
             Toast.makeText(requireContext(), getString(R.string.restored), Toast.LENGTH_SHORT).show()
         }
-        deleteNote = view.findViewById(R.id.delete_note)
-        deleteNote.setOnClickListener {
+        binding.deleteNote.setOnClickListener {
             deleteDialog()
         }
-        return view
+        viewLifecycleOwner.lifecycle.addObserver(LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_DESTROY) { _binding = null }
+        })
+        return binding.root
     }
 }

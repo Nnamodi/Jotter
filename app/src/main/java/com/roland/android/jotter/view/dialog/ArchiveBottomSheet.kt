@@ -4,38 +4,34 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.switchmaterial.SwitchMaterial
 import com.roland.android.jotter.R
+import com.roland.android.jotter.databinding.ArchiveBottomSheetBinding
 import com.roland.android.jotter.util.Preference
 
 class ArchiveBottomSheet : BottomSheetDialogFragment() {
-    private lateinit var lock: SwitchMaterial
-    private lateinit var lockText: TextView
-    private lateinit var changePinText: TextView
-    private lateinit var lockField: View
-    private lateinit var changePin: View
+    private var _binding: ArchiveBottomSheetBinding? = null
+    private val binding get() = _binding!!
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.archive)
-        val view = inflater.inflate(R.layout.archive_bottom_sheet, container, false)
+        _binding = ArchiveBottomSheetBinding.inflate(inflater, container, false)
         val locked = Preference.getLockState(requireContext())
         val pinSet = Preference.getPIN(requireContext()).isNotEmpty()
-        lockText = view.findViewById(R.id.lock_text)
-        lockField = view.findViewById(R.id.lock_field)
         if (locked) {
-            lockText.text = getString(R.string.archive_locked_text)
-            lockField.contentDescription = getString(R.string.unlock_archive)
+            binding.lockText.text = getString(R.string.archive_locked_text)
+            binding.lockField.contentDescription = getString(R.string.unlock_archive)
         } else {
-            lockText.text = getString(R.string.archive_not_locked_text)
-            lockField.contentDescription = getString(R.string.lock_archive)
+            binding.lockText.text = getString(R.string.archive_not_locked_text)
+            binding.lockField.contentDescription = getString(R.string.lock_archive)
         }
-        lockField.setOnClickListener {
-            if (pinSet) { lock.isChecked = !lock.isChecked }
+        binding.lockField.setOnClickListener {
+            if (pinSet) { binding.lock.isChecked = !binding.lock.isChecked }
             else {
                 val dialog = MaterialAlertDialogBuilder(requireContext())
                 dialog.setTitle(R.string.archive_lock)
@@ -50,22 +46,19 @@ class ArchiveBottomSheet : BottomSheetDialogFragment() {
                     .show()
             }
         }
-        lock = view.findViewById(R.id.lock_archive)
-        lock.isChecked = Preference.getLockState(requireContext())
-        lock.setOnCheckedChangeListener { _, checked ->
+        binding.lock.isChecked = Preference.getLockState(requireContext())
+        binding.lock.setOnCheckedChangeListener { _, checked ->
             if (checked) {
-                lockText.text = getString(R.string.archive_locked_text)
-                lockField.contentDescription = getString(R.string.unlock_archive)
+                binding.lockText.text = getString(R.string.archive_locked_text)
+                binding.lockField.contentDescription = getString(R.string.unlock_archive)
                 Preference.setLockState(requireContext(), true)
             } else {
-                lockText.text = getString(R.string.archive_not_locked_text)
-                lockField.contentDescription = getString(R.string.lock_archive)
+                binding.lockText.text = getString(R.string.archive_not_locked_text)
+                binding.lockField.contentDescription = getString(R.string.lock_archive)
                 Preference.setLockState(requireContext(), false)
             }
         }
-        changePinText = view.findViewById(R.id.change_pin_text)
-        changePin = view.findViewById(R.id.change_pin)
-        changePin.setOnClickListener {
+        binding.changePin.setOnClickListener {
             val action = if (pinSet) {
                 ArchiveBottomSheetDirections
                     .archiveBottomSheetToArchiveLock(changePassword = "change")
@@ -76,8 +69,11 @@ class ArchiveBottomSheet : BottomSheetDialogFragment() {
             findNavController().navigate(action)
         }
         if (!pinSet) {
-            changePinText.text = getString(R.string.set_pin)
+            binding.changePinText.text = getString(R.string.set_pin)
         }
-        return view
+        viewLifecycleOwner.lifecycle.addObserver(LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_DESTROY) { _binding = null }
+        })
+        return binding.root
     }
 }

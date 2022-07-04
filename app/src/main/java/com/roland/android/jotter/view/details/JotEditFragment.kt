@@ -16,15 +16,18 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.roland.android.jotter.R
+import com.roland.android.jotter.databinding.FragmentJotEditBinding
 import com.roland.android.jotter.model.Note
 import com.roland.android.jotter.util.Preference
 import com.roland.android.jotter.viewModel.JotterViewModel
 import java.util.*
 
 class JotEditFragment : Fragment() {
+    private lateinit var jotViewModel: JotterViewModel
     private lateinit var noteTitle: TextView
     private lateinit var noteBody: TextView
-    private lateinit var jotViewModel: JotterViewModel
+    private var _binding: FragmentJotEditBinding? = null
+    private val binding get() = _binding!!
     private val args by navArgs<JotEditFragmentArgs>()
     private val note = Note()
     private var noteIsNew = false
@@ -35,13 +38,13 @@ class JotEditFragment : Fragment() {
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         (activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.menu_cancel)
-        val view = inflater.inflate(R.layout.fragment_jot_edit, container, false)
-        noteTitle = view.findViewById(R.id.edit_title)
+        _binding = FragmentJotEditBinding.inflate(inflater, container, false)
+        noteTitle = binding.editTitle
+        noteBody = binding.editBody
         noteTitle.requestFocus()
         noteTitle.text = args.edit?.title
-        noteBody = view.findViewById(R.id.edit_body)
         noteBody.text = args.edit?.body
         noteBody.textSize = Preference.getSize(requireContext()).toFloat()
         noteIsNew = noteTitle.text.isEmpty() && noteBody.text.isEmpty()
@@ -61,8 +64,9 @@ class JotEditFragment : Fragment() {
                 val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow(activity?.windowToken, 0)
             }
+            if (event == Lifecycle.Event.ON_DESTROY) { _binding = null }
         })
-        return view
+        return binding.root
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
