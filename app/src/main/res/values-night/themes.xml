@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Theme.Jotter" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Primary brand color. -->
@@ -13,9 +13,9 @@
         <item name="colorSecondaryVariant">@color/secondaryColor</item>
         <item name="colorOnSecondary">@color/secondaryTextColor</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
-        <item name="android:navigationBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:navigationBarColor">?android:attr/colorBackground</item>
         <item name="bottomSheetDialogTheme">@style/Jotter.BottomSheetDialog</item>
         <item name="floatingActionButtonStyle">@style/Widget.Design.FloatingActionButton</item>
         <item name="android:textColor">@color/primaryTextColor</item>
@@ -58,6 +58,16 @@
     <!-- Snackbar Theme. -->
     <style name="Jotter.SnackbarTheme" parent="Widget.Material3.Button.TextButton.Snackbar">
         <item name="android:textColor">?attr/colorPrimary</item>
+    </style>
+
+    <!-- LaunchScreen -->
+    <style name="Jotter.Launch" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">?android:attr/colorBackground</item>
+        <item name="colorPrimaryVariant">?android:attr/colorBackground</item>
+        <item name="colorPrimaryContainer">@color/secondaryColor</item>
+        <item name="colorOnSecondary">@color/secondaryTextColor</item>
+        <item name="android:navigationBarColor">?android:attr/colorBackground</item>
+        <item name="android:windowBackground">@drawable/launch</item>
     </style>
 
 </resources>

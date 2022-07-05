@@ -11,14 +11,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Jotter">
-        <activity android:name=".view.JotterActivity"
-            android:exported="true">
+        <activity android:name=".view.Launch"
+            android:exported="true"
+            android:theme="@style/Jotter.Launch">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".view.JotterActivity" />
     </application>
 
 </manifest>

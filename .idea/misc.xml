@@ -8,14 +8,18 @@
         <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/drawable-anydpi/delete_icon.xml" value="0.151" />
         <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/drawable-anydpi/delete_permanently_icon.xml" value="0.188" />
         <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/drawable-anydpi/dialog_delete_icon.xml" value="0.188" />
+        <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/drawable-anydpi/launch_text.xml" value="0.151" />
         <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/drawable-anydpi/loading_icon.xml" value="0.151" />
         <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/drawable-anydpi/lock_icon.xml" value="0.151" />
         <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/drawable-anydpi/night_icon.xml" value="0.188" />
         <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/drawable-anydpi/share_icon.xml" value="0.188" />
         <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/drawable-anydpi/unlock_icon.xml" value="0.151" />
+        <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/drawable-hdpi/launch_icon.xml" value="0.151" />
         <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/drawable/dark_checkbox.xml" value="0.188" />
         <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/drawable/dialog_delete_icon.xml" value="0.151" />
         <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/drawable/divider.xml" value="0.188" />
+        <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/drawable/launch.xml" value="0.22" />
+        <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/drawable/launch_icon.xml" value="0.188" />
         <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/drawable/light_night.xml" value="0.151" />
         <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/drawable/lock_switch.xml" value="0.151" />
         <entry key="..\:/Users/Martins/AndroidStudioProjects/Jotter/app/src/main/res/drawable/rounded_corners.xml" value="0.151" />
