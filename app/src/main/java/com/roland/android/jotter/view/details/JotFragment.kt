@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -29,7 +31,6 @@ class JotFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this) [JotterViewModel::class.java]
-        setHasOptionsMenu(true)
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -53,50 +54,54 @@ class JotFragment : Fragment() {
             }
         }
         savedStateHandle()
+        setupMenuItems()
         viewLifecycleOwner.lifecycle.addObserver(LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_DESTROY) { _binding = null }
         })
         return binding.root
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.menu_jot, menu)
-        val starItem = menu.findItem(R.id.star)
-        if (args.note.starred) {
-            starItem.apply {
-                title = getString(R.string.unstar)
-                setIcon(R.drawable.menu_unstar)
-            }
-        }
-        starItem.isVisible = !args.note.trashed
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.more_options -> {
-                if (args.note.trashed) {
-                    val action = JotFragmentDirections.jotToTrashJotBottomSheet(args.note)
-                    findNavController().navigate(action)
-                } else {
-                    val action = JotFragmentDirections.jotFragmentToJotBottomSheet(args.note)
-                    findNavController().navigate(action)
-                }
-                true
-            }
-            R.id.star -> {
+    private fun setupMenuItems() {
+        val menuHost: MenuHost = requireActivity()
+        menuHost.addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, inflater: MenuInflater) {
+                inflater.inflate(R.menu.menu_jot, menu)
+                val starItem = menu.findItem(R.id.star)
                 if (args.note.starred) {
-                    viewModel.starNote(args.note, false)
-                } else {
-                    viewModel.starNote(args.note, true)
+                    starItem.apply {
+                        title = getString(R.string.unstar)
+                        setIcon(R.drawable.menu_unstar)
+                    }
                 }
-                activity?.invalidateOptionsMenu()
-                true
+                starItem.isVisible = !args.note.trashed
             }
-            else -> {
-                super.onOptionsItemSelected(item)
+
+            override fun onMenuItemSelected(item: MenuItem): Boolean {
+                return when (item.itemId) {
+                    R.id.more_options -> {
+                        if (args.note.trashed) {
+                            val action = JotFragmentDirections.jotToTrashJotBottomSheet(args.note)
+                            findNavController().navigate(action)
+                        } else {
+                            val action =
+                                JotFragmentDirections.jotFragmentToJotBottomSheet(args.note)
+                            findNavController().navigate(action)
+                        }
+                        true
+                    }
+                    R.id.star -> {
+                        if (args.note.starred) {
+                            viewModel.starNote(args.note, false)
+                        } else {
+                            viewModel.starNote(args.note, true)
+                        }
+                        activity?.invalidateOptionsMenu()
+                        true
+                    }
+                    else -> false
+                }
             }
-        }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
     private fun savedStateHandle() {

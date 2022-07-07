@@ -5,6 +5,8 @@ import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.activity.addCallback
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -32,7 +34,6 @@ class ArchiveFragment : Fragment() {
                 findNavController().navigate(R.id.back_to_jotterFragment)
             }
         }
-        setHasOptionsMenu(true)
         return binding.root
     }
 
@@ -45,24 +46,27 @@ class ArchiveFragment : Fragment() {
             adapter.submitList(archive)
             binding.archive = archive
         }
+        setupMenuItems()
         savedStateHandle()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.menu_more, menu)
-    }
+    private fun setupMenuItems() {
+        val menuHost: MenuHost = requireActivity()
+        menuHost.addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, inflater: MenuInflater) {
+                inflater.inflate(R.menu.menu_more, menu)
+            }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.more_options -> {
-                findNavController().navigate(R.id.archiveBottomSheet)
-                true
+            override fun onMenuItemSelected(item: MenuItem): Boolean {
+                return when (item.itemId) {
+                    R.id.more_options -> {
+                        findNavController().navigate(R.id.archiveBottomSheet)
+                        true
+                    }
+                    else -> false
+                }
             }
-            else -> {
-                super.onOptionsItemSelected(item)
-            }
-        }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
     private fun savedStateHandle() {

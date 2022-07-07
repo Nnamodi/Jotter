@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
@@ -26,16 +27,22 @@ class ArchiveLock : Fragment() {
     private lateinit var viewModel: ArchiveViewModel
     private var _binding: FragmentArchiveLockBinding? = null
     private val binding get() = _binding!!
-    private val password = binding.archivePassword
-    private val incorrectPinText = binding.incorrectPin
-    private val lockText = binding.lockText
-    private val pinTip = binding.pinTip
-    private val nextButton = binding.nextButton
-    private val lockImage = binding.lockImage
+    private lateinit var password: EditText
+    private lateinit var incorrectPinText: TextView
+    private lateinit var lockText: TextView
+    private lateinit var pinTip: TextView
+    private lateinit var nextButton: Button
+    private lateinit var lockImage: ImageView
 
     @Suppress("DEPRECATION")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentArchiveLockBinding.inflate(inflater, container, false)
+        password = binding.archivePassword
+        incorrectPinText = binding.incorrectPin
+        lockText = binding.lockText
+        pinTip = binding.pinTip
+        nextButton = binding.nextButton
+        lockImage = binding.lockImage
         val pin = Preference.getPIN(requireContext())
         val args by navArgs<ArchiveLockArgs>()
         val vibrate: () -> Unit = {
@@ -99,6 +106,7 @@ class ArchiveLock : Fragment() {
                     changePIN(pin) { vibrate() }
                 }
                 configureSoftKeyboard { changePIN(pin) { vibrate() } }
+                (activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.menu_cancel)
             }
             "set" -> {
                 pinTip.visibility = View.VISIBLE
@@ -106,6 +114,7 @@ class ArchiveLock : Fragment() {
                     setPIN { vibrate() }
                 }
                 configureSoftKeyboard { setPIN(vibrate) }
+                (activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.menu_cancel)
             }
             else -> {
                 nextButton.setOnClickListener {
@@ -114,7 +123,7 @@ class ArchiveLock : Fragment() {
                 configureSoftKeyboard(unlock)
             }
         }
-        imm.showSoftInput(binding.root, InputMethodManager.SHOW_IMPLICIT)
+        imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
         viewLifecycleOwner.lifecycle.addObserver(LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_DESTROY) { _binding = null }
         })

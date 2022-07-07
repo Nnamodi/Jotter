@@ -8,6 +8,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -35,7 +37,6 @@ class JotEditFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         jotViewModel = ViewModelProvider(this) [JotterViewModel::class.java]
-        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -66,38 +67,40 @@ class JotEditFragment : Fragment() {
             }
             if (event == Lifecycle.Event.ON_DESTROY) { _binding = null }
         })
+        setupMenuItems()
         return binding.root
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.menu_jot_edit, menu)
-    }
+    private fun setupMenuItems() {
+        val menuHost: MenuHost = requireActivity()
+        menuHost.addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, inflater: MenuInflater) {
+                inflater.inflate(R.menu.menu_jot_edit, menu)
+            }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            android.R.id.home -> {
-                val noteIsEdited = !noteTitle.text.contentEquals(args.edit?.title) ||
-                        !noteBody.text.contentEquals(args.edit?.body)
-                val noteIsNotEmpty = noteTitle.text.isNotEmpty() || noteBody.text.isNotEmpty()
-                if (noteIsEdited && noteIsNotEmpty) {
-                    confirmationDialog()
-                } else {
-                    findNavController().navigateUp()
+            override fun onMenuItemSelected(item: MenuItem): Boolean {
+                return when (item.itemId) {
+                    android.R.id.home -> {
+                        val noteIsEdited = !noteTitle.text.contentEquals(args.edit?.title) ||
+                                !noteBody.text.contentEquals(args.edit?.body)
+                        val noteIsNotEmpty =
+                            noteTitle.text.isNotEmpty() || noteBody.text.isNotEmpty()
+                        if (noteIsEdited && noteIsNotEmpty) {
+                            confirmationDialog()
+                        } else {
+                            findNavController().navigateUp()
+                        }
+                        true
+                    }
+                    R.id.save_jot -> {
+                        // save jot
+                        if (!noteIsNew) updateNote() else saveNote()
+                        true
+                    }
+                    else -> true
                 }
-                true
             }
-            R.id.save_jot -> {
-                // save jot
-                if (!noteIsNew) {
-                    updateNote()
-                } else {
-                    saveNote()
-                }
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
     private fun saveNote() {
