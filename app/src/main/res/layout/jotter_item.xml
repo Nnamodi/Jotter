@@ -63,8 +63,7 @@
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/menu_unstar"
-                app:tint="?attr/colorOnSecondary" />
+                app:srcCompat="@drawable/menu_unstar" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 </layout>
