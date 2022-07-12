@@ -15,6 +15,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.roland.android.jotter.R
 import com.roland.android.jotter.databinding.FragmentJotterBinding
 import com.roland.android.jotter.model.Note
+import com.roland.android.jotter.util.actionEnabled
 import com.roland.android.jotter.util.swipeCallback
 import com.roland.android.jotter.view.main.adapter.JotterAdapter
 import com.roland.android.jotter.viewModel.JotterViewModel
@@ -28,22 +29,28 @@ class JotterFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentJotterBinding.inflate(layoutInflater)
         jotterViewModel = ViewModelProvider(this) [JotterViewModel::class.java]
-        binding.recyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                if (dy > 0) {
-                    binding.jot.shrink()
-                } else {
-                    binding.jot.extend()
+        actionEnabled.value = false
+        actionEnabled.observe(viewLifecycleOwner) { enabled ->
+            if (enabled) { binding.jot.hide() } else { binding.jot.show() }
+        }
+        binding.apply {
+            recyclerView.adapter = adapter
+            recyclerView.setHasFixedSize(true)
+            recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    if (dy > 0) {
+                        binding.jot.shrink()
+                    } else {
+                        binding.jot.extend()
+                    }
+                    Log.d("ScrollState", "Scroll direction is: $dy on y-axis")
                 }
-                Log.d("ScrollState", "Scroll direction is: $dy on y-axis")
+            })
+            jot.setOnClickListener {
+                val action = JotterFragmentDirections.moveIntoEditing(null)
+                findNavController().navigate(action)
             }
-        })
-        binding.recyclerView.adapter = adapter
-        binding.recyclerView.setHasFixedSize(true)
-        binding.jot.setOnClickListener {
-            val action = JotterFragmentDirections.moveIntoEditing(null)
-            findNavController().navigate(action)
         }
         savedStateHandle()
         return binding.root
@@ -51,15 +58,20 @@ class JotterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        jotterViewModel.getNotes.observe(
-            viewLifecycleOwner
-        ) { note ->
-            Log.d("JotterFragment", "Notes received: $note")
-            adapter.submitList(note)
-            binding.notes = note
+        jotterViewModel.getNotes.observe(viewLifecycleOwner) { notes ->
+            Log.d("JotterFragment", "Notes received: $notes")
+            notes.forEach { note ->
+                if (actionEnabled.value == false) {
+                    if (note.selected) {
+                        jotterViewModel.selectNote(note, false)
+                    }
+                }
+            }
+            adapter.submitList(notes)
+            binding.notes = notes
 
             // Swipe_to_archive implementation
-            activity?.swipeCallback(binding.root, binding.recyclerView, note, jotterViewModel)
+            activity?.swipeCallback(binding.root, binding.recyclerView, notes, jotterViewModel)
         }
         setupMenuItems()
     }

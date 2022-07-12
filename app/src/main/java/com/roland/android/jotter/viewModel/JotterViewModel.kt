@@ -49,4 +49,9 @@ class JotterViewModel(app: Application) : AndroidViewModel(app) {
         note.starred = starred
         updateNote(note)
     }
+
+    fun selectNote(note: Note, selected: Boolean) {
+        note.selected = selected
+        updateNote(note)
+    }
 }

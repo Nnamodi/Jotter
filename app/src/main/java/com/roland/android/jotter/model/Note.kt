@@ -16,5 +16,6 @@ data class Note(
     var body: String = "",
     var archived: Boolean = false,
     var trashed: Boolean = false,
-    var starred: Boolean = false
+    var starred: Boolean = false,
+    var selected: Boolean = false
 ) : Parcelable

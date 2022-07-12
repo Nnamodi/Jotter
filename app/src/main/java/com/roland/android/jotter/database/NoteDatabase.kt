@@ -9,7 +9,7 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.roland.android.jotter.model.Note
 
-@Database(entities = [Note::class], version = 4, exportSchema = false)
+@Database(entities = [Note::class], version = 5, exportSchema = false)
 @TypeConverters(NoteTypeConverter::class)
 abstract class NoteDatabase: RoomDatabase() {
     abstract fun noteDao(): NoteDao
@@ -37,8 +37,8 @@ abstract class NoteDatabase: RoomDatabase() {
     }
 }
 
-val migration = object : Migration(3, 4) {
+val migration = object : Migration(4, 5) {
     override fun migrate(database: SupportSQLiteDatabase) {
-        database.execSQL("ALTER TABLE Note ADD COLUMN starred INTEGER NOT NULL DEFAULT ''")
+        database.execSQL("ALTER TABLE Note ADD COLUMN selected INTEGER NOT NULL DEFAULT ''")
     }
 }
