@@ -21,15 +21,10 @@ class ArchiveViewModel(app: Application) : AndroidViewModel(app) {
         getArchivedNotes = repository.getArchivedNotes
     }
 
-    private fun updateNote(note: Note) {
+    fun updateNote(note: Note) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.updateNote(note)
         }
-    }
-
-    fun archiveNote(note: Note, archive: Boolean) {
-        note.archived = archive
-        updateNote(note)
     }
 
     fun trashNote(note: Note, archive: Boolean, trash: Boolean) {

@@ -17,6 +17,7 @@ import com.roland.android.jotter.R
 import com.roland.android.jotter.databinding.FragmentArchiveBinding
 import com.roland.android.jotter.model.Note
 import com.roland.android.jotter.util.Preference
+import com.roland.android.jotter.util.actionEnabled
 import com.roland.android.jotter.view.archive.adapter.ArchiveAdapter
 import com.roland.android.jotter.viewModel.ArchiveViewModel
 
@@ -28,7 +29,10 @@ class ArchiveFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         archiveViewModel = ViewModelProvider(this) [ArchiveViewModel::class.java]
         binding = FragmentArchiveBinding.inflate(layoutInflater)
-        binding.archiveRecyclerView.adapter = adapter
+        binding.apply {
+            archiveRecyclerView.adapter = adapter
+            archiveRecyclerView.setHasFixedSize(true)
+        }
         if (Preference.getLock(requireContext())) {
             activity?.onBackPressedDispatcher?.addCallback(this) {
                 findNavController().navigate(R.id.back_to_jotterFragment)
@@ -39,10 +43,17 @@ class ArchiveFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        archiveViewModel.getArchivedNotes.observe(
-            viewLifecycleOwner
-        ) { archive ->
+        actionEnabled.value = false
+        archiveViewModel.getArchivedNotes.observe(viewLifecycleOwner) { archive ->
             Log.d("ArchiveFragment", "Received archived notes: $archive")
+            archive.forEach {
+                if (actionEnabled.value == false) {
+                    if (it.selected) {
+                        it.selected = false
+                        archiveViewModel.updateNote(it)
+                    }
+                }
+            }
             adapter.submitList(archive)
             binding.archive = archive
         }
@@ -88,7 +99,8 @@ class ArchiveFragment : Fragment() {
                 if (!note.archived) {
                     snackbar.setText(getString(R.string.jot_unarchived, note.title))
                     snackbar.setAction(getString(R.string.undo)) {
-                        archiveViewModel.archiveNote(note, true)
+                        note.archived = true
+                        archiveViewModel.updateNote(note)
                     }.show()
                 }
             }

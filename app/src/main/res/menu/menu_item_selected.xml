@@ -14,7 +14,19 @@
         android:icon="@drawable/archive_icon"
         android:title="@string/move_to_archive" />
     <item
+        android:id="@+id/unarchive_note"
+        android:icon="@drawable/unarchive_icon"
+        android:title="@string/unarchive" />
+    <item
         android:id="@+id/trash_note"
         android:icon="@drawable/trash_icon"
         android:title="@string/move_to_trash" />
+    <item
+        android:id="@+id/restore_note"
+        android:icon="@drawable/restore_icon"
+        android:title="@string/restore" />
+    <item
+        android:id="@+id/delete_permanently"
+        android:icon="@drawable/delete_permanently_icon"
+        android:title="@string/delete_permanently" />
 </menu>

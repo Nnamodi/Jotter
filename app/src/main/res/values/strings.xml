@@ -81,10 +81,13 @@
     <string name="restore">Restore</string>
     <string name="delete_permanently">Delete permanently</string>
     <string name="delete_permanently_">Delete permanently?</string>
-    <string name="restored">Note restored</string>
-    <string name="delete_permanently_dialog">Note will be permanently deleted. Are you sure you want to continue?</string>
+    <string name="restored">Restored</string>
+    <string name="delete_permanently_dialog">Note will be <b>permanently</b> deleted. Are you sure you want to continue?</string>
+    <string name="delete_multiple_permanently_dialog">Notes will be <b>permanently</b> deleted. Are you sure you want to continue?</string>
     <string name="star">Star</string>
     <string name="unstar">Unstar</string>
     <string name="note_starred">Note starred</string>
     <string name="move_to_archive">Move to Archive</string>
+    <string name="unarchived">Unarchived</string>
+    <string name="note_unarchived">Notes unarchived</string>
 </resources>

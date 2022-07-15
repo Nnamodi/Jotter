@@ -14,7 +14,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class JotterHolder(private val binding: JotterItemBinding) : RecyclerView.ViewHolder(binding.root) {
-    private val card = binding.root as MaterialCardView
+    private val view = binding.root
+    private val card = view as MaterialCardView
 
     fun bind(note: Note) {
         binding.apply {
@@ -36,7 +37,7 @@ class JotterHolder(private val binding: JotterItemBinding) : RecyclerView.ViewHo
 
                 setOnLongClickListener {
                     if (actionEnabled.value == false) {
-                        startActionMode(callBack(card, note, binding))
+                        startActionMode(callBack(card, note, binding, view))
                     } else {
                         select(card, note)
                     }
