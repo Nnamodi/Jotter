@@ -9,6 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.roland.android.jotter.databinding.FragmentTrashBinding
 import com.roland.android.jotter.util.actionEnabled
+import com.roland.android.jotter.util.allCards
+import com.roland.android.jotter.util.allNotes
 import com.roland.android.jotter.view.trash.adapter.TrashAdapter
 import com.roland.android.jotter.viewModel.TrashViewModel
 
@@ -21,6 +23,7 @@ class TrashFragment : Fragment() {
         binding = FragmentTrashBinding.inflate(layoutInflater)
         trashViewModel = ViewModelProvider(this) [TrashViewModel::class.java]
         actionEnabled.value = false
+        allCards.clear()
         binding.apply {
             trashRecyclerView.adapter = adapter
             trashRecyclerView.setHasFixedSize(true)
@@ -46,6 +49,7 @@ class TrashFragment : Fragment() {
             }
             adapter.submitList(trash)
             binding.trash = trash
+            allNotes = trash.toMutableList()
         }
     }
 }

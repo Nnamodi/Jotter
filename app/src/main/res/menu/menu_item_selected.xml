@@ -1,32 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="AlwaysShowAction, AppCompatResource">
 
     <item
         android:id="@+id/star_note"
         android:icon="@drawable/menu_star"
+        android:showAsAction="always"
         android:title="@string/star" />
     <item
         android:id="@+id/share_note"
         android:icon="@drawable/share_icon"
+        android:showAsAction="always"
         android:title="@string/share" />
     <item
         android:id="@+id/archive_note"
         android:icon="@drawable/archive_icon"
+        android:showAsAction="always"
         android:title="@string/move_to_archive" />
     <item
         android:id="@+id/unarchive_note"
         android:icon="@drawable/unarchive_icon"
+        android:showAsAction="always"
         android:title="@string/unarchive" />
     <item
         android:id="@+id/trash_note"
         android:icon="@drawable/trash_icon"
+        android:showAsAction="always"
         android:title="@string/move_to_trash" />
     <item
         android:id="@+id/restore_note"
         android:icon="@drawable/restore_icon"
+        android:showAsAction="always"
         android:title="@string/restore" />
     <item
         android:id="@+id/delete_permanently"
         android:icon="@drawable/delete_permanently_icon"
+        android:showAsAction="always"
         android:title="@string/delete_permanently" />
+    <item
+        android:id="@+id/select_all"
+        android:icon="@drawable/menu_select_all"
+        android:showAsAction="always"
+        android:title="@string/select_all" />
 </menu>

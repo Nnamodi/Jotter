@@ -90,4 +90,6 @@
     <string name="move_to_archive">Move to Archive</string>
     <string name="unarchived">Unarchived</string>
     <string name="note_unarchived">Notes unarchived</string>
+    <string name="select_all">Select all</string>
+    <string name="unselect_all">Unselect all</string>
 </resources>

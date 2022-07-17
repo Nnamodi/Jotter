@@ -7,6 +7,7 @@ import com.google.android.material.card.MaterialCardView
 import com.roland.android.jotter.databinding.JotterItemBinding
 import com.roland.android.jotter.model.Note
 import com.roland.android.jotter.util.actionEnabled
+import com.roland.android.jotter.util.allCards
 import com.roland.android.jotter.util.callBack
 import com.roland.android.jotter.util.select
 import com.roland.android.jotter.view.main.JotterFragmentDirections
@@ -18,6 +19,7 @@ class JotterHolder(private val binding: JotterItemBinding) : RecyclerView.ViewHo
     private val card = view as MaterialCardView
 
     fun bind(note: Note) {
+        allCards.add(card)
         binding.apply {
             jotTitle.text = note.title
             jotBody.text = note.body

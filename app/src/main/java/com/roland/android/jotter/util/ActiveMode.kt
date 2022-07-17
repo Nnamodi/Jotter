@@ -20,10 +20,13 @@ import com.roland.android.jotter.viewModel.TrashViewModel
 private lateinit var actionMode: ActionMode
 private val viewModel = JotterViewModel(Application())
 private val selectedCards = mutableListOf<MaterialCardView>()
-private val selectedNotes = mutableListOf<Note>()
+private var selectedNotes = mutableListOf<Note>()
+var allCards = mutableListOf<MaterialCardView>()
+var allNotes = mutableListOf<Note>()
 var actionEnabled = MutableLiveData(false)
 private var noteArchived = false
 private var manySelected = false
+private var allIsSelected = false
 
 fun callBack(card: MaterialCardView, note: Note, binding: ViewDataBinding, view: View): ActionMode.Callback =
     object : ActionMode.Callback {
@@ -51,6 +54,7 @@ fun callBack(card: MaterialCardView, note: Note, binding: ViewDataBinding, view:
             selectedNotes.clear()
             selectedCards.clear()
             manySelected = false
+            allIsSelected = false
             actionMode = mode
             actionEnabled.value = true
             card.isChecked = true
@@ -63,6 +67,17 @@ fun callBack(card: MaterialCardView, note: Note, binding: ViewDataBinding, view:
 
         override fun onPrepareActionMode(mode: ActionMode, menu: Menu): Boolean {
             menu.findItem(R.id.share_note).isVisible = !manySelected && !note.trashed
+            if (allIsSelected) {
+                menu.findItem(R.id.select_all).apply {
+                    setIcon(R.drawable.menu_unselect_all)
+                    setTitle(R.string.unselect_all)
+                }
+            } else {
+                menu.findItem(R.id.select_all).apply {
+                    setIcon(R.drawable.menu_select_all)
+                    setTitle(R.string.select_all)
+                }
+            }
             selectedNotes.forEach { note ->
                 if (note.starred) {
                     menu.findItem(R.id.star_note).apply {
@@ -131,6 +146,20 @@ fun callBack(card: MaterialCardView, note: Note, binding: ViewDataBinding, view:
                                 else { context.getString(R.string.delete_multiple_permanently_dialog) }
                     deleteDialog(view, text, binding, isTrashed = false)
                 }
+                R.id.select_all -> {
+                    if (!allIsSelected) {
+                        allIsSelected = true
+                        manySelected = true
+                        selectedNotes = allNotes
+                        selectedCards.addAll(allCards)
+                        allCards.forEach { it.isChecked = true }
+                        selectedNotes.forEach {
+                            viewModel.selectNote(it, true)
+                        }
+                        mode.invalidate()
+                    } else { mode.finish() }
+                    mode.title = "${selectedNotes.size}"
+                }
             }
             return true
         }
@@ -140,7 +169,6 @@ fun callBack(card: MaterialCardView, note: Note, binding: ViewDataBinding, view:
             selectedNotes.forEach { viewModel.selectNote(it, false) }
             actionEnabled.value = false
             manySelected = false
-            mode.finish()
         }
     }
 
@@ -159,7 +187,8 @@ fun select(card: MaterialCardView, note: Note) {
     if (selectedNotes.size == 0) {
         actionMode.finish()
     }
-    manySelected = !(selectedNotes.size == 1 || selectedNotes.size == 0)
+    allIsSelected = selectedNotes.size == allNotes.size
+    manySelected = selectedNotes.size != 1
     actionMode.title = "${selectedNotes.size}"
     actionMode.invalidate()
 }

@@ -16,6 +16,8 @@ import com.roland.android.jotter.R
 import com.roland.android.jotter.databinding.FragmentJotterBinding
 import com.roland.android.jotter.model.Note
 import com.roland.android.jotter.util.actionEnabled
+import com.roland.android.jotter.util.allCards
+import com.roland.android.jotter.util.allNotes
 import com.roland.android.jotter.util.swipeCallback
 import com.roland.android.jotter.view.main.adapter.JotterAdapter
 import com.roland.android.jotter.viewModel.JotterViewModel
@@ -30,6 +32,7 @@ class JotterFragment : Fragment() {
         _binding = FragmentJotterBinding.inflate(layoutInflater)
         jotterViewModel = ViewModelProvider(this) [JotterViewModel::class.java]
         actionEnabled.value = false
+        allCards.clear()
         actionEnabled.observe(viewLifecycleOwner) { enabled ->
             if (enabled) { binding.jot.hide() } else { binding.jot.show() }
         }
@@ -69,6 +72,7 @@ class JotterFragment : Fragment() {
             }
             adapter.submitList(notes)
             binding.notes = notes
+            allNotes = notes.toMutableList()
 
             // Swipe_to_archive implementation
             activity?.swipeCallback(binding.root, binding.recyclerView, notes, jotterViewModel)

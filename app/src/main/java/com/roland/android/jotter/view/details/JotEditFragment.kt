@@ -44,7 +44,6 @@ class JotEditFragment : Fragment() {
         _binding = FragmentJotEditBinding.inflate(inflater, container, false)
         noteTitle = binding.editTitle
         noteBody = binding.editBody
-        noteTitle.requestFocus()
         noteTitle.text = args.edit?.title
         noteBody.text = args.edit?.body
         noteBody.textSize = Preference.getSize(requireContext()).toFloat()
@@ -59,6 +58,7 @@ class JotEditFragment : Fragment() {
                 findNavController().navigateUp()
             }
         }
+        if (noteIsNew) { noteTitle.requestFocus() } else { noteBody.requestFocus() }
         viewLifecycleOwner.lifecycle.addObserver(LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_STOP) {
                 val activity = activity?.currentFocus

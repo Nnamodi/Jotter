@@ -18,6 +18,8 @@ import com.roland.android.jotter.databinding.FragmentArchiveBinding
 import com.roland.android.jotter.model.Note
 import com.roland.android.jotter.util.Preference
 import com.roland.android.jotter.util.actionEnabled
+import com.roland.android.jotter.util.allCards
+import com.roland.android.jotter.util.allNotes
 import com.roland.android.jotter.view.archive.adapter.ArchiveAdapter
 import com.roland.android.jotter.viewModel.ArchiveViewModel
 
@@ -29,6 +31,7 @@ class ArchiveFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         archiveViewModel = ViewModelProvider(this) [ArchiveViewModel::class.java]
         binding = FragmentArchiveBinding.inflate(layoutInflater)
+        allCards.clear()
         binding.apply {
             archiveRecyclerView.adapter = adapter
             archiveRecyclerView.setHasFixedSize(true)
@@ -56,6 +59,7 @@ class ArchiveFragment : Fragment() {
             }
             adapter.submitList(archive)
             binding.archive = archive
+            allNotes = archive.toMutableList()
         }
         setupMenuItems()
         savedStateHandle()
