@@ -2,6 +2,8 @@ package com.roland.android.jotter.util
 
 import android.app.Application
 import android.content.Intent
+import android.os.Handler
+import android.os.Looper
 import android.view.ActionMode
 import android.view.Menu
 import android.view.MenuItem
@@ -19,6 +21,7 @@ import com.roland.android.jotter.viewModel.TrashViewModel
 
 private lateinit var actionMode: ActionMode
 private val viewModel = JotterViewModel(Application())
+private var handler = Handler(Looper.getMainLooper())
 private val selectedCards = mutableListOf<MaterialCardView>()
 private var selectedNotes = mutableListOf<Note>()
 var allCards = mutableListOf<MaterialCardView>()
@@ -98,10 +101,12 @@ fun callBack(card: MaterialCardView, note: Note, binding: ViewDataBinding, view:
             val context = binding.root.context
             when (item.itemId) {
                 R.id.star_note -> {
-                    selectedNotes.forEach {
-                        if (it.starred) { viewModel.starNote(it, false) }
-                        else { viewModel.starNote(it, true) }
-                    }
+                    handler.postDelayed({
+                        selectedNotes.forEach {
+                            if (it.starred) { viewModel.starNote(it, false) }
+                            else { viewModel.starNote(it, true) }
+                        }
+                    }, 300)
                     mode.finish()
                 }
                 R.id.trash_note -> {
@@ -122,6 +127,7 @@ fun callBack(card: MaterialCardView, note: Note, binding: ViewDataBinding, view:
                         )
                         context.startActivity(chooserIntent)
                     }
+                    handler.postDelayed({ mode.finish() }, 300)
                 }
                 R.id.archive_note -> {
                     val text = if (selectedNotes.size == 1) { context.getString(R.string.archived) }
@@ -134,12 +140,14 @@ fun callBack(card: MaterialCardView, note: Note, binding: ViewDataBinding, view:
                     archiveNote(view, text, archive = false)
                 }
                 R.id.restore_note -> {
-                    selectedNotes.forEach {
-                        viewModel.trashNote(it, archive = false, trash = false)
-                    }
+                    handler.postDelayed({
+                        selectedNotes.forEach {
+                            viewModel.trashNote(it, archive = false, trash = false)
+                        }
+                        Toast.makeText(binding.root.context, binding.root.context
+                            .getString(R.string.restored), Toast.LENGTH_SHORT).show()
+                    }, 300)
                     mode.finish()
-                    Toast.makeText(binding.root.context, binding.root.context
-                        .getString(R.string.restored), Toast.LENGTH_SHORT).show()
                 }
                 R.id.delete_permanently -> {
                     val text = if (selectedNotes.size == 1) { context.getString(R.string.delete_permanently_dialog) }
@@ -194,16 +202,18 @@ fun select(card: MaterialCardView, note: Note) {
 }
 
 private fun archiveNote(view: View, text: String, archive: Boolean) {
-    selectedNotes.forEach { note ->
-        viewModel.apply {
-            archiveNote(note, archive)
-            selectNote(note, false)
+    handler.postDelayed({
+        selectedNotes.forEach { note ->
+            viewModel.apply {
+                archiveNote(note, archive)
+                selectNote(note, false)
+            }
         }
-    }
-    Snackbar.make(view, text, Snackbar.LENGTH_LONG)
-        .setAction(R.string.undo) {
-            selectedNotes.forEach { viewModel.archiveNote(it, !archive) }
-        }.show()
+        Snackbar.make(view, text, Snackbar.LENGTH_LONG)
+            .setAction(R.string.undo) {
+                selectedNotes.forEach { viewModel.archiveNote(it, !archive) }
+            }.show()
+    }, 300)
     actionMode.finish()
 }
 
@@ -221,22 +231,22 @@ private fun deleteDialog(view: View, text: String, binding: ViewDataBinding, isT
     builder.setTitle(title)
         .setMessage(text)
         .setPositiveButton(R.string.continue_action) { _, _ ->
-            selectedNotes.forEach { note ->
-                if (isTrashed) {
-                    viewModel.apply {
-                        trashNote(note, archive = false, trash = true)
-                        selectNote(note, false)
-                    }
-                } else {
-                    trashViewModel.deleteNote(note)
+            handler.postDelayed({
+                selectedNotes.forEach { note ->
+                    if (isTrashed) {
+                        viewModel.apply {
+                            trashNote(note, archive = false, trash = true)
+                            selectNote(note, false)
+                        }
+                    } else { trashViewModel.deleteNote(note) }
                 }
-            }
-            if (isTrashed) { snackbar.show() }
-            else {
-                Toast.makeText(binding.root.context, binding.root.context
+                if (isTrashed) { snackbar.show() }
+                else {
+                    Toast.makeText(binding.root.context, binding.root.context
                         .getString(R.string.deleted), Toast.LENGTH_SHORT
-                ).show()
-            }
+                    ).show()
+                }
+            }, 300)
             actionMode.finish()
         }
         .setNegativeButton(R.string.close) { _, _ -> }
