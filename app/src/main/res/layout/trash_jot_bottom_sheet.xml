@@ -88,7 +88,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/textView1"
                 app:srcCompat="@drawable/delete_permanently_icon"
-                app:tint="?attr/colorOnSecondary" />
+                app:tint="@android:color/holo_red_dark" />
 
             <TextView
                 android:id="@+id/textView1"
@@ -100,6 +100,7 @@
                 android:layout_marginBottom="10dp"
                 android:text="@string/delete"
                 android:textSize="24sp"
+                android:textColor="@android:color/holo_red_dark"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/delete"

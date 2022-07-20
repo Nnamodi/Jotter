@@ -23,7 +23,7 @@ private lateinit var actionMode: ActionMode
 private val viewModel = JotterViewModel(Application())
 private var handler = Handler(Looper.getMainLooper())
 private val selectedCards = mutableListOf<MaterialCardView>()
-private var selectedNotes = mutableListOf<Note>()
+private val selectedNotes = mutableListOf<Note>()
 var allCards = mutableListOf<MaterialCardView>()
 var allNotes = mutableListOf<Note>()
 var actionEnabled = MutableLiveData(false)
@@ -110,7 +110,8 @@ fun callBack(card: MaterialCardView, note: Note, binding: ViewDataBinding, view:
                     mode.finish()
                 }
                 R.id.trash_note -> {
-                    val text = if (selectedNotes.size == 1) { context.getString(R.string.delete_this_note, note.title) }
+                    val noteTitle: String = note.title.ifEmpty { context.getString(R.string.note) }
+                    val text = if (selectedNotes.size == 1) { context.getString(R.string.delete_this_note, noteTitle) }
                                 else { context.getString(R.string.delete_multiple_note, selectedNotes.size) }
                     deleteDialog(view, text, binding, true)
                 }
@@ -150,15 +151,17 @@ fun callBack(card: MaterialCardView, note: Note, binding: ViewDataBinding, view:
                     mode.finish()
                 }
                 R.id.delete_permanently -> {
-                    val text = if (selectedNotes.size == 1) { context.getString(R.string.delete_permanently_dialog) }
+                    val noteTitle: String = note.title.ifEmpty { context.getString(R.string.note) }
+                    val text = if (selectedNotes.size == 1) { context.getString(R.string.delete_permanently_dialog, noteTitle) }
                                 else { context.getString(R.string.delete_multiple_permanently_dialog) }
                     deleteDialog(view, text, binding, isTrashed = false)
                 }
                 R.id.select_all -> {
+                    selectedNotes.clear()
                     if (!allIsSelected) {
                         allIsSelected = true
                         manySelected = true
-                        selectedNotes = allNotes
+                        selectedNotes.addAll(allNotes)
                         selectedCards.addAll(allCards)
                         allCards.forEach { it.isChecked = true }
                         selectedNotes.forEach {

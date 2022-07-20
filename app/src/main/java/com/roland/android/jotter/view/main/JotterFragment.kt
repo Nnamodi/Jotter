@@ -42,11 +42,7 @@ class JotterFragment : Fragment() {
             recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
-                    if (dy > 0) {
-                        binding.jot.shrink()
-                    } else {
-                        binding.jot.extend()
-                    }
+                    if (dy > 0) { jot.shrink() } else { jot.extend() }
                     Log.d("ScrollState", "Scroll direction is: $dy on y-axis")
                 }
             })
@@ -105,7 +101,8 @@ class JotterFragment : Fragment() {
         navBackStackEntry.savedStateHandle.apply {
             getLiveData<Note>("archive").observe(viewLifecycleOwner) { note ->
                 if (note.archived) {
-                    Snackbar.make(requireView(), getString(R.string.jot_archived, note.title), Snackbar.LENGTH_LONG)
+                    val noteTitle: String = note.title.ifEmpty { getString(R.string.note) }
+                    Snackbar.make(requireView(), getString(R.string.jot_archived, noteTitle), Snackbar.LENGTH_LONG)
                         .setAction(getString(R.string.undo)) {
                             jotterViewModel.archiveNote(note, false)
                         }.show()

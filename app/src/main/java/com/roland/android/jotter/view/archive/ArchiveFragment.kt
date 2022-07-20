@@ -101,7 +101,8 @@ class ArchiveFragment : Fragment() {
             }
             getLiveData<Note>("unarchive").observe(viewLifecycleOwner) { note ->
                 if (!note.archived) {
-                    snackbar.setText(getString(R.string.jot_unarchived, note.title))
+                    val noteTitle: String = note.title.ifEmpty { getString(R.string.note) }
+                    snackbar.setText(getString(R.string.jot_unarchived, noteTitle))
                     snackbar.setAction(getString(R.string.undo)) {
                         note.archived = true
                         archiveViewModel.updateNote(note)

@@ -87,9 +87,10 @@ class JotBottomSheet : BottomSheetDialogFragment() {
     }
 
     private fun trashNote(note: Note) {
+        val noteTitle: String = note.title.ifEmpty { getString(R.string.note) }
         val builder = MaterialAlertDialogBuilder(requireContext())
         builder.setTitle(getString(R.string.move_to_trash_))
-            .setMessage(getString(R.string.delete_this_note, note.title))
+            .setMessage(getString(R.string.delete_this_note, noteTitle))
             .setPositiveButton(getString(R.string.yes)) { _, _ ->
                 viewModel.trashNote(note, archive = false, trash = true)
                 findNavController().apply {

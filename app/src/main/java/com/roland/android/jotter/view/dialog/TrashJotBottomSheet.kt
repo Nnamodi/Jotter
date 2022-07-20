@@ -26,10 +26,11 @@ class TrashJotBottomSheet : BottomSheetDialogFragment() {
         _binding = TrashJotBottomSheetBinding.inflate(inflater, container, false)
         viewModel = ViewModelProvider(this) [TrashViewModel::class.java]
         val deleteDialog = {
+            val trashTitle: String = args.trash.title.ifEmpty { getString(R.string.note) }
             val dialog = MaterialAlertDialogBuilder(requireContext())
             dialog.setTitle(getString(R.string.delete_permanently_))
                 .setIcon(R.drawable.dialog_delete_icon)
-                .setMessage(getString(R.string.delete_permanently_dialog))
+                .setMessage(getString(R.string.delete_permanently_dialog, trashTitle))
                 .setPositiveButton(getString(R.string.yes)) { _, _ ->
                     viewModel.deleteNote(args.trash)
                     findNavController().popBackStack(R.id.jotFragment, true)

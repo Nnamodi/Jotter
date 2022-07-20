@@ -27,17 +27,17 @@
     <string name="archive">Archive</string>
     <string name="archived">Archived</string>
     <string name="empty_archive_text">Archive a note to see it here.</string>
-    <string name="jot_archived">%s archived</string>
+    <string name="jot_archived">\'%s\' archived</string>
     <string name="note_archived">Notes archived</string>
     <string name="chooser_title">Share note via</string>
     <string name="unarchive">Unarchive</string>
-    <string name="jot_unarchived">%s unarchived</string>
+    <string name="jot_unarchived">\'%s\' unarchived</string>
     <string name="undo">UNDO</string>
     <string name="close">Close</string>
     <string name="continue_action">Continue</string>
     <string name="deleted">Deleted</string>
     <string name="delete_multiple_note">Move %d notes to Trash?\nYou can still restore these notes from Trash.</string>
-    <string name="delete_this_note">Move %s to Trash?\nYou can still restore this note from Trash.</string>
+    <string name="delete_this_note">Move \'%s\' to Trash?\nYou can still restore this note from Trash.</string>
     <string name="archive_empty">Archive empty</string>
     <string name="incorrect_password">Incorrect PIN</string>
     <string name="password">****</string>
@@ -82,8 +82,8 @@
     <string name="delete_permanently">Delete permanently</string>
     <string name="delete_permanently_">Delete permanently?</string>
     <string name="restored">Restored</string>
-    <string name="delete_permanently_dialog">Note will be <b>permanently</b> deleted. Are you sure you want to continue?</string>
-    <string name="delete_multiple_permanently_dialog">Notes will be <b>permanently</b> deleted. Are you sure you want to continue?</string>
+    <string name="delete_permanently_dialog">\'%s\' will be permanently deleted. Are you sure you want to continue?</string>
+    <string name="delete_multiple_permanently_dialog">Notes will be permanently deleted. Are you sure you want to continue?</string>
     <string name="star">Star</string>
     <string name="unstar">Unstar</string>
     <string name="note_starred">Note starred</string>
@@ -92,4 +92,5 @@
     <string name="note_unarchived">Notes unarchived</string>
     <string name="select_all">Select all</string>
     <string name="unselect_all">Unselect all</string>
+    <string name="note">Note</string>
 </resources>
