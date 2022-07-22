@@ -13,6 +13,9 @@ import kotlinx.coroutines.launch
 class ArchiveViewModel(app: Application) : AndroidViewModel(app) {
     private val repository: NoteRepository
     val getArchivedNotes: LiveData<List<Note>>
+    var actionWasEnabled = false
+    var manyWereSelected = false
+    var allWereSelected = false
     var inputPIN = ""
 
     init {

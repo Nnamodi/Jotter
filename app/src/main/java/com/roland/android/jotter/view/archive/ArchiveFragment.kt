@@ -15,23 +15,25 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.roland.android.jotter.R
 import com.roland.android.jotter.databinding.FragmentArchiveBinding
+import com.roland.android.jotter.databinding.JotterItemBinding
 import com.roland.android.jotter.model.Note
-import com.roland.android.jotter.util.Preference
-import com.roland.android.jotter.util.actionEnabled
-import com.roland.android.jotter.util.allCards
-import com.roland.android.jotter.util.allNotes
+import com.roland.android.jotter.util.*
 import com.roland.android.jotter.view.archive.adapter.ArchiveAdapter
 import com.roland.android.jotter.viewModel.ArchiveViewModel
 
 class ArchiveFragment : Fragment() {
-    private lateinit var binding: FragmentArchiveBinding
+    private var _binding: FragmentArchiveBinding? = null
+    private val binding get() = _binding!!
     private lateinit var archiveViewModel: ArchiveViewModel
     private var adapter = ArchiveAdapter()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         archiveViewModel = ViewModelProvider(this) [ArchiveViewModel::class.java]
-        binding = FragmentArchiveBinding.inflate(layoutInflater)
+        _binding = FragmentArchiveBinding.inflate(layoutInflater)
         allCards.clear()
+        actionEnabled.observe(viewLifecycleOwner) { enabled ->
+            if (!enabled) { actionMode?.finish() }
+        }
         binding.apply {
             archiveRecyclerView.adapter = adapter
             archiveRecyclerView.setHasFixedSize(true)
@@ -41,12 +43,18 @@ class ArchiveFragment : Fragment() {
                 findNavController().navigate(R.id.back_to_jotterFragment)
             }
         }
+        // Restore actionMode if destroyed by configuration change
+        if (archiveViewModel.actionWasEnabled) {
+            manySelected = archiveViewModel.manyWereSelected
+            allIsSelected = archiveViewModel.allWereSelected
+            val bind = JotterItemBinding.inflate(LayoutInflater.from(binding.root.context))
+            activity?.startActionMode(callBack(Note(archived = true), bind, binding.root, isActive = true))
+        }
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        actionEnabled.value = false
         archiveViewModel.getArchivedNotes.observe(viewLifecycleOwner) { archive ->
             Log.d("ArchiveFragment", "Received archived notes: $archive")
             archive.forEach {
@@ -125,8 +133,14 @@ class ArchiveFragment : Fragment() {
                     set("unarchive", Note(archived = true))
                     set("trashed", Note())
                 }
+                archiveViewModel.apply {
+                    actionWasEnabled = actionEnabled.value == true
+                    manyWereSelected = manySelected == true
+                    allWereSelected = allIsSelected == true
+                }
                 if (snackbar.isShown) { snackbar.dismiss() }
             }
+            if (event == Lifecycle.Event.ON_DESTROY) { _binding = null }
         })
     }
 

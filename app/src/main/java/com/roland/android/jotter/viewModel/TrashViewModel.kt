@@ -13,6 +13,9 @@ import kotlinx.coroutines.launch
 class TrashViewModel(val app: Application) : AndroidViewModel(app) {
     private val repository: NoteRepository
     val getTrashedNotes: LiveData<List<Note>>
+    var actionWasEnabled = false
+    var manyWereSelected = false
+    var allWereSelected = false
 
     init {
         val noteDao = NoteDatabase.getDatabase(app).noteDao()

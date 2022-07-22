@@ -15,11 +15,12 @@ import com.google.android.material.card.MaterialCardView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.roland.android.jotter.R
+import com.roland.android.jotter.databinding.JotterItemBinding
 import com.roland.android.jotter.model.Note
 import com.roland.android.jotter.viewModel.JotterViewModel
 import com.roland.android.jotter.viewModel.TrashViewModel
 
-private lateinit var actionMode: ActionMode
+var actionMode: ActionMode? = null
 private val viewModel = JotterViewModel(Application())
 private var handler = Handler(Looper.getMainLooper())
 private val selectedCards = mutableListOf<MaterialCardView>()
@@ -28,10 +29,10 @@ var allCards = mutableListOf<MaterialCardView>()
 var allNotes = mutableListOf<Note>()
 var actionEnabled = MutableLiveData(false)
 private var noteArchived = false
-private var manySelected = false
-private var allIsSelected = false
+var allIsSelected = false
+var manySelected = false
 
-fun callBack(card: MaterialCardView, note: Note, binding: ViewDataBinding, view: View): ActionMode.Callback =
+fun callBack(note: Note, binding: JotterItemBinding, view: View, isActive: Boolean = false): ActionMode.Callback =
     object : ActionMode.Callback {
         override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
             val menuInflater = mode.menuInflater
@@ -54,15 +55,16 @@ fun callBack(card: MaterialCardView, note: Note, binding: ViewDataBinding, view:
                     findItem(R.id.unarchive_note).isVisible = false
                 }
             }
-            selectedNotes.clear()
-            selectedCards.clear()
-            manySelected = false
-            allIsSelected = false
+            val card = binding.root as MaterialCardView
+            if (!isActive) {
+                selectedNotes.clear(); selectedCards.clear()
+                selectedNotes.add(note); selectedCards.add(card)
+                card.isChecked = true
+                allIsSelected = false
+                manySelected = false
+            }
             actionMode = mode
             actionEnabled.value = true
-            card.isChecked = true
-            selectedNotes.add(note)
-            selectedCards.add(card)
             viewModel.selectNote(note, true)
             mode.title = "${selectedNotes.size}"
             return true
@@ -110,16 +112,20 @@ fun callBack(card: MaterialCardView, note: Note, binding: ViewDataBinding, view:
                     mode.finish()
                 }
                 R.id.trash_note -> {
-                    val noteTitle: String = note.title.ifEmpty { context.getString(R.string.note) }
+                    var trashNote = Note()
+                    selectedNotes.forEach { trashNote = it }
+                    val noteTitle: String = trashNote.title.ifEmpty { context.getString(R.string.note) }
                     val text = if (selectedNotes.size == 1) { context.getString(R.string.delete_this_note, noteTitle) }
                                 else { context.getString(R.string.delete_multiple_note, selectedNotes.size) }
                     deleteDialog(view, text, binding, true)
                 }
                 R.id.share_note -> {
+                    var shareNote = Note()
                     Intent(Intent.ACTION_SEND).apply {
+                        selectedNotes.forEach { shareNote = it }
                         type = "text/plain"
                         putExtra(Intent.EXTRA_TEXT,
-                            context.getString(R.string.text, note.title, note.body)
+                            context.getString(R.string.text, shareNote.title, shareNote.body)
                         )
                         putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.subject_text))
                     }.also { intent ->
@@ -151,19 +157,22 @@ fun callBack(card: MaterialCardView, note: Note, binding: ViewDataBinding, view:
                     mode.finish()
                 }
                 R.id.delete_permanently -> {
-                    val noteTitle: String = note.title.ifEmpty { context.getString(R.string.note) }
+                    var deleteNote = Note()
+                    selectedNotes.forEach { deleteNote = it }
+                    val noteTitle: String = deleteNote.title.ifEmpty { context.getString(R.string.note) }
                     val text = if (selectedNotes.size == 1) { context.getString(R.string.delete_permanently_dialog, noteTitle) }
                                 else { context.getString(R.string.delete_multiple_permanently_dialog) }
                     deleteDialog(view, text, binding, isTrashed = false)
                 }
                 R.id.select_all -> {
-                    selectedNotes.clear()
                     if (!allIsSelected) {
+                        selectedCards.clear()
+                        selectedNotes.clear()
                         allIsSelected = true
                         manySelected = true
                         selectedNotes.addAll(allNotes)
                         selectedCards.addAll(allCards)
-                        allCards.forEach { it.isChecked = true }
+                        selectedCards.forEach { it.isChecked = true }
                         selectedNotes.forEach {
                             viewModel.selectNote(it, true)
                         }
@@ -196,12 +205,12 @@ fun select(card: MaterialCardView, note: Note) {
         viewModel.selectNote(note, false)
     }
     if (selectedNotes.size == 0) {
-        actionMode.finish()
+        actionMode?.finish()
     }
     allIsSelected = selectedNotes.size == allNotes.size
     manySelected = selectedNotes.size != 1
-    actionMode.title = "${selectedNotes.size}"
-    actionMode.invalidate()
+    actionMode?.title = "${selectedNotes.size}"
+    actionMode?.invalidate()
 }
 
 private fun archiveNote(view: View, text: String, archive: Boolean) {
@@ -217,7 +226,7 @@ private fun archiveNote(view: View, text: String, archive: Boolean) {
                 selectedNotes.forEach { viewModel.archiveNote(it, !archive) }
             }.show()
     }, 300)
-    actionMode.finish()
+    actionMode?.finish()
 }
 
 private fun deleteDialog(view: View, text: String, binding: ViewDataBinding, isTrashed: Boolean) {
@@ -250,7 +259,7 @@ private fun deleteDialog(view: View, text: String, binding: ViewDataBinding, isT
                     ).show()
                 }
             }, 300)
-            actionMode.finish()
+            actionMode?.finish()
         }
         .setNegativeButton(R.string.close) { _, _ -> }
         .show()

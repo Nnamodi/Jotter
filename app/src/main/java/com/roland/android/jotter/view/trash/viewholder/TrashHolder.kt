@@ -37,7 +37,7 @@ class TrashHolder(private val binding: JotterItemBinding) : RecyclerView.ViewHol
 
                 setOnLongClickListener {
                     if (actionEnabled.value == false) {
-                        startActionMode(callBack(card, note, binding, view))
+                        startActionMode(callBack(note, binding, view))
                     } else {
                         select(card, note)
                     }

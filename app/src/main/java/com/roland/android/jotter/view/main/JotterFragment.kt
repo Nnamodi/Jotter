@@ -14,11 +14,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.roland.android.jotter.R
 import com.roland.android.jotter.databinding.FragmentJotterBinding
+import com.roland.android.jotter.databinding.JotterItemBinding
 import com.roland.android.jotter.model.Note
-import com.roland.android.jotter.util.actionEnabled
-import com.roland.android.jotter.util.allCards
-import com.roland.android.jotter.util.allNotes
-import com.roland.android.jotter.util.swipeCallback
+import com.roland.android.jotter.util.*
 import com.roland.android.jotter.view.main.adapter.JotterAdapter
 import com.roland.android.jotter.viewModel.JotterViewModel
 
@@ -31,10 +29,10 @@ class JotterFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentJotterBinding.inflate(layoutInflater)
         jotterViewModel = ViewModelProvider(this) [JotterViewModel::class.java]
-        actionEnabled.value = false
         allCards.clear()
         actionEnabled.observe(viewLifecycleOwner) { enabled ->
-            if (enabled) { binding.jot.hide() } else { binding.jot.show() }
+            if (!enabled) { binding.jot.show(); actionMode?.finish() }
+            else { binding.jot.hide() }
         }
         binding.apply {
             recyclerView.adapter = adapter
@@ -52,6 +50,14 @@ class JotterFragment : Fragment() {
             }
         }
         savedStateHandle()
+
+        // Restore actionMode if destroyed by configuration change
+        if (jotterViewModel.actionWasEnabled) {
+            manySelected = jotterViewModel.manyWereSelected
+            allIsSelected = jotterViewModel.allWereSelected
+            val bind = JotterItemBinding.inflate(LayoutInflater.from(binding.root.context))
+            activity?.startActionMode(callBack(Note(), bind, binding.root, isActive = true))
+        }
         return binding.root
     }
 
@@ -121,6 +127,11 @@ class JotterFragment : Fragment() {
             if (event == Lifecycle.Event.ON_STOP) {
                 navBackStackEntry.savedStateHandle["archive"] = Note()
                 navBackStackEntry.savedStateHandle["trashed"] = Note()
+                jotterViewModel.apply {
+                    actionWasEnabled = actionEnabled.value == true
+                    manyWereSelected = manySelected == true
+                    allWereSelected = allIsSelected == true
+                }
             }
             if (event == Lifecycle.Event.ON_DESTROY) { _binding = null }
         })
