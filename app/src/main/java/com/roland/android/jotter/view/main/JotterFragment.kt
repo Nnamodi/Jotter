@@ -77,7 +77,7 @@ class JotterFragment : Fragment() {
             allNotes = notes.toMutableList()
 
             // Swipe_to_archive implementation
-            activity?.swipeCallback(binding.root, binding.recyclerView, notes, jotterViewModel)
+            activity?.swipeCallback(binding.root, binding.recyclerView, jotterViewModel, viewLifecycleOwner)
         }
         setupMenuItems()
     }

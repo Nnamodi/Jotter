@@ -1,15 +1,14 @@
 package com.roland.android.jotter.view.main.viewholder
 
+import android.annotation.SuppressLint
+import android.view.MotionEvent
 import android.view.View
 import androidx.navigation.Navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import com.roland.android.jotter.databinding.JotterItemBinding
 import com.roland.android.jotter.model.Note
-import com.roland.android.jotter.util.actionEnabled
-import com.roland.android.jotter.util.allCards
-import com.roland.android.jotter.util.callBack
-import com.roland.android.jotter.util.select
+import com.roland.android.jotter.util.*
 import com.roland.android.jotter.view.main.JotterFragmentDirections
 import java.text.SimpleDateFormat
 import java.util.*
@@ -18,6 +17,7 @@ class JotterHolder(private val binding: JotterItemBinding) : RecyclerView.ViewHo
     private val view = binding.root
     private val card = view as MaterialCardView
 
+    @SuppressLint("ClickableViewAccessibility")
     fun bind(note: Note) {
         allCards.add(card)
         binding.apply {
@@ -39,11 +39,27 @@ class JotterHolder(private val binding: JotterItemBinding) : RecyclerView.ViewHo
 
                 setOnLongClickListener {
                     if (actionEnabled.value == false) {
-                        startActionMode(callBack(card, note, binding, view))
+                        startActionMode(callBack(note, binding, view))
                     } else {
                         select(card, note)
                     }
                     true
+                }
+
+                // To get the particular note swiped.
+                setOnTouchListener { _, event ->
+                    var swiped = false
+                    when (event.action) {
+                        MotionEvent.ACTION_DOWN -> {
+                            noteToSwipe = note
+                            swiped = false
+                        }
+                        MotionEvent.ACTION_MOVE -> {
+                            noteToSwipe = note
+                            swiped = true
+                        }
+                    }
+                    swiped
                 }
             }
         }

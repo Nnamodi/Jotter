@@ -40,7 +40,7 @@ class ArchiveFragment : Fragment() {
         }
         if (Preference.getLock(requireContext())) {
             activity?.onBackPressedDispatcher?.addCallback(this) {
-                findNavController().navigate(R.id.back_to_jotterFragment)
+                findNavController().popBackStack(R.id.archiveLock, true)
             }
         }
         // Restore actionMode if destroyed by configuration change
