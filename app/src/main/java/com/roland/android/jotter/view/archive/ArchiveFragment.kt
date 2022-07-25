@@ -25,11 +25,12 @@ class ArchiveFragment : Fragment() {
     private var _binding: FragmentArchiveBinding? = null
     private val binding get() = _binding!!
     private lateinit var archiveViewModel: ArchiveViewModel
-    private var adapter = ArchiveAdapter()
+    private lateinit var adapter: ArchiveAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         archiveViewModel = ViewModelProvider(this) [ArchiveViewModel::class.java]
         _binding = FragmentArchiveBinding.inflate(layoutInflater)
+        adapter = ArchiveAdapter(binding.root)
         allCards.clear()
         actionEnabled.observe(viewLifecycleOwner) { enabled ->
             if (!enabled) { actionMode?.finish() }

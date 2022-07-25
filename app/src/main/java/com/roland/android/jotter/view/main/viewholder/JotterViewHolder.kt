@@ -13,9 +13,8 @@ import com.roland.android.jotter.view.main.JotterFragmentDirections
 import java.text.SimpleDateFormat
 import java.util.*
 
-class JotterHolder(private val binding: JotterItemBinding) : RecyclerView.ViewHolder(binding.root) {
-    private val view = binding.root
-    private val card = view as MaterialCardView
+class JotterHolder(val view: View, val binding: JotterItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    private val card = binding.root as MaterialCardView
 
     @SuppressLint("ClickableViewAccessibility")
     fun bind(note: Note) {

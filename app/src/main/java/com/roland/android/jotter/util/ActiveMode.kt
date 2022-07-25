@@ -65,7 +65,7 @@ fun callBack(note: Note, binding: JotterItemBinding, view: View, isActive: Boole
             }
             actionMode = mode
             actionEnabled.value = true
-            viewModel.selectNote(note, true)
+            selectedNotes.forEach { viewModel.selectNote(it, true) }
             mode.title = "${selectedNotes.size}"
             return true
         }
@@ -166,10 +166,8 @@ fun callBack(note: Note, binding: JotterItemBinding, view: View, isActive: Boole
                 }
                 R.id.select_all -> {
                     if (!allIsSelected) {
-                        selectedCards.clear()
-                        selectedNotes.clear()
-                        allIsSelected = true
-                        manySelected = true
+                        selectedCards.clear(); selectedNotes.clear()
+                        allIsSelected = true; manySelected = true
                         selectedNotes.addAll(allNotes)
                         selectedCards.addAll(allCards)
                         selectedCards.forEach { it.isChecked = true }

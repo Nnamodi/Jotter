@@ -24,10 +24,11 @@ class JotterFragment : Fragment() {
     private var _binding: FragmentJotterBinding? = null
     private val binding get() = _binding!!
     private lateinit var jotterViewModel: JotterViewModel
-    private val adapter = JotterAdapter()
+    private lateinit var adapter: JotterAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentJotterBinding.inflate(layoutInflater)
+        adapter = JotterAdapter(binding.root)
         jotterViewModel = ViewModelProvider(this) [JotterViewModel::class.java]
         allCards.clear()
         actionEnabled.observe(viewLifecycleOwner) { enabled ->

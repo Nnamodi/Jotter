@@ -14,9 +14,8 @@ import com.roland.android.jotter.view.archive.ArchiveFragmentDirections
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ArchiveHolder(private val binding: JotterItemBinding) : RecyclerView.ViewHolder(binding.root) {
-    private val view = binding.root
-    private val card = view as MaterialCardView
+class ArchiveHolder(val view: View, val binding: JotterItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    private val card = binding.root as MaterialCardView
 
     fun bind(note: Note) {
         allCards.add(card)
