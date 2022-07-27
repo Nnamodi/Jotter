@@ -9,6 +9,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.core.view.children
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.MutableLiveData
 import com.google.android.material.card.MaterialCardView
@@ -38,6 +39,7 @@ fun callBack(note: Note, binding: JotterItemBinding, view: View, isActive: Boole
             val menuInflater = mode.menuInflater
             menuInflater.inflate(R.menu.menu_item_selected, menu)
             menu.apply {
+                findItem(R.id.select_all).isVisible = false
                 if (note.trashed) {
                     findItem(R.id.star_note).isVisible = false
                     findItem(R.id.archive_note).isVisible = false
@@ -72,6 +74,9 @@ fun callBack(note: Note, binding: JotterItemBinding, view: View, isActive: Boole
 
         override fun onPrepareActionMode(mode: ActionMode, menu: Menu): Boolean {
             menu.findItem(R.id.share_note).isVisible = !manySelected && !note.trashed
+            if (selectedNotes.isEmpty()) {
+                menu.children.all { it.isEnabled = false; true }
+            }
             if (allIsSelected) {
                 menu.findItem(R.id.select_all).apply {
                     setIcon(R.drawable.menu_unselect_all)

@@ -4,17 +4,26 @@ import android.annotation.SuppressLint
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.android.material.appbar.MaterialToolbar
 import com.roland.android.jotter.R
+import com.roland.android.jotter.util.Preference
 
 class JotterActivity : AppCompatActivity() {
     private lateinit var navController: NavController
 
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
+        val isDark = Preference.getDarkMode(this)
+        val mode = if (isDark) {
+            AppCompatDelegate.MODE_NIGHT_YES
+        } else {
+            AppCompatDelegate.MODE_NIGHT_NO
+        }
+        AppCompatDelegate.setDefaultNightMode(mode)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_jot)
         val toolbar = findViewById<MaterialToolbar>(R.id.toolbar)
