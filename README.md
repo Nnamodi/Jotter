@@ -11,7 +11,7 @@ A "jotter" or notebook app. Jotter allows you jot things down in style, while ke
  ## Screenshots
   ![Launch screen](screenshots/launch_screen.png)
   ![Main screen](screenshots/main_screen.png)
-  ![Main screen_more options](screenshots/main_screen_more_options.png)
+  ![Main screen_more options](screenshots/main_screen_more_option.png)
 
   * Other screens in Dark Mode
   ![Edit screen](screenshots/edit_screen.png)
